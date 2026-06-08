@@ -171,7 +171,7 @@ export function Testimonials() {
 
         {/* Full-bleed bottom bar — stats left, statement right */}
         <div
-          className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr]"
+          className="grid grid-cols-1 lg:grid-cols-[1fr_1px_1fr]"
           style={{
             marginTop: "80px",
             marginInline: "calc(var(--section-padding-x) * -1)",
@@ -181,7 +181,7 @@ export function Testimonials() {
         >
           {/* Left — four stats */}
           <div
-            className="grid grid-cols-2 md:grid-cols-4"
+            className="grid grid-cols-2 lg:grid-cols-4"
             style={{
               padding: "0 64px",
               alignItems: "center",
@@ -230,7 +230,7 @@ export function Testimonials() {
           </div>
 
           {/* Vertical divider */}
-          <div className="hidden md:block" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+          <div className="hidden lg:block" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
 
           {/* Right — bold statement + payment info */}
           <div
