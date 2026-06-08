@@ -46,7 +46,7 @@ export function Hero() {
       </video>
 
       <div className="container-x" style={{ position: "relative", zIndex: 3, width: "100%" }}>
-        <div style={{ gap: "48px" }} className="grid grid-cols-1 lg:grid-cols-[58%_42%] lg:gap-10">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[58%_42%] lg:gap-12 items-center">
 
           {/* LEFT */}
           <div style={{ position: "relative", zIndex: 3 }}>
