@@ -195,23 +195,21 @@ export function Testimonials() {
             ].map((s, i) => (
               <div
                 key={i}
-                className="min-w-0"
                 style={{
                   textAlign: "center",
                   padding: "48px 8px",
                   borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                  overflow: "hidden",
                 }}
               >
                 <div
-                  className="truncate"
                   style={{
                     fontFamily: "var(--font-display)",
                     fontWeight: 800,
-                    fontSize: "clamp(22px, 2.5vw, 42px)",
+                    fontSize: "clamp(18px, 2vw, 38px)",
                     color: "#FFFFFF",
                     letterSpacing: "-0.03em",
                     lineHeight: 1,
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {s.prefix || ""}<CountUp end={s.value} />{s.suffix || ""}
