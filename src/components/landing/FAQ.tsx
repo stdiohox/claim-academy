@@ -51,16 +51,15 @@ export function FAQ() {
 
         {/* Two-column layout */}
         <div
+          className="grid grid-cols-1 md:grid-cols-2"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
             gap: "80px",
             alignItems: "start",
           }}
         >
 
           {/* Left — sticky label block */}
-          <div style={{ position: "sticky", top: "120px" }}>
+          <div className="md:sticky" style={{ top: "120px" }}>
             <p
               style={{
                 fontFamily: "var(--font-body)",

@@ -99,14 +99,15 @@ export function Footer() {
 
       {/* Link columns */}
       <div style={{ paddingTop: "48px", paddingBottom: "48px" }}>
-        <div style={{
-          maxWidth: "800px",
-          margin: "0 auto",
-          paddingInline: "var(--section-padding-x)",
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "40px",
-        }}>
+        <div
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{
+            maxWidth: "800px",
+            margin: "0 auto",
+            paddingInline: "var(--section-padding-x)",
+            gap: "40px",
+          }}
+        >
           <FooterCol title="Quick Links" links={QUICK_LINKS} />
           <FooterCol title="Program" links={PROGRAM_LINKS} />
           <FooterCol title="Contact" links={CONTACT_LINKS} />
@@ -116,14 +117,13 @@ export function Footer() {
       {/* Bottom bar */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         <div
+          className="flex flex-col md:flex-row text-center md:text-left"
           style={{
             maxWidth: "var(--content-max-width)",
             margin: "0 auto",
             paddingInline: "var(--section-padding-x)",
             paddingTop: "24px",
             paddingBottom: "24px",
-            display: "flex",
-            flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             gap: "16px",

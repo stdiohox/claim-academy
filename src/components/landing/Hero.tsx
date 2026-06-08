@@ -8,13 +8,12 @@ export function Hero() {
   return (
     <section
       id="top"
+      className="pt-20 md:pt-24 pb-16 md:pb-20"
       style={{
         position: "relative",
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
-        paddingTop: "96px",
-        paddingBottom: "80px",
         overflow: "hidden",
         background: "transparent",
       }}
@@ -47,7 +46,7 @@ export function Hero() {
       </video>
 
       <div className="container-x" style={{ position: "relative", zIndex: 3, width: "100%" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "48px" }} className="lg:grid-cols-[58%_42%] lg:gap-10 lg:grid">
+        <div style={{ gap: "48px" }} className="grid grid-cols-1 lg:grid-cols-[58%_42%] lg:gap-10">
 
           {/* LEFT */}
           <div style={{ position: "relative", zIndex: 3 }}>
@@ -77,8 +76,8 @@ export function Hero() {
 
             {/* Headline */}
             <h1
+              className="text-[var(--text-3xl)] lg:text-[var(--text-5xl)]"
               style={{
-                fontSize: "var(--text-5xl)",
                 lineHeight: 1.08,
                 letterSpacing: "-0.035em",
                 color: "white",
@@ -211,12 +210,10 @@ export function Hero() {
               borderRadius: "16px",
               padding: "36px",
               boxShadow: "0 24px 64px rgba(0,0,0,0.50)",
-              display: "grid",
-              gridTemplateColumns: "1fr 1px 1fr",
               gap: "32px",
               alignItems: "center",
             }}
-            className="proof-card-grid"
+            className="proof-card-grid grid grid-cols-1 md:grid-cols-[1fr_1px_1fr]"
           >
             {/* Left col — checklist */}
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -240,7 +237,7 @@ export function Hero() {
             </ul>
 
             {/* Vertical divider */}
-            <div style={{ width: "1px", height: "100%", backgroundColor: "rgba(255,255,255,0.10)", alignSelf: "stretch" }} />
+            <div className="hidden md:block" style={{ width: "1px", height: "100%", backgroundColor: "rgba(255,255,255,0.10)", alignSelf: "stretch" }} />
 
             {/* Right col — price + CTA */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>

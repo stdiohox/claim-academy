@@ -23,11 +23,11 @@ const CARDS = [
 
 export function Problem() {
   return (
-    <section style={{ backgroundColor: "#FFFFFF", paddingTop: "48px", paddingBottom: "64px" }}>
+    <section className="py-10 md:py-16" style={{ backgroundColor: "#FFFFFF" }}>
       <div className="container-x">
         <h2
-          className="font-display font-bold text-center"
-          style={{ fontSize: "var(--text-4xl)", lineHeight: 1.1, letterSpacing: "-0.01em", color: "#000000" }}
+          className="font-display font-bold text-center text-[var(--text-2xl)] md:text-[var(--text-4xl)]"
+          style={{ lineHeight: 1.1, letterSpacing: "-0.01em", color: "#000000" }}
         >
           You've been trying to break<br className="hidden md:inline" /> into AI for months. Still stuck.
         </h2>

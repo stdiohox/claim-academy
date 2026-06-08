@@ -49,8 +49,8 @@ export function LogoBar() {
               key={i}
               src={logo.src}
               alt={logo.name}
+              className="h-8 md:h-12"
               style={{
-                height: "48px",
                 width: "auto",
                 maxWidth: "160px",
                 objectFit: "contain",

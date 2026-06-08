@@ -66,9 +66,8 @@ export function Testimonials() {
 
         {/* Three testimonial cards */}
         <div
+          className="grid grid-cols-1 md:grid-cols-3"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
             gap: "2px",
             backgroundColor: "#EBEBEB",
             borderRadius: "16px",
@@ -172,20 +171,18 @@ export function Testimonials() {
 
         {/* Full-bleed bottom bar — stats left, statement right */}
         <div
+          className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr]"
           style={{
             marginTop: "80px",
             marginInline: "calc(var(--section-padding-x) * -1)",
             background: "linear-gradient(135deg, #1A1A1A 0%, #0D0D0D 100%)",
-            display: "grid",
-            gridTemplateColumns: "1fr 1px 1fr",
             minHeight: "200px",
           }}
         >
           {/* Left — four stats */}
           <div
+            className="grid grid-cols-2 md:grid-cols-4"
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
               padding: "0 64px",
               alignItems: "center",
             }}
@@ -233,7 +230,7 @@ export function Testimonials() {
           </div>
 
           {/* Vertical divider */}
-          <div style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+          <div className="hidden md:block" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
 
           {/* Right — bold statement + payment info */}
           <div

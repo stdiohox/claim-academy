@@ -48,10 +48,9 @@ export function HowItWorks() {
   return (
     <section
       id="how"
+      className="pt-16 md:pt-[120px] pb-10 md:pb-12"
       style={{
         backgroundColor: "#FFFFFF",
-        paddingTop: "120px",
-        paddingBottom: "48px",
       }}
     >
       <div className="container-x">
@@ -94,9 +93,8 @@ export function HowItWorks() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, ease, delay: i * 0.08 }}
+                className="grid grid-cols-1 md:grid-cols-2"
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
                   gap: "0",
                   minHeight: "340px",
                   borderTop: "1px solid #F0F0F0",
@@ -106,12 +104,10 @@ export function HowItWorks() {
               >
                 {/* Content column */}
                 <div
+                  className={`${isLeft ? "order-first md:order-first md:pr-[72px]" : "order-first md:order-last md:pl-[72px]"}`}
                   style={{
-                    order: isLeft ? 0 : 1,
                     paddingTop: "48px",
                     paddingBottom: "64px",
-                    paddingLeft: isLeft ? "0" : "72px",
-                    paddingRight: isLeft ? "72px" : "0",
                     borderRight: isLeft ? "1px solid #F0F0F0" : "none",
                     borderLeft: isLeft ? "none" : "1px solid #F0F0F0",
                     display: "flex",
@@ -287,9 +283,8 @@ export function HowItWorks() {
 
                 {/* Number watermark column */}
                 <div
+                  className={`hidden md:flex ${isLeft ? "md:order-last" : "md:order-first"}`}
                   style={{
-                    order: isLeft ? 1 : 0,
-                    display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     padding: "64px",

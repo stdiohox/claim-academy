@@ -87,12 +87,12 @@ export function EmployerNetwork() {
       >
         {/* Left fade */}
         <div
+          className="w-20 md:w-40"
           style={{
             position: "absolute",
             left: 0,
             top: 0,
             bottom: 0,
-            width: "160px",
             background: "linear-gradient(to right, #FFFFFF, transparent)",
             zIndex: 2,
             pointerEvents: "none",
@@ -100,12 +100,12 @@ export function EmployerNetwork() {
         />
         {/* Right fade */}
         <div
+          className="w-20 md:w-40"
           style={{
             position: "absolute",
             right: 0,
             top: 0,
             bottom: 0,
-            width: "160px",
             background: "linear-gradient(to left, #FFFFFF, transparent)",
             zIndex: 2,
             pointerEvents: "none",

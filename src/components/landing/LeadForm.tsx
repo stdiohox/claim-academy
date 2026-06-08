@@ -101,8 +101,8 @@ export function LeadForm() {
         {/* LEFT */}
         <div className="text-white">
           <h2
-            className="font-display font-extrabold"
-            style={{ fontSize: "var(--text-4xl)", lineHeight: 1.05, letterSpacing: "-0.02em" }}
+            className="font-display font-extrabold text-[var(--text-2xl)] lg:text-[var(--text-4xl)]"
+            style={{ lineHeight: 1.05, letterSpacing: "-0.02em" }}
           >
             Book your free<br /> strategy call.
           </h2>
