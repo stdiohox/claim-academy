@@ -181,9 +181,9 @@ export function Testimonials() {
         >
           {/* Left — four stats */}
           <div
-            className="grid grid-cols-2 lg:grid-cols-4"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-0"
             style={{
-              padding: "0 64px",
+              padding: "0 24px",
               alignItems: "center",
             }}
           >
@@ -195,17 +195,20 @@ export function Testimonials() {
             ].map((s, i) => (
               <div
                 key={i}
+                className="min-w-0"
                 style={{
                   textAlign: "center",
-                  padding: "48px 0",
+                  padding: "48px 8px",
                   borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                  overflow: "hidden",
                 }}
               >
                 <div
+                  className="truncate"
                   style={{
                     fontFamily: "var(--font-display)",
                     fontWeight: 800,
-                    fontSize: "clamp(28px, 3vw, 42px)",
+                    fontSize: "clamp(22px, 2.5vw, 42px)",
                     color: "#FFFFFF",
                     letterSpacing: "-0.03em",
                     lineHeight: 1,
