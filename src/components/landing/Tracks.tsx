@@ -1,13 +1,43 @@
-const TRACKS = {
+type Week = { week: string; title: string; plain: string; focus: string };
+
+type Track = {
+  label: string;
+  roles: string[];
+  tools: string[];
+  weeks: Week[];
+  callout: string;
+};
+
+const TRACKS: Record<string, Track> = {
   engineering: {
     label: "Engineering Track",
     roles: ["AI Engineer", "AI Architect"],
     tools: ["Claude API", "LangGraph", "RAG", "FastAPI", "Supabase", "Langfuse"],
     weeks: [
-      { week: "Week 1", focus: "Claude API · Streaming · Prompt Engineering · Eval Frameworks" },
-      { week: "Week 2", focus: "RAG Pipeline · Vector DBs · Supabase pgvector · AI Memory" },
-      { week: "Week 3", focus: "Multi-Agent Systems · LangGraph · n8n · MCP Servers" },
-      { week: "Week 4", focus: "Portfolio Project · Demo Day · AI Architect Document" },
+      {
+        week: "Week 1",
+        title: "Make AI Talk to Your App",
+        plain: "Connect to a real AI model, get it responding live word-by-word, write instructions that get reliable answers, and confirm it actually works.",
+        focus: "Claude API · Streaming · Prompt Engineering · Eval Frameworks",
+      },
+      {
+        week: "Week 2",
+        title: "Give Your AI a Memory",
+        plain: "Teach your AI to answer using your own documents and data — and remember past conversations instead of starting blank every time.",
+        focus: "RAG Pipeline · Vector DBs · Supabase pgvector · AI Memory",
+      },
+      {
+        week: "Week 3",
+        title: "Build AI That Works on Its Own",
+        plain: "Create AI agents that handle multi-step tasks by themselves and plug into the apps and tools you already use.",
+        focus: "Multi-Agent Systems · LangGraph · n8n · MCP Servers",
+      },
+      {
+        week: "Week 4",
+        title: "Ship It and Show It Off",
+        plain: "Bring it all together into a real, deployed project, document how you built it, and present it live on Demo Day.",
+        focus: "Portfolio Project · Demo Day · AI Architect Document",
+      },
     ],
     callout: "You leave with: 4 deployed projects, a live URL, and a production-ready GitHub portfolio.",
   },
@@ -16,10 +46,30 @@ const TRACKS = {
     roles: ["AI Product Manager", "AI Builder"],
     tools: ["Cursor", "Lovable.dev", "n8n", "Supabase", "Claude.ai"],
     weeks: [
-      { week: "Week 1", focus: "Cursor AI Coding · Claude.ai Projects · Deploy First AI Feature" },
-      { week: "Week 2", focus: "RAG Chatbot · Supabase pgvector · Automated Ingestion" },
-      { week: "Week 3", focus: "n8n Visual Agent Builder · Autonomous Agents · Human-in-Loop" },
-      { week: "Week 4", focus: "Full-Stack Sprint · Demo Day · Product Presentation" },
+      {
+        week: "Week 1",
+        title: "Build Your First AI Feature — No Code Needed",
+        plain: "Use an AI assistant to write code alongside you, organize your work, and put your very first AI feature live on the internet.",
+        focus: "Cursor AI Coding · Claude.ai Projects · First Deployment",
+      },
+      {
+        week: "Week 2",
+        title: "Create a Chatbot That Knows Your Stuff",
+        plain: "Build a chatbot that answers from your own documents, and set it up to pull in new information automatically.",
+        focus: "RAG Chatbot · Supabase pgvector · Automated Ingestion",
+      },
+      {
+        week: "Week 3",
+        title: "Automate the Boring Work",
+        plain: "Visually build AI agents that run tasks on their own — with you stepping in to approve the decisions that matter.",
+        focus: "n8n Visual Agent Builder · Autonomous Agents · Human-in-the-Loop",
+      },
+      {
+        week: "Week 4",
+        title: "Launch Your Full Product",
+        plain: "Spend the week building a complete AI product end-to-end, then present it live on Demo Day.",
+        focus: "Full-Stack Sprint · Demo Day · Product Presentation",
+      },
     ],
     callout: "No prior coding required. You leave with a full-stack AI product at a live URL.",
   },
@@ -160,21 +210,54 @@ export function Tracks() {
                         fontSize: "12px",
                         color: "#FFB71B",
                         letterSpacing: "0.02em",
-                        paddingTop: "1px",
+                        paddingTop: "3px",
                       }}
                     >
                       {w.week}
                     </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "14px",
-                        color: "#444444",
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {w.focus}
-                    </span>
+                    <div>
+                      <p
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontWeight: 700,
+                          fontSize: "14px",
+                          color: "#111111",
+                          letterSpacing: "-0.01em",
+                          margin: "0 0 4px",
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {w.title}
+                      </p>
+                      <p
+                        style={{
+                          fontFamily: "var(--font-body)",
+                          fontSize: "13px",
+                          color: "#888888",
+                          lineHeight: 1.5,
+                          margin: "0 0 8px",
+                        }}
+                      >
+                        {w.plain}
+                      </p>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                        {w.focus.split(" · ").map((tag, j) => (
+                          <span
+                            key={j}
+                            style={{
+                              fontFamily: "var(--font-body)",
+                              fontSize: "11px",
+                              color: "#999999",
+                              backgroundColor: "#F0F0F0",
+                              padding: "2px 8px",
+                              borderRadius: "4px",
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
