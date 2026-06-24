@@ -5,6 +5,7 @@ import { LogoBar } from "@/components/landing/LogoBar";
 import { Problem } from "@/components/landing/Problem";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Tracks } from "@/components/landing/Tracks";
+import { CareerOutcomes } from "@/components/landing/CareerOutcomes";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { Pricing } from "@/components/landing/Pricing";
 import { EmployerNetwork } from "@/components/landing/EmployerNetwork";
@@ -40,6 +41,7 @@ function Index() {
       <Problem />
       <HowItWorks />
       <Tracks />
+      <CareerOutcomes />
       <Testimonials />
       <Pricing />
       <EmployerNetwork />
