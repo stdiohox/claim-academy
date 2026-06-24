@@ -65,7 +65,7 @@ const TIERS: Tier[] = [
 
 export function Pricing() {
   return (
-    <section id="pricing" style={{ backgroundColor: "var(--brand-white)", paddingTop: "64px", paddingBottom: "48px" }}>
+    <section id="pricing" style={{ backgroundColor: "#F7F6FC", paddingTop: "64px", paddingBottom: "48px" }}>
       <div className="container-x">
         <h2
           className="font-display font-bold text-center"
@@ -98,7 +98,7 @@ export function Pricing() {
                       boxShadow: "0 8px 40px rgba(96,40,137,0.15)",
                       paddingBlock: "2.75rem",
                     }
-                  : { border: "1px solid var(--brand-gray-200)" }
+                  : { border: "1px solid #ECEAF2", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }
               }
             >
               {t.featured && (

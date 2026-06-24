@@ -50,7 +50,7 @@ export function HowItWorks() {
       id="how"
       className="pt-16 md:pt-[120px] pb-10 md:pb-12"
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F7F6FC",
       }}
     >
       <div className="container-x">

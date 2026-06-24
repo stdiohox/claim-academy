@@ -91,7 +91,7 @@
   }
 
   body {
-    background-color: var(--brand-dark);
+    background-color: #F7F6FC;
     color: var(--brand-white);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;

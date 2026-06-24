@@ -19,7 +19,7 @@ export function EmployerNetwork() {
   return (
     <section
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F7F6FC",
         paddingTop: "48px",
         paddingBottom: "100px",
         overflow: "hidden",
@@ -93,7 +93,7 @@ export function EmployerNetwork() {
             left: 0,
             top: 0,
             bottom: 0,
-            background: "linear-gradient(to right, #FFFFFF, transparent)",
+            background: "linear-gradient(to right, #F7F6FC, transparent)",
             zIndex: 2,
             pointerEvents: "none",
           }}
@@ -106,7 +106,7 @@ export function EmployerNetwork() {
             right: 0,
             top: 0,
             bottom: 0,
-            background: "linear-gradient(to left, #FFFFFF, transparent)",
+            background: "linear-gradient(to left, #F7F6FC, transparent)",
             zIndex: 2,
             pointerEvents: "none",
           }}

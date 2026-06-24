@@ -83,6 +83,8 @@ export function Testimonials() {
               transition={{ duration: 0.5, ease, delay: i * 0.1 }}
               style={{
                 backgroundColor: "#FFFFFF",
+                border: "1px solid #ECEAF2",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
                 padding: "44px 40px",
                 display: "flex",
                 flexDirection: "column",

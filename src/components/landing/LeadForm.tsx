@@ -127,7 +127,7 @@ export function LeadForm() {
         {/* RIGHT */}
         <div
           className="bg-white rounded-xl p-8 sm:p-9 relative"
-          style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}
+          style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.3)", border: "1px solid #ECEAF2" }}
         >
           <AnimatePresence mode="wait">
             {success ? (

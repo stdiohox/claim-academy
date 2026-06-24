@@ -23,7 +23,7 @@ const CARDS = [
 
 export function Problem() {
   return (
-    <section className="py-10 md:py-16" style={{ backgroundColor: "#FFFFFF" }}>
+    <section className="py-10 md:py-16" style={{ backgroundColor: "#F7F6FC" }}>
       <div className="container-x">
         <h2
           className="font-display font-bold text-center text-[var(--text-2xl)] md:text-[var(--text-4xl)]"
@@ -50,6 +50,7 @@ export function Problem() {
               style={{
                 border: "1px solid var(--brand-gray-200)",
                 borderTop: "3px solid var(--brand-gold)",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
               }}
             >
               <div
