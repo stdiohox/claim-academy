@@ -299,7 +299,7 @@ export function HowItWorks() {
                       fontWeight: 900,
                       fontSize: "clamp(160px, 18vw, 240px)",
                       color: "#000000",
-                      opacity: 0.10,
+                      opacity: 0.16,
                       letterSpacing: "-0.05em",
                       lineHeight: 1,
                       userSelect: "none",
