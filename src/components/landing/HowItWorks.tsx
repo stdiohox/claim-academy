@@ -179,9 +179,10 @@ export function HowItWorks() {
                         <div
                           key={t.name}
                           style={{
-                            backgroundColor: "#F8F8F8",
+                            backgroundColor: "#FBF6EA",
                             borderRadius: "10px",
                             padding: "18px 20px",
+                            border: "1px solid #EFE4CC",
                             borderTop: "2px solid #FFB71B",
                           }}
                         >
@@ -200,7 +201,7 @@ export function HowItWorks() {
                             style={{
                               fontFamily: "var(--font-body)",
                               fontSize: "12px",
-                              color: "#999999",
+                              color: "#777777",
                               marginTop: "8px",
                               lineHeight: 1.6,
                             }}
