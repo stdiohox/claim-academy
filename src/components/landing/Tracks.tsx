@@ -80,8 +80,8 @@ export function Tracks() {
     <section
       style={{
         backgroundColor: "#F8F8F8",
-        paddingTop: "32px",
-        paddingBottom: "100px",
+        paddingTop: "40px",
+        paddingBottom: "64px",
       }}
     >
       <div className="container-x">

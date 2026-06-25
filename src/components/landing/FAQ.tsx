@@ -44,7 +44,7 @@ export function FAQ() {
       style={{
         backgroundColor: "#F9F7F4",
         paddingTop: "56px",
-        paddingBottom: "100px",
+        paddingBottom: "64px",
       }}
     >
       <div className="container-x">

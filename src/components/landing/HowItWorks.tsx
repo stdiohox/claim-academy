@@ -48,7 +48,7 @@ export function HowItWorks() {
   return (
     <section
       id="how"
-      className="pt-16 md:pt-[120px] pb-10 md:pb-12"
+      className="pt-12 md:pt-16 pb-10 md:pb-12"
       style={{
         backgroundColor: "#F7F6FC",
       }}
@@ -56,7 +56,7 @@ export function HowItWorks() {
       <div className="container-x">
 
         {/* Section header */}
-        <div style={{ textAlign: "center", marginBottom: "100px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <h2
             style={{
               fontFamily: "var(--font-display)",
@@ -284,22 +284,24 @@ export function HowItWorks() {
 
                 {/* Number watermark column */}
                 <div
-                  className={`hidden md:flex ${isLeft ? "md:order-last" : "md:order-first"}`}
+                  className={`hidden md:block ${isLeft ? "md:order-last" : "md:order-first"}`}
                   style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "64px",
                     position: "relative",
                     overflow: "hidden",
+                    minHeight: "260px",
                   }}
                 >
                   <span
                     style={{
+                      position: "absolute",
+                      top: "50%",
+                      [isLeft ? "right" : "left"]: "-4%",
+                      transform: "translateY(-50%)",
                       fontFamily: "var(--font-display)",
                       fontWeight: 900,
-                      fontSize: "clamp(160px, 18vw, 240px)",
-                      color: "#000000",
-                      opacity: 0.16,
+                      fontSize: "clamp(100px, 12vw, 160px)",
+                      color: "#602889",
+                      opacity: 0.10,
                       letterSpacing: "-0.05em",
                       lineHeight: 1,
                       userSelect: "none",

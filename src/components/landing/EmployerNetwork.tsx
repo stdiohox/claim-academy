@@ -13,7 +13,7 @@ export function EmployerNetwork() {
       style={{
         backgroundColor: "#F7F6FC",
         paddingTop: "48px",
-        paddingBottom: "100px",
+        paddingBottom: "56px",
         overflow: "hidden",
       }}
     >

@@ -31,9 +31,9 @@ export function Testimonials() {
   return (
     <section
       style={{
-        backgroundColor: "#F9F7F4",
+        backgroundColor: "#120820",
         paddingTop: "64px",
-        paddingBottom: "0",
+        paddingBottom: "48px",
       }}
     >
       <div className="container-x">
@@ -45,7 +45,7 @@ export function Testimonials() {
               fontFamily: "var(--font-display)",
               fontWeight: 800,
               fontSize: "var(--text-3xl)",
-              color: "#0A0A0A",
+              color: "#FFFFFF",
               letterSpacing: "-0.025em",
               lineHeight: 1.1,
             }}
@@ -56,7 +56,7 @@ export function Testimonials() {
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "16px",
-              color: "#AAAAAA",
+              color: "rgba(255,255,255,0.45)",
               marginTop: "12px",
             }}
           >
@@ -69,7 +69,7 @@ export function Testimonials() {
           className="grid grid-cols-1 md:grid-cols-3"
           style={{
             gap: "2px",
-            backgroundColor: "#EBEBEB",
+            backgroundColor: "rgba(255,255,255,0.04)",
             borderRadius: "16px",
             overflow: "hidden",
           }}
@@ -82,9 +82,9 @@ export function Testimonials() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, ease, delay: i * 0.1 }}
               style={{
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #ECEAF2",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
+                backgroundColor: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "none",
                 padding: "44px 40px",
                 display: "flex",
                 flexDirection: "column",
@@ -111,7 +111,7 @@ export function Testimonials() {
                     fontFamily: "var(--font-display)",
                     fontWeight: 600,
                     fontSize: "18px",
-                    color: "#111111",
+                    color: "rgba(255,255,255,0.90)",
                     fontStyle: "italic",
                     lineHeight: 1.55,
                     letterSpacing: "-0.01em",
@@ -128,7 +128,7 @@ export function Testimonials() {
                   alignItems: "center",
                   gap: "14px",
                   paddingTop: "24px",
-                  borderTop: "1px solid #F0F0F0",
+                  borderTop: "1px solid rgba(255,255,255,0.08)",
                 }}
               >
                 <img
@@ -140,7 +140,7 @@ export function Testimonials() {
                     borderRadius: "50%",
                     objectFit: "cover",
                     flexShrink: 0,
-                    border: "2px solid #F0F0F0",
+                    border: "2px solid rgba(255,255,255,0.12)",
                   }}
                 />
                 <div>
@@ -149,7 +149,7 @@ export function Testimonials() {
                       fontFamily: "var(--font-display)",
                       fontWeight: 700,
                       fontSize: "14px",
-                      color: "#111111",
+                      color: "rgba(255,255,255,0.90)",
                       letterSpacing: "-0.01em",
                     }}
                   >
@@ -159,7 +159,7 @@ export function Testimonials() {
                     style={{
                       fontFamily: "var(--font-body)",
                       fontSize: "12px",
-                      color: "#999999",
+                      color: "rgba(255,255,255,0.40)",
                       marginTop: "2px",
                     }}
                   >
@@ -175,9 +175,10 @@ export function Testimonials() {
         <div
           className="grid grid-cols-1 lg:grid-cols-[1fr_1px_1fr]"
           style={{
-            marginTop: "80px",
+            marginTop: "56px",
             marginInline: "calc(var(--section-padding-x) * -1)",
-            background: "linear-gradient(135deg, #1A1A1A 0%, #0D0D0D 100%)",
+            background: "linear-gradient(135deg, rgba(96,40,137,0.25) 0%, rgba(18,8,32,0.0) 100%)",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
             minHeight: "200px",
           }}
         >

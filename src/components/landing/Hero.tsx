@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="pt-20 md:pt-24 pb-16 md:pb-20"
+      className="pt-24 md:pt-32 pb-20 md:pb-28"
       style={{
         position: "relative",
         minHeight: "100vh",
@@ -77,10 +77,10 @@ export function Hero() {
 
             {/* Headline */}
             <h1
-              className="text-[var(--text-3xl)] lg:text-[var(--text-5xl)]"
               style={{
-                lineHeight: 1.08,
-                letterSpacing: "-0.035em",
+                fontSize: "clamp(2.4rem, 5vw + 1rem, 4.5rem)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.038em",
                 color: "white",
                 fontWeight: 800,
                 marginTop: "28px",
