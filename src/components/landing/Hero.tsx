@@ -181,21 +181,6 @@ export function Hero() {
 
             <CohortCountdown variant="dark" />
 
-            {/* Social proof */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.65 }}
-              style={{
-                marginTop: "24px",
-                fontFamily: "var(--font-body)",
-                fontSize: "13px",
-                color: "rgba(255,255,255,0.40)",
-                letterSpacing: "0.02em",
-              }}
-            >
-              Rated 4.9/5 by 200+ graduates · 11 years · 87% placement rate
-            </motion.p>
           </div>
 
           {/* RIGHT — Proof Card */}
