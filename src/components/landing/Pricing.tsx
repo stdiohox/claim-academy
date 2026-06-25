@@ -80,7 +80,7 @@ export function Pricing() {
           All tiers include the guaranteed employer internship. Difference is support level.
         </p>
 
-        <div className="mt-14 grid md:grid-cols-3 gap-6 items-start">
+        <div className="mt-14 grid md:grid-cols-3 gap-6 items-center">
           {TIERS.map((t, i) => (
             <motion.div
               key={i}
@@ -92,26 +92,38 @@ export function Pricing() {
               style={
                 t.featured
                   ? {
-                      border: "1px solid #602889",
-                      borderTopWidth: 3,
-                      borderTopColor: "#602889",
-                      boxShadow: "0 8px 40px rgba(96,40,137,0.15)",
-                      paddingBlock: "2.75rem",
+                      border: "2px solid #602889",
+                      boxShadow: "0 20px 60px rgba(96,40,137,0.22)",
+                      padding: "2.5rem 2rem",
+                      transform: "scale(1.04)",
+                      transformOrigin: "center",
+                      zIndex: 1,
+                      backgroundColor: "#FFFFFF",
                     }
-                  : { border: "1px solid #ECEAF2", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }
+                  : { border: "1px solid #ECEAF2", boxShadow: "none", backgroundColor: "#FAFAF9" }
               }
             >
               {t.featured && (
-                <span
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded text-[11px] text-white"
-                  style={{
-                    background: "linear-gradient(138deg, #602889 0%, #C51BDB 100%)",
-                    fontFamily: "var(--font-mono)",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  MOST POPULAR
-                </span>
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex justify-center">
+                  <span
+                    style={{
+                      display: "inline-block",
+                      background: "linear-gradient(138deg, #602889 0%, #C51BDB 100%)",
+                      fontFamily: "var(--font-body)",
+                      fontWeight: 700,
+                      fontSize: "12px",
+                      letterSpacing: "0.08em",
+                      color: "#FFFFFF",
+                      padding: "6px 18px",
+                      borderRadius: "100px",
+                      boxShadow: "0 4px 12px rgba(96,40,137,0.35)",
+                      whiteSpace: "nowrap",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Most Popular
+                  </span>
+                </div>
               )}
               <p
                 className="text-[11px] uppercase"
