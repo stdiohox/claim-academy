@@ -127,7 +127,7 @@ export function Testimonials() {
                       margin: 0,
                     }}
                   >
-                    "Hear it from someone who's been through the program — the employer guarantee is real."
+                    "Don't take our word for it — take theirs."
                   </p>
                   <p
                     style={{
@@ -137,7 +137,7 @@ export function Testimonials() {
                       margin: 0,
                     }}
                   >
-                    Claim Academy Graduate
+                    Claim Academy Graduates
                   </p>
                 </div>
               </div>
