@@ -2,17 +2,9 @@ import { motion } from "framer-motion";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const LOGOS = [
-  { name: "IBM", src: "http://claimacademy.org/wp-content/uploads/2021/12/logo_0000s_0000_ibm-logo.png" },
-  { name: "Boeing", src: "http://claimacademy.org/wp-content/uploads/2021/12/logo_0000s_0001_boeing-logo-black.png" },
-  { name: "Mastercard", src: "http://claimacademy.org/wp-content/uploads/2021/12/logo_0000s_0002_mastercard-logo-black.png" },
-  { name: "Wells Fargo", src: "http://claimacademy.org/wp-content/uploads/2021/12/logo_0000s_0003_Wells-Fargo-Logo.png" },
-  { name: "FedEx", src: "http://claimacademy.org/wp-content/uploads/2021/12/logo_0000s_0004_fedex-logo-black-and-white.png" },
-  { name: "Anheuser-Busch", src: "http://claimacademy.org/wp-content/uploads/2022/07/ab-logo.jpg" },
-  { name: "Amazon", src: "http://claimacademy.org/wp-content/uploads/2022/07/amazon.jpg" },
-  { name: "Google", src: "http://claimacademy.org/wp-content/uploads/2022/07/google.jpg" },
-  { name: "Accenture", src: "http://claimacademy.org/wp-content/uploads/2022/07/accenture.jpg" },
-  { name: "Enterprise", src: "http://claimacademy.org/wp-content/uploads/2022/07/enterprise.jpg" },
+const COMPANIES = [
+  "IBM", "Boeing", "Mastercard", "Wells Fargo", "FedEx",
+  "Anheuser-Busch", "Amazon", "Google", "Accenture", "Enterprise",
 ];
 
 export function EmployerNetwork() {
@@ -78,100 +70,35 @@ export function EmployerNetwork() {
 
       </div>
 
-      {/* Full-bleed logo strip — no container constraint */}
-      <div
-        style={{
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Left fade */}
-        <div
-          className="w-20 md:w-40"
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            bottom: 0,
-            background: "linear-gradient(to right, #F7F6FC, transparent)",
-            zIndex: 2,
-            pointerEvents: "none",
-          }}
-        />
-        {/* Right fade */}
-        <div
-          className="w-20 md:w-40"
-          style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            bottom: 0,
-            background: "linear-gradient(to left, #F7F6FC, transparent)",
-            zIndex: 2,
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* Scrolling row 1 — left to right */}
-        <div
-          className="logo-track"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "80px",
-            width: "max-content",
-            paddingInline: "80px",
-            marginBottom: "40px",
-          }}
-        >
-          {[...LOGOS, ...LOGOS].map((logo, i) => (
-            <img
-              key={i}
-              src={logo.src}
-              alt={logo.name}
-              style={{
-                height: "40px",
-                width: "auto",
-                maxWidth: "140px",
-                objectFit: "contain",
-                opacity: 0.18,
-                filter: "grayscale(1)",
-                transition: "opacity 300ms",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = "0.6")}
-              onMouseLeave={e => (e.currentTarget.style.opacity = "0.18")}
-            />
-          ))}
-        </div>
-
-        {/* Scrolling row 2 — right to left (reverse) */}
+      {/* Company badge grid */}
+      <div className="container-x">
         <div
           style={{
             display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+            justifyContent: "center",
             alignItems: "center",
-            gap: "80px",
-            width: "max-content",
-            paddingInline: "80px",
-            animation: "logo-scroll-reverse 35s linear infinite",
           }}
         >
-          {[...LOGOS.slice(5), ...LOGOS, ...LOGOS.slice(0, 5)].map((logo, i) => (
-            <img
-              key={i}
-              src={logo.src}
-              alt={logo.name}
+          {COMPANIES.map((name) => (
+            <span
+              key={name}
               style={{
-                height: "40px",
-                width: "auto",
-                maxWidth: "140px",
-                objectFit: "contain",
-                opacity: 0.12,
-                filter: "grayscale(1)",
-                transition: "opacity 300ms",
+                fontFamily: "var(--font-body)",
+                fontWeight: 600,
+                fontSize: "13px",
+                color: "#AAAAAA",
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E8E4F0",
+                padding: "10px 20px",
+                borderRadius: "8px",
+                letterSpacing: "0.01em",
+                whiteSpace: "nowrap",
               }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = "0.5")}
-              onMouseLeave={e => (e.currentTarget.style.opacity = "0.12")}
-            />
+            >
+              {name}
+            </span>
           ))}
         </div>
       </div>

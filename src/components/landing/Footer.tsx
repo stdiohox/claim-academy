@@ -77,11 +77,19 @@ export function Footer() {
     <footer style={{ backgroundColor: "#000000", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
       {/* Top centered block */}
       <div style={{ paddingTop: "64px", paddingBottom: "48px", textAlign: "center" }}>
-        <img
-          src="http://claimacademy.org/wp-content/uploads/2021/12/Claim-Academy-Logo-FIN-white.png"
-          alt="Claim Academy"
-          style={{ height: "34px", display: "block", margin: "0 auto", opacity: 0.9 }}
-        />
+        <div style={{ display: "inline-block" }}>
+          <span
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              fontSize: "20px",
+              letterSpacing: "-0.03em",
+              color: "rgba(255,255,255,0.85)",
+            }}
+          >
+            Claim<span style={{ color: "#FFB71B" }}>Academy</span>
+          </span>
+        </div>
         <p style={{
           textAlign: "center",
           color: "rgba(255,255,255,0.30)",
