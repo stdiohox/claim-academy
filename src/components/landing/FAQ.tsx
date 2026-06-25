@@ -125,6 +125,36 @@ export function FAQ() {
             >
               Book a free call →
             </a>
+
+            {/* About video */}
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontWeight: 600,
+                fontSize: "11px",
+                color: "#AAAAAA",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                marginTop: "40px",
+                marginBottom: "12px",
+              }}
+            >
+              See who we are
+            </p>
+            <video
+              src="/videos/about-claim.mp4"
+              controls
+              playsInline
+              preload="metadata"
+              aria-label="About Claim Academy — founder Ola Ayeni explains the program"
+              style={{
+                width: "100%",
+                aspectRatio: "16 / 9",
+                borderRadius: "12px",
+                display: "block",
+                backgroundColor: "#000",
+              }}
+            />
           </div>
 
           {/* Right — accordion */}
