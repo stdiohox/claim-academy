@@ -24,6 +24,9 @@ export function LeadForm() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [trackVal, setTrackVal] = useState("");
+  const [sourceVal, setSourceVal] = useState("");
+  const [backgroundVal, setBackgroundVal] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -163,7 +166,11 @@ export function LeadForm() {
                   Takes 2 minutes to fill out.
                 </p>
 
-                <div className="mt-6 space-y-4">
+                <div className="mt-6 space-y-5">
+
+                  {/* — YOUR INFO — */}
+                  <SectionLabel>Your info</SectionLabel>
+
                   <div className="grid grid-cols-2 gap-3">
                     <Field label="First name" name="firstName" error={errors.firstName}>
                       <input name="firstName" className={inputCls} style={{ border: errors.firstName ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }} placeholder="Jane" />
@@ -172,39 +179,64 @@ export function LeadForm() {
                       <input name="lastName" className={inputCls} style={{ border: errors.lastName ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }} placeholder="Smith" />
                     </Field>
                   </div>
-                  <Field label="Email address" name="email" error={errors.email}>
-                    <input type="email" name="email" className={inputCls} style={{ border: errors.email ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }} placeholder="you@example.com" />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Field label="Email" name="email" error={errors.email}>
+                      <input type="email" name="email" className={inputCls} style={{ border: errors.email ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }} placeholder="you@example.com" />
+                    </Field>
+                    <Field label="Phone" name="phone" error={errors.phone}>
+                      <input type="tel" name="phone" className={inputCls} style={{ border: errors.phone ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }} placeholder="+1 (555) 555-5555" />
+                    </Field>
+                  </div>
+
+                  {/* — ABOUT YOU — */}
+                  <SectionLabel>About you</SectionLabel>
+
+                  <Field label="Your background" name="background" error={errors.background}>
+                    <input type="hidden" name="background" value={backgroundVal} />
+                    <ChipGroup
+                      options={[
+                        { value: "recent_grad", label: "Recent grad" },
+                        { value: "working_professional", label: "Professional" },
+                        { value: "career_switcher", label: "Career switcher" },
+                        { value: "other", label: "Other" },
+                      ]}
+                      value={backgroundVal}
+                      onChange={setBackgroundVal}
+                      error={!!errors.background}
+                    />
                   </Field>
-                  <Field label="Phone number" name="phone" error={errors.phone}>
-                    <input type="tel" name="phone" className={inputCls} style={{ border: errors.phone ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }} placeholder="+1 (555) 555-5555" />
+
+                  <Field label="Which track interests you?" name="track" error={errors.track}>
+                    <input type="hidden" name="track" value={trackVal} />
+                    <ChipGroup
+                      options={[
+                        { value: "engineering", label: "Engineering Track" },
+                        { value: "builders", label: "Builders Track" },
+                        { value: "unsure", label: "Not sure yet" },
+                      ]}
+                      value={trackVal}
+                      onChange={setTrackVal}
+                      error={!!errors.track}
+                    />
                   </Field>
-                  <Field label="Current background" name="background" error={errors.background}>
-                    <select name="background" defaultValue="" className={inputCls} style={{ border: errors.background ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }}>
-                      <option value="" disabled>Select one</option>
-                      <option value="recent_grad">Recent CS/STEM graduate</option>
-                      <option value="working_professional">Working professional (employed)</option>
-                      <option value="career_switcher">Career switcher</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </Field>
-                  <Field label="Track interest" name="track" error={errors.track}>
-                    <select name="track" defaultValue="" className={inputCls} style={{ border: errors.track ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }}>
-                      <option value="" disabled>Select one</option>
-                      <option value="engineering">Engineering Track (AI Engineer / Architect)</option>
-                      <option value="builders">Builders Track (AI PM / Builder)</option>
-                      <option value="unsure">Not sure yet</option>
-                    </select>
-                  </Field>
+
                   <Field label="How did you hear about us?" name="source" error={errors.source}>
-                    <select name="source" defaultValue="" className={inputCls} style={{ border: errors.source ? "1px solid var(--brand-purple)" : "1px solid var(--brand-gray-200)" }}>
-                      <option value="" disabled>Select one</option>
-                      <option value="linkedin">LinkedIn</option>
-                      <option value="webinar">Webinar</option>
-                      <option value="google">Google search</option>
-                      <option value="referral">Referral from a friend</option>
-                      <option value="other">Other</option>
-                    </select>
+                    <input type="hidden" name="source" value={sourceVal} />
+                    <ChipGroup
+                      options={[
+                        { value: "linkedin", label: "LinkedIn" },
+                        { value: "webinar", label: "Webinar" },
+                        { value: "google", label: "Google" },
+                        { value: "referral", label: "Referral" },
+                        { value: "other", label: "Other" },
+                      ]}
+                      value={sourceVal}
+                      onChange={setSourceVal}
+                      error={!!errors.source}
+                    />
                   </Field>
+
                 </div>
 
                 <button
@@ -227,6 +259,72 @@ export function LeadForm() {
         </div>
       </div>
     </section>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      style={{
+        fontFamily: "var(--font-body)",
+        fontWeight: 600,
+        fontSize: "10px",
+        color: "#BBBBBB",
+        textTransform: "uppercase",
+        letterSpacing: "0.14em",
+        marginBottom: "-4px",
+      }}
+    >
+      {children}
+    </p>
+  );
+}
+
+type ChipOption = { value: string; label: string };
+
+function ChipGroup({
+  options,
+  value,
+  onChange,
+  error,
+}: {
+  options: ChipOption[];
+  value: string;
+  onChange: (v: string) => void;
+  error: boolean;
+}) {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "6px" }}>
+      {options.map((opt) => {
+        const selected = value === opt.value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onChange(opt.value)}
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 500,
+              fontSize: "13px",
+              padding: "8px 14px",
+              borderRadius: "8px",
+              border: selected
+                ? "1.5px solid #602889"
+                : error
+                ? "1.5px solid var(--brand-purple)"
+                : "1.5px solid var(--brand-gray-200)",
+              backgroundColor: selected ? "rgba(96,40,137,0.07)" : "#FFFFFF",
+              color: selected ? "#602889" : "#555555",
+              cursor: "pointer",
+              transition: "all 120ms",
+              lineHeight: 1,
+            }}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
