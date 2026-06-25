@@ -130,7 +130,7 @@ export function Hero() {
               style={{ marginTop: "36px", display: "flex", flexWrap: "wrap", gap: "12px" }}
             >
               <a
-                href="#lead-form"
+                href="#how"
                 style={{
                   backgroundColor: "#FFB71B",
                   color: "#000000",
@@ -148,10 +148,10 @@ export function Hero() {
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F7901B")}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FFB71B")}
               >
-                Book a Free Strategy Call
+                See How It Works
               </a>
               <a
-                href="#how"
+                href="#lead-form"
                 style={{
                   backgroundColor: "transparent",
                   border: "1px solid rgba(255,255,255,0.22)",
@@ -175,7 +175,7 @@ export function Hero() {
                   e.currentTarget.style.color = "rgba(255,255,255,0.80)";
                 }}
               >
-                View Program Details
+                Book a Free Strategy Call
               </a>
             </motion.div>
 
