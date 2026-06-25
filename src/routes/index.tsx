@@ -10,6 +10,7 @@ import { Testimonials } from "@/components/landing/Testimonials";
 import { Pricing } from "@/components/landing/Pricing";
 import { EmployerNetwork } from "@/components/landing/EmployerNetwork";
 import { LeadForm } from "@/components/landing/LeadForm";
+import { TrustBar } from "@/components/landing/TrustBar";
 import { FAQ } from "@/components/landing/FAQ";
 import { Footer } from "@/components/landing/Footer";
 
@@ -38,11 +39,13 @@ function Index() {
       <Nav />
       <Hero />
       <LogoBar />
+      <TrustBar />
       <Problem />
       <HowItWorks />
       <Tracks />
       <CareerOutcomes />
       <Testimonials />
+      <TrustBar />
       <Pricing />
       <EmployerNetwork />
       <LeadForm />
