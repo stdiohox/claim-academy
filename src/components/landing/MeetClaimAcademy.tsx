@@ -78,18 +78,6 @@ export function MeetClaimAcademy() {
 
           {/* Right — video player */}
           <div>
-            {/* .mov compatibility note — remove once re-exported as MP4 */}
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "11px",
-                color: "#AAAAAA",
-                marginBottom: "10px",
-                textAlign: "right",
-              }}
-            >
-              Best viewed in Chrome or Safari
-            </p>
             <video
               controls
               playsInline
@@ -104,8 +92,7 @@ export function MeetClaimAcademy() {
                 backgroundColor: "#120820",
               }}
             >
-              <source src="/videos/about%20claim.mov" type="video/quicktime" />
-              <source src="/videos/about%20claim.mov" type="video/mp4" />
+              <source src="/videos/about-claim.mp4" type="video/mp4" />
               <track kind="captions" srcLang="en" label="English captions" default />
               Your browser does not support the video tag.
             </video>

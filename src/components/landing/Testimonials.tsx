@@ -97,7 +97,7 @@ export function Testimonials() {
                     objectFit: "cover",
                   }}
                 >
-                  <source src="/videos/main%20testimonial%20video.mp4" type="video/mp4" />
+                  <source src="/videos/main-testimonial-video.mp4" type="video/mp4" />
                   <track kind="captions" srcLang="en" label="English captions" default />
                   Your browser does not support the video tag.
                 </video>
