@@ -37,7 +37,15 @@ const FAQS = [
 ];
 
 export function FAQ() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<Set<number>>(new Set([0, 1]));
+
+  function toggle(i: number) {
+    setOpen(prev => {
+      const next = new Set(prev);
+      next.has(i) ? next.delete(i) : next.add(i);
+      return next;
+    });
+  }
 
   return (
     <section
@@ -134,7 +142,8 @@ export function FAQ() {
                 }}
               >
                 <button
-                  onClick={() => setOpen(open === i ? null : i)}
+                  onClick={() => toggle(i)}
+                  aria-expanded={open.has(i)}
                   style={{
                     width: "100%",
                     display: "flex",
@@ -155,7 +164,7 @@ export function FAQ() {
                         fontFamily: "var(--font-body)",
                         fontSize: "10px",
                         fontWeight: 600,
-                        color: open === i ? "#FFB71B" : "#CCCCCC",
+                        color: open.has(i) ? "#FFB71B" : "#CCCCCC",
                         letterSpacing: "0.12em",
                         textTransform: "uppercase",
                         transition: "color 150ms",
@@ -169,7 +178,7 @@ export function FAQ() {
                         fontFamily: "var(--font-display)",
                         fontWeight: 700,
                         fontSize: "17px",
-                        color: open === i ? "#000000" : "#222222",
+                        color: open.has(i) ? "#000000" : "#222222",
                         letterSpacing: "-0.01em",
                         lineHeight: 1.3,
                         transition: "color 150ms",
@@ -186,7 +195,7 @@ export function FAQ() {
                       width: "28px",
                       height: "28px",
                       borderRadius: "50%",
-                      backgroundColor: open === i ? "#FFB71B" : "#F0F0F0",
+                      backgroundColor: open.has(i) ? "#FFB71B" : "#F0F0F0",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -199,9 +208,9 @@ export function FAQ() {
                         fontFamily: "var(--font-body)",
                         fontSize: "16px",
                         fontWeight: 400,
-                        color: open === i ? "#000000" : "#888888",
+                        color: open.has(i) ? "#000000" : "#888888",
                         lineHeight: 1,
-                        transform: open === i ? "rotate(45deg)" : "rotate(0deg)",
+                        transform: open.has(i) ? "rotate(45deg)" : "rotate(0deg)",
                         transition: "transform 200ms, color 150ms",
                         display: "block",
                         marginTop: "-1px",
@@ -213,7 +222,7 @@ export function FAQ() {
                 </button>
 
                 <AnimatePresence initial={false}>
-                  {open === i && (
+                  {open.has(i) && (
                     <motion.div
                       key="answer"
                       initial={{ height: 0, opacity: 0 }}
