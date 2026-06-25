@@ -284,22 +284,19 @@ export function HowItWorks() {
 
                 {/* Number watermark column */}
                 <div
-                  className={`hidden md:block ${isLeft ? "md:order-last" : "md:order-first"}`}
+                  className={`hidden md:flex ${isLeft ? "md:order-last" : "md:order-first"}`}
                   style={{
+                    alignItems: "center",
+                    justifyContent: "center",
                     position: "relative",
                     overflow: "hidden",
-                    minHeight: "260px",
                   }}
                 >
                   <span
                     style={{
-                      position: "absolute",
-                      top: "50%",
-                      [isLeft ? "right" : "left"]: "-4%",
-                      transform: "translateY(-50%)",
                       fontFamily: "var(--font-display)",
                       fontWeight: 900,
-                      fontSize: "clamp(100px, 12vw, 160px)",
+                      fontSize: "clamp(120px, 14vw, 200px)",
                       color: "#602889",
                       opacity: 0.10,
                       letterSpacing: "-0.05em",
