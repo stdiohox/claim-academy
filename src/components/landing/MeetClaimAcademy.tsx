@@ -1,5 +1,5 @@
 const POSTER =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Crect width='1280' height='720' fill='%23120820'/%3E%3Ccircle cx='640' cy='360' r='72' fill='rgba(255%2C255%2C255%2C0.08)'/%3E%3Cpolygon points='624%2C330 624%2C390 678%2C360' fill='%23FFB71B'/%3E%3C/svg%3E";
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Crect width='1280' height='720' fill='%23120820'/%3E%3Ccircle cx='640' cy='360' r='72' fill='%231e0d35'/%3E%3Cpolygon points='624%2C330 624%2C390 678%2C360' fill='%23FFB71B'/%3E%3C/svg%3E";
 
 export function MeetClaimAcademy() {
   return (
@@ -86,6 +86,8 @@ export function MeetClaimAcademy() {
               aria-label="Meet Claim Academy — founder Ola Ayeni explains the guaranteed employer internship program"
               style={{
                 width: "100%",
+                aspectRatio: "16/9",
+                height: "auto",
                 borderRadius: "12px",
                 boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
                 display: "block",
