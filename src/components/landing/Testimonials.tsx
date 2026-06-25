@@ -64,6 +64,87 @@ export function Testimonials() {
           </p>
         </div>
 
+        {/* Featured video testimonial */}
+        {(() => {
+          const videoPoster =
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Crect width='1280' height='720' fill='%231a0830'/%3E%3Ccircle cx='640' cy='360' r='72' fill='rgba(255%2C255%2C255%2C0.08)'/%3E%3Cpolygon points='624%2C330 624%2C390 678%2C360' fill='%23FFB71B'/%3E%3C/svg%3E";
+          return (
+            <div
+              style={{
+                marginBottom: "48px",
+                borderRadius: "16px",
+                overflow: "hidden",
+                border: "1px solid rgba(255,255,255,0.08)",
+                backgroundColor: "rgba(255,255,255,0.03)",
+              }}
+            >
+              <div
+                className="grid grid-cols-1 lg:grid-cols-[3fr_2fr]"
+                style={{ alignItems: "stretch" }}
+              >
+                {/* Video */}
+                <video
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster={videoPoster}
+                  aria-label="Graduate testimonial video — hear directly from a Claim Academy graduate"
+                  style={{
+                    width: "100%",
+                    display: "block",
+                    backgroundColor: "#0D0618",
+                    maxHeight: "380px",
+                    objectFit: "cover",
+                  }}
+                >
+                  <source src="/videos/main%20testimonial%20video.mp4" type="video/mp4" />
+                  <track kind="captions" srcLang="en" label="English captions" default />
+                  Your browser does not support the video tag.
+                </video>
+
+                {/* Caption panel */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    padding: "40px 36px",
+                    gap: "16px",
+                  }}
+                >
+                  <div style={{ fontSize: "14px", letterSpacing: "3px", color: "#D4A843" }}>
+                    ★★★★★
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 600,
+                      fontSize: "18px",
+                      color: "rgba(255,255,255,0.90)",
+                      fontStyle: "italic",
+                      lineHeight: 1.55,
+                      letterSpacing: "-0.01em",
+                      margin: 0,
+                    }}
+                  >
+                    "Hear it from someone who's been through the program — the employer guarantee is real."
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "13px",
+                      color: "rgba(255,255,255,0.40)",
+                      margin: 0,
+                    }}
+                  >
+                    Claim Academy Graduate
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Three testimonial cards */}
         <div
           className="grid grid-cols-1 md:grid-cols-3"
