@@ -12,6 +12,7 @@ import { Pricing } from "@/components/landing/Pricing";
 import { EmployerNetwork } from "@/components/landing/EmployerNetwork";
 import { LeadForm } from "@/components/landing/LeadForm";
 import { TrustBar } from "@/components/landing/TrustBar";
+import { StickyCtaBar } from "@/components/landing/StickyCtaBar";
 import { FAQ } from "@/components/landing/FAQ";
 import { Footer } from "@/components/landing/Footer";
 
@@ -55,6 +56,7 @@ function Index() {
         <FAQ />
       </div>
       <Footer />
+      <StickyCtaBar />
     </main>
   );
 }

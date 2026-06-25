@@ -74,7 +74,10 @@ function FooterCol({ title, links }: { title: string; links: FooterLink[] }) {
 
 export function Footer() {
   return (
-    <footer style={{ backgroundColor: "#000000", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+    <footer
+      style={{ backgroundColor: "#000000", borderTop: "1px solid rgba(255,255,255,0.07)" }}
+      className="pb-[calc(72px+env(safe-area-inset-bottom,0px))] md:pb-0"
+    >
       {/* Top centered block */}
       <div style={{ paddingTop: "64px", paddingBottom: "48px", textAlign: "center" }}>
         <div style={{ display: "inline-block" }}>
