@@ -146,9 +146,9 @@ export function LeadForm() {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
-                <h3 className="font-display font-bold text-[var(--brand-dark)] text-[22px]">You're booked.</h3>
+                <h3 className="font-display font-bold text-[var(--brand-dark)] text-[22px]">Thanks — you're all set.</h3>
                 <p className="mt-2 text-[15px] text-[var(--brand-gray-600)]">
-                  Check your email for the Zoom link. We look forward to speaking with you.
+                  Our admissions team will reach out to you shortly to confirm the details. Keep an eye on your inbox.
                 </p>
               </motion.div>
             ) : (
