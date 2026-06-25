@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { CohortCountdown } from "@/components/landing/CohortCountdown";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -177,6 +178,8 @@ export function Hero() {
                 View Program Details
               </a>
             </motion.div>
+
+            <CohortCountdown variant="dark" />
 
             {/* Social proof */}
             <motion.p

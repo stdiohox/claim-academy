@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { CohortCountdown } from "@/components/landing/CohortCountdown";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -80,7 +81,11 @@ export function Pricing() {
           All tiers include the guaranteed employer internship. Difference is support level.
         </p>
 
-        <div className="mt-14 grid md:grid-cols-3 gap-6 items-center">
+        <div className="flex justify-center mt-8 mb-2">
+          <CohortCountdown variant="light" />
+        </div>
+
+        <div className="mt-8 grid md:grid-cols-3 gap-6 items-center">
           {TIERS.map((t, i) => (
             <motion.div
               key={i}
