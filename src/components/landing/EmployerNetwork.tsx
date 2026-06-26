@@ -2,9 +2,17 @@ import { motion } from "framer-motion";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const COMPANIES = [
-  "IBM", "Boeing", "Mastercard", "Wells Fargo", "FedEx",
-  "Anheuser-Busch", "Amazon", "Google", "Accenture", "Enterprise",
+const LOGOS = [
+  { src: "/images/employer-ibm.png",           alt: "IBM" },
+  { src: "/images/employer-boeing.png",         alt: "Boeing" },
+  { src: "/images/employer-mastercard.png",     alt: "Mastercard" },
+  { src: "/images/employer-wells-fargo.png",    alt: "Wells Fargo" },
+  { src: "/images/employer-fedex.png",          alt: "FedEx" },
+  { src: "/images/employer-anheuser-busch.jpg", alt: "Anheuser-Busch" },
+  { src: "/images/employer-amazon.jpg",         alt: "Amazon" },
+  { src: "/images/employer-google.jpg",         alt: "Google" },
+  { src: "/images/employer-accenture.jpg",      alt: "Accenture" },
+  { src: "/images/employer-enterprise.jpg",     alt: "Enterprise" },
 ];
 
 export function EmployerNetwork() {
@@ -70,35 +78,31 @@ export function EmployerNetwork() {
 
       </div>
 
-      {/* Company badge grid */}
+      {/* Company logo grid */}
       <div className="container-x">
         <div
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "10px",
+            gap: "40px",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          {COMPANIES.map((name) => (
-            <span
-              key={name}
+          {LOGOS.map((logo) => (
+            <img
+              key={logo.alt}
+              src={logo.src}
+              alt={logo.alt}
               style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 600,
-                fontSize: "13px",
-                color: "#AAAAAA",
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #E8E4F0",
-                padding: "10px 20px",
-                borderRadius: "8px",
-                letterSpacing: "0.01em",
-                whiteSpace: "nowrap",
+                height: "36px",
+                width: "auto",
+                objectFit: "contain",
+                opacity: 0.45,
+                filter: "grayscale(100%)",
+                display: "block",
               }}
-            >
-              {name}
-            </span>
+            />
           ))}
         </div>
       </div>

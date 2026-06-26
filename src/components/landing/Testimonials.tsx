@@ -9,21 +9,21 @@ const TESTIMONIALS = [
     name: "Claudia Sittman",
     career: "Java Developer at Salesforce / Slalom",
     prev: "Previously in sales",
-    photo: "http://claimacademy.org/wp-content/uploads/2022/03/claudi_sittmann.jpeg",
+    photo: "/images/testimonial-claudia-sittmann.jpg",
   },
   {
     quote: "At the end of my twelve week course I am satisfied with Claim's claims. I'm personally recommending to friends and family.",
     name: "Brett Smith",
     career: "Software Developer at Anheuser-Busch",
     prev: "Career changer",
-    photo: "http://claimacademy.org/wp-content/uploads/2022/03/brett-smith.jpeg",
+    photo: "/images/testimonial-brett-smith.jpg",
   },
   {
     quote: "My experience at Claim Academy has been one of the best in my life. I gained a world-class experience in computer programming.",
     name: "Jessica Tucker",
     career: "Software Engineer II at Mastercard",
     prev: "Bootcamp graduate",
-    photo: "http://claimacademy.org/wp-content/uploads/2022/03/jessica-tucker.jpeg",
+    photo: "/images/testimonial-jessica-tucker.jpg",
   },
 ];
 

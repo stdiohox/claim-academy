@@ -81,17 +81,11 @@ export function Footer() {
       {/* Top centered block */}
       <div style={{ paddingTop: "64px", paddingBottom: "48px", textAlign: "center" }}>
         <div style={{ display: "inline-block" }}>
-          <span
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700,
-              fontSize: "20px",
-              letterSpacing: "-0.03em",
-              color: "rgba(255,255,255,0.85)",
-            }}
-          >
-            Claim<span style={{ color: "#FFB71B" }}>Academy</span>
-          </span>
+          <img
+            src="/images/logo-white.png"
+            alt="Claim Academy"
+            style={{ height: "40px", width: "auto", display: "block", opacity: 0.85 }}
+          />
         </div>
         <p style={{
           textAlign: "center",
