@@ -176,9 +176,86 @@ export function Pricing() {
           ))}
         </div>
 
-        <div className="mt-14 text-center text-[15px]" style={{ color: "var(--brand-body-text)" }}>
-          8 ways to pay — including $0 out-of-pocket options.{" "}
-          <a href="#lead-form" className="hover:underline font-medium" style={{ color: "#602889" }}>
+        {/* Payment callout — light bg version */}
+        <div
+          className="mt-14 mx-auto"
+          style={{
+            maxWidth: "560px",
+            border: "2px solid #FFB71B",
+            borderRadius: "14px",
+            background: "linear-gradient(135deg, #FBF6EA 0%, #FEF9F0 100%)",
+            padding: "28px 36px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "12px",
+            textAlign: "center",
+          }}
+        >
+          {/* Badge */}
+          <span
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 700,
+              fontSize: "10px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "#000000",
+              backgroundColor: "#FFB71B",
+              padding: "4px 12px",
+              borderRadius: "100px",
+            }}
+          >
+            $0 to start
+          </span>
+
+          {/* Hook — high contrast on light bg */}
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              fontSize: "clamp(32px, 4vw, 48px)",
+              color: "#602889",
+              letterSpacing: "-0.04em",
+              lineHeight: 1,
+              margin: 0,
+            }}
+          >
+            $0 out-of-pocket.
+          </p>
+
+          {/* Supporting line */}
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "14px",
+              color: "#777777",
+              margin: 0,
+              lineHeight: 1.5,
+            }}
+          >
+            8 flexible ways to pay — Climb Credit, ISA, employer reimbursement &amp; more.
+          </p>
+
+          {/* CTA */}
+          <a
+            href="#lead-form"
+            style={{
+              display: "inline-block",
+              fontFamily: "var(--font-body)",
+              fontWeight: 700,
+              fontSize: "13px",
+              color: "#000000",
+              backgroundColor: "#FFB71B",
+              textDecoration: "none",
+              padding: "10px 22px",
+              borderRadius: "6px",
+              marginTop: "4px",
+              transition: "background-color 150ms",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#F7901B")}
+            onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#FFB71B")}
+          >
             See all payment options →
           </a>
         </div>
