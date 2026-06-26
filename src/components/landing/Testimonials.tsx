@@ -317,60 +317,113 @@ export function Testimonials() {
           {/* Vertical divider */}
           <div className="hidden lg:block" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
 
-          {/* Right — bold statement + payment info */}
+          {/* Right — gold payment callout card */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              padding: "48px 64px",
-              gap: "20px",
+              padding: "40px 48px",
             }}
           >
-            <p
+            {/* Gold callout card */}
+            <div
               style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 800,
-                fontSize: "clamp(22px, 2.5vw, 32px)",
-                color: "#FFFFFF",
-                letterSpacing: "-0.025em",
-                lineHeight: 1.2,
+                border: "2px solid #FFB71B",
+                borderRadius: "14px",
+                background: "linear-gradient(135deg, rgba(255,183,27,0.10) 0%, rgba(255,183,27,0.04) 100%)",
+                padding: "32px 36px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "18px",
               }}
             >
-              8 ways to pay.<br />
-              Including <span style={{ color: "#FFB71B" }}>$0 upfront</span>.
-            </p>
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "14px",
-                color: "rgba(255,255,255,0.45)",
-                lineHeight: 1.7,
-                maxWidth: "360px",
-              }}
-            >
-              From $249/mo with Climb Credit · Employer reimbursement up to $5,250 · ISA available · 30-day money back guarantee
-            </p>
-            <a
-              href="#pricing"
-              style={{
-                display: "inline-block",
-                alignSelf: "flex-start",
-                fontFamily: "var(--font-body)",
-                fontWeight: 600,
-                fontSize: "13px",
-                color: "#FFB71B",
-                textDecoration: "none",
-                letterSpacing: "0.02em",
-                borderBottom: "1px solid rgba(255,183,27,0.35)",
-                paddingBottom: "2px",
-                transition: "border-color 150ms",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = "#FFB71B")}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,183,27,0.35)")}
-            >
-              See all payment options →
-            </a>
+              {/* Badge pill */}
+              <div style={{ alignSelf: "flex-start" }}>
+                <span
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 700,
+                    fontSize: "10px",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "#000000",
+                    backgroundColor: "#FFB71B",
+                    padding: "4px 12px",
+                    borderRadius: "100px",
+                  }}
+                >
+                  $0 to start
+                </span>
+              </div>
+
+              {/* Hook — $0 upfront dominates */}
+              <div>
+                <p
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 700,
+                    fontSize: "clamp(38px, 5vw, 58px)",
+                    color: "#FFB71B",
+                    letterSpacing: "-0.04em",
+                    lineHeight: 1,
+                    margin: 0,
+                  }}
+                >
+                  $0 upfront.
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 600,
+                    fontSize: "clamp(16px, 1.8vw, 22px)",
+                    color: "rgba(255,255,255,0.75)",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.2,
+                    marginTop: "8px",
+                  }}
+                >
+                  8 flexible ways to pay.
+                </p>
+              </div>
+
+              {/* Supporting detail */}
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "13px",
+                  color: "rgba(255,255,255,0.40)",
+                  lineHeight: 1.7,
+                  margin: 0,
+                }}
+              >
+                From $249/mo with Climb Credit · Employer reimbursement up to $5,250 · ISA available · 30-day money-back guarantee
+              </p>
+
+              {/* CTA */}
+              <a
+                href="#pricing"
+                style={{
+                  display: "inline-flex",
+                  alignSelf: "flex-start",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 700,
+                  fontSize: "13px",
+                  color: "#000000",
+                  backgroundColor: "#FFB71B",
+                  textDecoration: "none",
+                  padding: "10px 20px",
+                  borderRadius: "6px",
+                  transition: "background-color 150ms",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#F7901B")}
+                onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#FFB71B")}
+              >
+                See all payment options →
+              </a>
+            </div>
           </div>
         </div>
 
