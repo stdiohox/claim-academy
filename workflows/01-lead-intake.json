@@ -1,0 +1,182 @@
+{
+  "id": "PNF0K53RSeblQupH",
+  "name": "01 - Lead Intake (Prototype)",
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "nodes": [
+    {
+      "id": "node-1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "e65b7447-17f3-4632-80e6-3034955cb527",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "claim-lead",
+        "responseMode": "responseNode"
+      }
+    },
+    {
+      "id": "node-2",
+      "name": "Map Lead Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            { "id": "f1", "name": "firstName",    "value": "={{ $json.body.firstName }}",                               "type": "string" },
+            { "id": "f2", "name": "lastName",     "value": "={{ $json.body.lastName }}",                                "type": "string" },
+            { "id": "f3", "name": "email",        "value": "={{ $json.body.email }}",                                   "type": "string" },
+            { "id": "f4", "name": "phone",        "value": "={{ $json.body.phone }}",                                   "type": "string" },
+            { "id": "f5", "name": "background",   "value": "={{ $json.body.background }}",                              "type": "string" },
+            { "id": "f6", "name": "trackInterest","value": "={{ $json.body.track }}",                                   "type": "string" },
+            { "id": "f7", "name": "source",       "value": "={{ $json.body.source }}",                                  "type": "string" },
+            { "id": "f8", "name": "submittedAt",  "value": "={{ $json.body.timestamp }}",                               "type": "string" },
+            { "id": "f9", "name": "fullName",     "value": "={{ $json.body.firstName + \" \" + $json.body.lastName }}", "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-3",
+      "name": "Score Lead (Gemini)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [680, 300],
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "systemMessage": "You are the Lead Scoring Agent for Claim Academy AI Internship Program — a 12-week AI bootcamp that guarantees employer placement in writing. You operate as part of an automated admissions pipeline. Your sole function is to evaluate incoming leads and return a structured JSON score. You never explain yourself, never add commentary, never use markdown. You return only a raw JSON object.\n\nPROGRAM CONTEXT:\nClaim Academy has two tracks:\n- Engineering Track (AI Engineer / Architect): Requires technical aptitude. Best for CS/STEM graduates, developers, data analysts, and technical working professionals looking to specialize in AI engineering, model deployment, and system building.\n- Builders Track (AI PM / Builder): No coding required. Best for product managers, marketers, operators, consultants, and business professionals who want to use AI tools to build products and automate workflows.\n\nThe program costs $2,997–$4,997. Students are placed at real US employer companies for 8 weeks. There is a full refund guarantee if placement fails.\n\nIDEAL LEAD PROFILE (score 9-10):\n- CS/STEM graduate or working professional in a technical role\n- Interested in Engineering Track specifically\n- Found via high-intent source: webinar or referral\n- Clear career goal: transition into AI or upgrade current role with AI skills\n\nSTRONG LEAD PROFILE (score 7-8):\n- Working professional in any field\n- Interested in Builders Track with a clear business use case\n- Career switcher with technical background interested in Engineering Track\n- Found via webinar, referral, or Google search\n\nMODERATE LEAD PROFILE (score 4-6):\n- Career switcher without clear technical background\n- Interested in Engineering Track but no CS/STEM foundation\n- Not sure yet on track selection\n- Found via LinkedIn or social\n\nWEAK LEAD PROFILE (score 1-3):\n- No background information provided\n- No track interest selected\n- Source is unknown or missing\n- Profile suggests significant mismatch with either track\n\nSCORING RULES:\nBase scores by background:\n- recent_grad (CS/STEM): base 8\n- working_professional: base 8\n- career_switcher: base 6\n- other: base 4\n\nAdjustments by track interest:\n- engineering (CS/STEM grad or working pro): +1\n- engineering (career switcher): 0\n- builders (working pro or career switcher): +1\n- not_sure: -2\n\nAdjustments by source:\n- webinar: +1\n- referral: +1\n- google: 0\n- linkedin: 0\n- other: -1\n\nFinal score must be between 1 and 10.\nTier assignment: HOT = 7-10, WARM = 4-6, COLD = 1-3\n\nOUTPUT FORMAT — return exactly this and nothing else:\n{\"score\": <integer 1-10>, \"tier\": \"<HOT|WARM|COLD>\", \"reason\": \"<one concise sentence explaining the score based on their specific profile>\"}",
+        "text": "=Score this incoming lead:\n\nBackground: {{ $json.background }}\nTrack Interest: {{ $json.trackInterest }}\nSource: {{ $json.source }}\nFull Name: {{ $json.fullName }}\nSubmitted At: {{ $json.submittedAt }}\n\nApply the scoring rules exactly. Return only the JSON object.",
+        "options": {}
+      }
+    },
+    {
+      "id": "node-4",
+      "name": "Parse AI Score",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300],
+      "parameters": {
+        "jsCode": "const aiText = $input.first().json.output || $input.first().json.text || $input.first().json.content || '';\nlet cleaned = aiText.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\nlet parsed;\ntry { parsed = JSON.parse(cleaned); } catch(e) { parsed = { score: 5, tier: 'WARM', reason: 'Parse error: ' + e.message }; }\nconst lead = $('Map Lead Fields').first().json;\nreturn [{ json: { ...lead, score: parsed.score, tier: parsed.tier, reason: parsed.reason } }];"
+      }
+    },
+    {
+      "id": "node-5",
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1120, 300],
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "1ZhzIfPDAGyYKhw-4MEjFcscJqANgMuge9ltwaxmfw6I", "mode": "id" },
+        "sheetName":  { "__rl": true, "value": "Sheet1", "mode": "name" },
+        "columns": { "mappingMode": "autoMapInputData", "value": {}, "matchingColumns": [], "schema": [] }
+      }
+    },
+    {
+      "id": "node-6",
+      "name": "HOT Lead?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1340, 300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            { "id": "c1", "leftValue": "={{ $json.tier }}", "rightValue": "HOT", "operator": { "type": "string", "operation": "equals" } }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "node-9",
+      "name": "Send Booking Email to Lead",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1560, 100],
+      "parameters": {
+        "sendTo": "={{ $('Map Lead Fields').first().json.email }}",
+        "subject": "=You're a strong fit for Claim Academy AI Internship — here's what happens next",
+        "emailType": "html",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111111;\"><div style=\"background-color:#111111;padding:16px 24px;display:inline-block;border-radius:8px;margin-bottom:24px;\"><img src=\"http://claimacademy.org/wp-content/uploads/2021/12/Claim-Academy-Logo-FIN-white.png\" width=\"180\" style=\"display:block;\" /></div><h2 style=\"color:#111111;\">Hi {{ $('Map Lead Fields').first().json.firstName }}, welcome to Claim Academy.</h2><p>We reviewed your application for the <strong>Claim Academy AI Internship Program</strong> and based on your background and goals, you look like a strong fit.</p><p>Here is what happens next:</p><div style=\"background:#f9f9f9;border-left:4px solid #FFB71B;padding:16px;margin:24px 0;\"><p><strong>📞 Expect a call from our admissions team within 24 hours.</strong></p><p>Our team will reach out to you directly at the phone number you provided. The call is free, 30 minutes, and there is zero obligation to enroll.</p><p>On the call we will:</p><ul><li>Learn more about your background and career goals</li><li>Recommend the right track for your profile</li><li>Walk you through the employer placement guarantee</li><li>Answer every question you have — honestly</li></ul></div><p>If you have any questions before the call, you can reach us directly:</p><p style=\"font-size:18px;font-weight:bold;color:#602889;\">📱 +1 (555) 000-0000</p><p style=\"color:#666;font-size:13px;\">(Replace this with the real Claim Academy admissions number)</p><p>We look forward to speaking with you soon.</p><p>— <strong>Admissions Team</strong><br/>Claim Academy AI Internship<br/><a href=\"https://claimaiinternship.com\" style=\"color:#602889;\">claimaiinternship.com</a></p></div>"
+      }
+    },
+    {
+      "id": "node-10",
+      "name": "Wait 15 Min Before Admissions Alert",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1780, 100],
+      "webhookId": "d4e5f6a7-b8c9-0123-defa-456789012345",
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "id": "node-11",
+      "name": "Generate Pre-Call Brief",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [2000, 100],
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "systemMessage": "You are the Discovery Call Coach for Claim Academy AI Internship Program. Your job is to prepare Admissions reps with a tight, actionable pre-call brief before every discovery call. Write in a direct, confident tone. No fluff. The brief must help the rep walk into the call already knowing the lead profile, likely objections, recommended track, and the best angle to close them.",
+        "text": "=Generate a pre-call brief for this hot lead:\n\nLEAD PROFILE:\n- Name: {{ $('Map Lead Fields').first().json.fullName }}\n- Email: {{ $('Map Lead Fields').first().json.email }}\n- Phone: {{ $('Map Lead Fields').first().json.phone }}\n- Background: {{ $('Map Lead Fields').first().json.background }}\n- Track Interest: {{ $('Map Lead Fields').first().json.trackInterest }}\n- Lead Score: {{ $('Parse AI Score').first().json.score }}\n- Lead Tier: {{ $('Parse AI Score').first().json.tier }}\n- Score Reason: {{ $('Parse AI Score').first().json.reason }}\n- Source: {{ $('Map Lead Fields').first().json.source }}\n- Submitted At: {{ $('Map Lead Fields').first().json.submittedAt }}\n\nGenerate the brief in this exact format:\n\nLEAD SNAPSHOT\nName, background, track interest, lead score and tier, how they found us.\n\nRECOMMENDED TRACK\nWhich track to recommend and why based on their background.\n\nLIKELY OBJECTIONS\nTop 2-3 objections this lead will probably raise. For each, give the exact response the rep should use.\n\nOPENING ANGLE\nThe single best opening question to build rapport and diagnose fit fast.\n\nCLOSING STRATEGY\nThe most effective closing approach for this lead. Which payment option to lead with. What urgency angle to use.",
+        "options": {}
+      }
+    },
+    {
+      "id": "node-7",
+      "name": "Alert Email (HOT)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [2220, 100],
+      "webhookId": "bcca263e-8869-48b7-875a-0a1cafad03f0",
+      "parameters": {
+        "sendTo": "samphicsdigital@gmail.com",
+        "subject": "=🔥 HOT Lead Assigned — Call {{ $('Map Lead Fields').first().json.fullName }} Now",
+        "emailType": "html",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111111;\"><div style=\"background-color:#111111;padding:16px 24px;display:inline-block;border-radius:8px;margin-bottom:24px;\"><img src=\"http://claimacademy.org/wp-content/uploads/2021/12/Claim-Academy-Logo-FIN-white.png\" width=\"180\" style=\"display:block;\" /></div><div style=\"background:#fff3cd;border:2px solid #FFB71B;border-radius:8px;padding:16px;margin-bottom:24px;\"><h2 style=\"color:#111111;margin:0;\">🔥 HOT Lead — Call Within 24 Hours</h2></div><div style=\"background:#f9f9f9;border-radius:8px;padding:16px;margin-bottom:24px;\"><h3 style=\"color:#602889;margin-top:0;\">📱 Lead Contact Details</h3><p style=\"font-size:20px;font-weight:bold;color:#111111;\">{{ $('Map Lead Fields').first().json.fullName }}</p><p><strong>Phone:</strong> <span style=\"font-size:18px;color:#602889;\">{{ $('Map Lead Fields').first().json.phone }}</span></p><p><strong>Email:</strong> {{ $('Map Lead Fields').first().json.email }}</p></div><div style=\"background:#f9f9f9;border-radius:8px;padding:16px;margin-bottom:24px;\"><h3 style=\"color:#602889;margin-top:0;\">📊 Lead Profile</h3><table style=\"width:100%;border-collapse:collapse;\"><tr><td style=\"padding:6px 0;border-bottom:1px solid #eee;\"><strong>Background</strong></td><td style=\"padding:6px 0;border-bottom:1px solid #eee;\">{{ $('Map Lead Fields').first().json.background }}</td></tr><tr><td style=\"padding:6px 0;border-bottom:1px solid #eee;\"><strong>Track Interest</strong></td><td style=\"padding:6px 0;border-bottom:1px solid #eee;\">{{ $('Map Lead Fields').first().json.trackInterest }}</td></tr><tr><td style=\"padding:6px 0;border-bottom:1px solid #eee;\"><strong>Source</strong></td><td style=\"padding:6px 0;border-bottom:1px solid #eee;\">{{ $('Map Lead Fields').first().json.source }}</td></tr><tr><td style=\"padding:6px 0;border-bottom:1px solid #eee;\"><strong>Lead Score</strong></td><td style=\"padding:6px 0;border-bottom:1px solid #eee;font-size:18px;font-weight:bold;color:#FFB71B;\">{{ $('Parse AI Score').first().json.score }}/10</td></tr><tr><td style=\"padding:6px 0;border-bottom:1px solid #eee;\"><strong>Tier</strong></td><td style=\"padding:6px 0;border-bottom:1px solid #eee;font-weight:bold;color:#e53e3e;\">{{ $('Parse AI Score').first().json.tier }}</td></tr><tr><td style=\"padding:6px 0;\"><strong>Score Reason</strong></td><td style=\"padding:6px 0;\">{{ $('Parse AI Score').first().json.reason }}</td></tr></table></div><div style=\"background:#f9f9f9;border-radius:8px;padding:16px;margin-bottom:24px;\"><h3 style=\"color:#602889;margin-top:0;\">🧠 Pre-Call Brief</h3><div style=\"white-space:pre-wrap;line-height:1.6;\">{{ $json.output }}</div></div><div style=\"background:#fff3cd;border-radius:8px;padding:16px;text-align:center;\"><p style=\"margin:0;font-size:16px;\"><strong>⏰ This lead was notified 15 minutes ago. Call them now.</strong></p><p style=\"margin:8px 0 0;color:#666;font-size:13px;\">Submitted at: {{ $('Map Lead Fields').first().json.submittedAt }}</p></div></div>"
+      }
+    },
+    {
+      "id": "node-8",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [2440, 300],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"success\": true }"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook":               { "main": [[{ "node": "Map Lead Fields",       "type": "main", "index": 0 }]] },
+    "Map Lead Fields":       { "main": [[{ "node": "Score Lead (Gemini)",   "type": "main", "index": 0 }]] },
+    "Score Lead (Gemini)":   { "main": [[{ "node": "Parse AI Score",        "type": "main", "index": 0 }]] },
+    "Parse AI Score":        { "main": [[{ "node": "Save to Google Sheets", "type": "main", "index": 0 }]] },
+    "Save to Google Sheets": { "main": [[{ "node": "HOT Lead?",             "type": "main", "index": 0 }]] },
+    "HOT Lead?": {
+      "main": [
+        [{ "node": "Send Booking Email to Lead", "type": "main", "index": 0 }],
+        [{ "node": "Respond to Webhook",         "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Booking Email to Lead":          { "main": [[{ "node": "Wait 15 Min Before Admissions Alert", "type": "main", "index": 0 }]] },
+    "Wait 15 Min Before Admissions Alert": { "main": [[{ "node": "Generate Pre-Call Brief",             "type": "main", "index": 0 }]] },
+    "Generate Pre-Call Brief":             { "main": [[{ "node": "Alert Email (HOT)",                   "type": "main", "index": 0 }]] },
+    "Alert Email (HOT)":                   { "main": [[{ "node": "Respond to Webhook",                  "type": "main", "index": 0 }]] }
+  }
+}

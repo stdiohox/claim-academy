@@ -1,0 +1,163 @@
+{
+  "id": "jiPrAXIpe6CxwlXE",
+  "name": "02 - Call Support (Prototype)",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodes": [
+    {
+      "id": "cs-node-1",
+      "name": "Poll Calendly Every 5 Min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300],
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "minutes", "minutesInterval": 5 }]
+        }
+      }
+    },
+    {
+      "id": "cs-node-2",
+      "name": "Get New Calendly Bookings",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.calendly.com/scheduled_events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer YOUR_CALENDLY_TOKEN" }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "organization", "value": "https://api.calendly.com/organizations/YOUR_ORG_URI" },
+            { "name": "status",       "value": "active" },
+            { "name": "count",        "value": "10" },
+            { "name": "sort",         "value": "created_at:desc" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cs-node-3",
+      "name": "Filter New Bookings",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300],
+      "parameters": {
+        "jsCode": "const events = $input.first().json.collection || [];\nconst fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();\n\nconst newBookings = events.filter(event => {\n  return event.created_at >= fiveMinutesAgo;\n});\n\nreturn newBookings.map(event => ({ json: event }));"
+      }
+    },
+    {
+      "id": "cs-node-4",
+      "name": "Get Invitee Details",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.uri }}/invitees",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer YOUR_CALENDLY_TOKEN" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cs-node-5",
+      "name": "Map Booking Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1120, 300],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            { "id": "b1", "name": "inviteeName",   "value": "={{ $json.collection[0].name }}",                               "type": "string" },
+            { "id": "b2", "name": "inviteeEmail",  "value": "={{ $json.collection[0].email }}",                              "type": "string" },
+            { "id": "b3", "name": "eventName",     "value": "={{ $('Get New Calendly Bookings').first().json.name }}",       "type": "string" },
+            { "id": "b4", "name": "scheduledTime", "value": "={{ $('Get New Calendly Bookings').first().json.start_time }}", "type": "string" },
+            { "id": "b5", "name": "cancelUrl",     "value": "={{ $json.collection[0].cancel_url }}",                         "type": "string" },
+            { "id": "b6", "name": "rescheduleUrl", "value": "={{ $json.collection[0].reschedule_url }}",                     "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cs-node-6",
+      "name": "Fetch Lead Data",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1340, 300],
+      "parameters": {
+        "operation": "lookup",
+        "documentId": { "__rl": true, "value": "1ZhzIfPDAGyYKhw-4MEjFcscJqANgMuge9ltwaxmfw6I", "mode": "id" },
+        "sheetName":  { "__rl": true, "value": "Sheet1", "mode": "name" },
+        "lookupColumn": "email",
+        "lookupValue": "={{ $json.inviteeEmail }}"
+      }
+    },
+    {
+      "id": "cs-node-7",
+      "name": "Wait Until 30 Min Before Call",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1560, 300],
+      "disabled": true,
+      "webhookId": "6392832d-ebdc-431e-82df-8528977e1d55",
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "={{ DateTime.fromISO($('Map Booking Fields').first().json.scheduledTime).minus({ minutes: 30 }).toISO() }}"
+      }
+    },
+    {
+      "id": "cs-node-8",
+      "name": "Generate Pre-Call Brief",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [1780, 300],
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "systemMessage": "You are the Discovery Call Coach for Claim Academy AI Internship Program. Your job is to prepare Admissions reps with a tight, actionable pre-call brief before every discovery call. You write in a direct, confident tone. No fluff. The brief must help the rep walk into the call already knowing the lead profile, likely objections, recommended track, and the best angle to close them.",
+        "text": "=Generate a pre-call brief for this upcoming discovery call.\n\nLEAD PROFILE:\n- Name: {{ $('Map Booking Fields').first().json.inviteeName }}\n- Email: {{ $('Map Booking Fields').first().json.inviteeEmail }}\n- Background: {{ $('Fetch Lead Data').first().json.background }}\n- Track Interest: {{ $('Fetch Lead Data').first().json.trackInterest }}\n- Lead Score: {{ $('Fetch Lead Data').first().json.score }}\n- Lead Tier: {{ $('Fetch Lead Data').first().json.tier }}\n- Score Reason: {{ $('Fetch Lead Data').first().json.reason }}\n- Source: {{ $('Fetch Lead Data').first().json.source }}\n- Scheduled Call Time: {{ $('Map Booking Fields').first().json.scheduledTime }}\n\nGenerate the brief in this exact format:\n\nLEAD SNAPSHOT\nName, background, track interest, lead score and tier, how they found us.\n\nRECOMMENDED TRACK\nWhich track to recommend and why based on their background.\n\nLIKELY OBJECTIONS\nTop 2-3 objections this lead will probably raise based on their profile. For each, give the exact response the rep should use.\n\nOPENING ANGLE\nThe single best opening question or angle to build rapport and diagnose fit fast.\n\nCLOSING STRATEGY\nThe most effective closing approach for this specific lead profile. Which payment option to lead with. What urgency angle to use.\n\nCANCEL / RESCHEDULE LINKS\nCancel: {{ $('Map Booking Fields').first().json.cancelUrl }}\nReschedule: {{ $('Map Booking Fields').first().json.rescheduleUrl }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "cs-node-9",
+      "name": "Send Pre-Call Brief",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [2000, 300],
+      "parameters": {
+        "sendTo": "samphicsdigital@gmail.com",
+        "subject": "=📋 Pre-Call Brief: {{ $('Map Booking Fields').first().json.inviteeName }} — {{ $('Map Booking Fields').first().json.scheduledTime }}",
+        "emailType": "html",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111111;\"><div style=\"background-color:#111111;padding:16px 24px;display:inline-block;border-radius:8px;margin-bottom:24px;\"><img src=\"http://claimacademy.org/wp-content/uploads/2021/12/Claim-Academy-Logo-FIN-white.png\" width=\"180\" style=\"display:block;\" /></div><h2 style=\"color:#111111;\">Pre-Call Brief</h2><p><strong>Invitee:</strong> {{ $('Map Booking Fields').first().json.inviteeName }}</p><p><strong>Email:</strong> {{ $('Map Booking Fields').first().json.inviteeEmail }}</p><p><strong>Scheduled Time:</strong> {{ $('Map Booking Fields').first().json.scheduledTime }}</p><hr/><div style=\"background:#f9f9f9;padding:16px;border-radius:8px;white-space:pre-wrap;\">{{ $json.output }}</div><hr/><p><strong>Cancel:</strong> <a href=\"{{ $('Map Booking Fields').first().json.cancelUrl }}\">Cancel link</a></p><p><strong>Reschedule:</strong> <a href=\"{{ $('Map Booking Fields').first().json.rescheduleUrl }}\">Reschedule link</a></p></div>"
+      }
+    }
+  ],
+  "connections": {
+    "Poll Calendly Every 5 Min":     { "main": [[{ "node": "Get New Calendly Bookings",     "type": "main", "index": 0 }]] },
+    "Get New Calendly Bookings":     { "main": [[{ "node": "Filter New Bookings",           "type": "main", "index": 0 }]] },
+    "Filter New Bookings":           { "main": [[{ "node": "Get Invitee Details",           "type": "main", "index": 0 }]] },
+    "Get Invitee Details":           { "main": [[{ "node": "Map Booking Fields",            "type": "main", "index": 0 }]] },
+    "Map Booking Fields":            { "main": [[{ "node": "Fetch Lead Data",               "type": "main", "index": 0 }]] },
+    "Fetch Lead Data":               { "main": [[{ "node": "Wait Until 30 Min Before Call", "type": "main", "index": 0 }]] },
+    "Wait Until 30 Min Before Call": { "main": [[{ "node": "Generate Pre-Call Brief",       "type": "main", "index": 0 }]] },
+    "Generate Pre-Call Brief":       { "main": [[{ "node": "Send Pre-Call Brief",           "type": "main", "index": 0 }]] }
+  }
+}
