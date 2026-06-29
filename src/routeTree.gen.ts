@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ForProfessionalsRouteImport } from './routes/for-professionals'
 import { Route as ForGradsRouteImport } from './routes/for-grads'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ForProfessionalsRoute = ForProfessionalsRouteImport.update({
+  id: '/for-professionals',
+  path: '/for-professionals',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForGradsRoute = ForGradsRouteImport.update({
   id: '/for-grads',
   path: '/for-grads',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/for-grads': typeof ForGradsRoute
+  '/for-professionals': typeof ForProfessionalsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/for-grads': typeof ForGradsRoute
+  '/for-professionals': typeof ForProfessionalsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/for-grads': typeof ForGradsRoute
+  '/for-professionals': typeof ForProfessionalsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/for-grads'
+  fullPaths: '/' | '/for-grads' | '/for-professionals'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/for-grads'
-  id: '__root__' | '/' | '/for-grads'
+  to: '/' | '/for-grads' | '/for-professionals'
+  id: '__root__' | '/' | '/for-grads' | '/for-professionals'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ForGradsRoute: typeof ForGradsRoute
+  ForProfessionalsRoute: typeof ForProfessionalsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/for-professionals': {
+      id: '/for-professionals'
+      path: '/for-professionals'
+      fullPath: '/for-professionals'
+      preLoaderRoute: typeof ForProfessionalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/for-grads': {
       id: '/for-grads'
       path: '/for-grads'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ForGradsRoute: ForGradsRoute,
+  ForProfessionalsRoute: ForProfessionalsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

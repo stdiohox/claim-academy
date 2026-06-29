@@ -45,10 +45,17 @@ const BOOK_URL = (import.meta as { env?: Record<string, string> }).env?.VITE_STR
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 function ForGradsPage() {
-  console.log('FOR GRADS PAGE RENDERED');
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+
+  useEffect(() => {
+    const styleEl = document.createElement('style');
+    styleEl.id = 'for-grads-styles';
+    styleEl.textContent = pageCss;
+    document.head.appendChild(styleEl);
+    return () => { document.getElementById('for-grads-styles')?.remove(); };
+  }, []);
 
   useEffect(() => {
     const cleanupCursor = initCursor();
@@ -61,16 +68,6 @@ function ForGradsPage() {
 
   return (
     <div className="for-grads-page">
-      <noscript>
-        <img
-          height="1"
-          width="1"
-          style={{ display: 'none' }}
-          src="https://www.facebook.com/tr?id=1407484639676240&ev=PageView&noscript=1"
-          alt=""
-        />
-      </noscript>
-      <style>{pageCss}</style>
       <div className="noise-overlay" aria-hidden="true" />
       <header className="page-header">
         <img src="/images/logo-white.png" alt="Claim Academy"
@@ -636,23 +633,31 @@ function LeadModal({ isOpen, onClose }: LeadModalProps) {
   const WEBHOOK = (import.meta as { env?: Record<string, string> })
     .env?.VITE_WEBHOOK_URL ?? '';
 
-  const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '',
-    phone: '', background: '', track: '', source: '',
-  });
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [background, setBackground] = useState('');
+  const [track, setTrack] = useState('');
+  const [source, setSource] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
-  const set = (field: string, value: string) =>
-    setForm((p) => ({ ...p, [field]: value }));
+  useEffect(() => {
+    if (!isOpen) {
+      setFirstName(''); setLastName(''); setEmail('');
+      setPhone(''); setBackground(''); setTrack('');
+      setSource(''); setStatus('idle');
+    }
+  }, [isOpen]);
 
   const handleSubmit = async () => {
-    if (!form.firstName || !form.email || !form.phone) return;
+    if (!firstName || !email || !phone) return;
     setStatus('submitting');
     try {
       await fetch(WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, source_page: '/for-grads' }),
+        body: JSON.stringify({ firstName, lastName, email, phone, background, track, source, source_page: '/for-grads' }),
       });
       if (typeof window !== 'undefined' && (window as any).fbq) {
         (window as any).fbq('track', 'Lead', {
@@ -737,26 +742,26 @@ function LeadModal({ isOpen, onClose }: LeadModalProps) {
                   <div className="form-group-label">YOUR INFO</div>
                   <div className="form-row">
                     <div className="form-field">
-                      <label className="field-label">First name</label>
-                      <input type="text" className="field-input" placeholder="Jane"
-                        value={form.firstName} onChange={(e) => set('firstName', e.target.value)} />
+                      <label className="field-label" htmlFor="fg-firstName">First name</label>
+                      <input id="fg-firstName" type="text" className="field-input" placeholder="Jane"
+                        value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     </div>
                     <div className="form-field">
-                      <label className="field-label">Last name</label>
-                      <input type="text" className="field-input" placeholder="Smith"
-                        value={form.lastName} onChange={(e) => set('lastName', e.target.value)} />
+                      <label className="field-label" htmlFor="fg-lastName">Last name</label>
+                      <input id="fg-lastName" type="text" className="field-input" placeholder="Smith"
+                        value={lastName} onChange={(e) => setLastName(e.target.value)} />
                     </div>
                   </div>
                   <div className="form-row">
                     <div className="form-field">
-                      <label className="field-label">Email</label>
-                      <input type="email" className="field-input" placeholder="you@example.com"
-                        value={form.email} onChange={(e) => set('email', e.target.value)} />
+                      <label className="field-label" htmlFor="fg-email">Email</label>
+                      <input id="fg-email" type="email" className="field-input" placeholder="you@example.com"
+                        value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="form-field">
-                      <label className="field-label">Phone</label>
-                      <input type="tel" className="field-input" placeholder="+1 (555) 555-5555"
-                        value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+                      <label className="field-label" htmlFor="fg-phone">Phone</label>
+                      <input id="fg-phone" type="tel" className="field-input" placeholder="+1 (555) 555-5555"
+                        value={phone} onChange={(e) => setPhone(e.target.value)} />
                     </div>
                   </div>
 
@@ -767,8 +772,8 @@ function LeadModal({ isOpen, onClose }: LeadModalProps) {
                     <div className="pill-group">
                       {['Recent grad', 'Professional', 'Career switcher', 'Other'].map((opt) => (
                         <button key={opt} type="button"
-                          className={`pill-btn ${form.background === opt ? 'active' : ''}`}
-                          onClick={() => set('background', opt)}>{opt}</button>
+                          className={`pill-btn ${background === opt ? 'active' : ''}`}
+                          onClick={() => setBackground(opt)}>{opt}</button>
                       ))}
                     </div>
                   </div>
@@ -778,8 +783,8 @@ function LeadModal({ isOpen, onClose }: LeadModalProps) {
                     <div className="pill-group">
                       {['Engineering Track', 'Builders Track', 'Not sure yet'].map((opt) => (
                         <button key={opt} type="button"
-                          className={`pill-btn ${form.track === opt ? 'active' : ''}`}
-                          onClick={() => set('track', opt)}>{opt}</button>
+                          className={`pill-btn ${track === opt ? 'active' : ''}`}
+                          onClick={() => setTrack(opt)}>{opt}</button>
                       ))}
                     </div>
                   </div>
@@ -789,8 +794,8 @@ function LeadModal({ isOpen, onClose }: LeadModalProps) {
                     <div className="pill-group">
                       {['LinkedIn', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
                         <button key={opt} type="button"
-                          className={`pill-btn ${form.source === opt ? 'active' : ''}`}
-                          onClick={() => set('source', opt)}>{opt}</button>
+                          className={`pill-btn ${source === opt ? 'active' : ''}`}
+                          onClick={() => setSource(opt)}>{opt}</button>
                       ))}
                     </div>
                   </div>
@@ -1129,7 +1134,7 @@ const pageCss = `
 .testimonial-quote{font-size:var(--text-lg);color:var(--text-primary);line-height:1.6;font-style:italic;margin:0 0 var(--space-4);}
 .testimonial-attr{font-size:var(--text-sm);color:var(--accent-gold);font-weight:600;font-family:'Space Grotesk',sans-serif;letter-spacing:0.05em;}
 @media(min-width:769px){.mobile-cta{display:none !important;}}
-.modal-backdrop{position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:var(--space-4);overflow-y:auto;}
+.modal-backdrop{position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:var(--space-4);overflow-y:auto;}
 .modal-panel{background:#ffffff;border-radius:20px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(0,0,0,0.05);}
 .modal-close{position:absolute;top:var(--space-4);right:var(--space-4);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.06);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#374151;z-index:1;transition:background 0.2s;}
 .modal-close:hover{background:rgba(0,0,0,0.12);}
@@ -1157,8 +1162,11 @@ const pageCss = `
 .modal-success h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;color:#111827;margin:0 0 var(--space-3);letter-spacing:-0.02em;}
 .modal-success p{color:#6B7280;font-size:0.95rem;line-height:1.6;margin:0;}
 @media(max-width:640px){
-  .modal-panel{border-radius:16px 16px 0 0;}
   .modal-backdrop{align-items:flex-end;padding:0;}
+  .modal-panel{border-radius:20px 20px 0 0;max-height:92vh;width:100%;}
   .form-row{grid-template-columns:1fr;}
+  .modal-header{padding:var(--space-6) var(--space-6) var(--space-3);}
+  .modal-body{padding:var(--space-4) var(--space-6);}
+  .modal-footer{padding:var(--space-3) var(--space-6) calc(var(--space-6) + env(safe-area-inset-bottom));}
 }
 `;
