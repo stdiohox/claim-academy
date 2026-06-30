@@ -655,7 +655,18 @@ const prosCss = `
   --text-on-dark-2: rgba(255,255,255,0.60);
   --border-light: rgba(15,27,45,0.08);
   --border-medium: rgba(15,27,45,0.15);
-  font-family:'Inter',system-ui,sans-serif;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  font-family:'Inter Variable',system-ui,sans-serif;
   font-size:var(--text-base); line-height:1.7;
   background:var(--bg-base); color:var(--text-primary);
   overflow-x:hidden; position:relative; min-height:100vh;
@@ -709,7 +720,7 @@ const prosCss = `
   text-align:center; position:relative; z-index:1;
 }
 .pros-eyebrow {
-  display:inline-block; font-family:'Space Grotesk',sans-serif;
+  display:inline-block; font-family:'Space Grotesk Variable',sans-serif;
   font-weight:600; font-size:0.75rem; letter-spacing:0.15em;
   color:rgba(255,255,255,0.8); padding:0.5rem 1rem; border-radius:999px;
   border:1px solid rgba(255,255,255,0.2); margin-bottom:var(--space-8);
@@ -749,7 +760,7 @@ const prosCss = `
 .pros-stat { display:flex; flex-direction:column; align-items:center; gap:0.25rem; }
 .pros-stat-divider { width:1px; height:40px; background:rgba(255,255,255,0.12); }
 .pros-stat-num {
-  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
   font-size:var(--text-2xl); color:rgba(255,255,255,0.95);
   line-height:1; letter-spacing:-0.02em;
 }
@@ -759,7 +770,7 @@ const prosCss = `
 }
 .pros-btn-gold {
   background:var(--accent-gold); color:#000;
-  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.95rem;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700; font-size:0.95rem;
   padding:0.95rem 1.75rem; border-radius:12px; border:none; cursor:pointer;
   text-decoration:none; display:inline-flex; align-items:center; justify-content:center;
   position:relative; overflow:hidden;
@@ -779,7 +790,7 @@ const prosCss = `
   background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.85);
   border:1px solid rgba(255,255,255,0.2); border-radius:12px;
   padding:0.95rem 1.75rem; text-decoration:none;
-  font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.95rem;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:600; font-size:0.95rem;
   display:inline-flex; align-items:center; justify-content:center;
   transition:background 0.2s,border-color 0.2s;
 }
@@ -789,7 +800,7 @@ const prosCss = `
   gap:var(--space-8); align-items:start; margin-top:var(--space-10);
 }
 .dilemma-label {
-  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
   font-size:0.7rem; letter-spacing:0.15em; margin-bottom:var(--space-4);
 }
 .dilemma-label-muted { color:var(--text-tertiary); }
@@ -805,18 +816,18 @@ const prosCss = `
 .reimb-num {
   width:48px; height:48px; border-radius:50%;
   background:var(--accent-gold); color:#000;
-  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700; font-size:1.1rem;
   display:flex; align-items:center; justify-content:center; margin:0 auto var(--space-4);
 }
 .reimb-title {
-  font-family:'Space Grotesk',sans-serif; font-weight:600;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
   font-size:var(--text-lg); color:var(--text-primary); margin-bottom:var(--space-2);
 }
 .reimb-desc { font-size:var(--text-sm); color:var(--text-secondary); line-height:1.6; margin:0; }
 .pros-gold-link {
   color:var(--accent-gold); font-weight:600; text-decoration:none;
   font-size:var(--text-base); cursor:pointer; background:none; border:none;
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Space Grotesk Variable',sans-serif;
 }
 .pros-gold-link:hover { text-decoration:underline; }
 .pros-cards-grid {
@@ -842,11 +853,11 @@ const prosCss = `
   display:inline-block; padding:0.3rem 0.8rem;
   background:rgba(96,40,137,0.08); border:1px solid rgba(96,40,137,0.2);
   border-radius:999px; color:var(--accent);
-  font-family:'Space Grotesk',sans-serif; font-weight:600;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
   font-size:0.7rem; letter-spacing:0.1em; margin-bottom:var(--space-4);
 }
 .pros-card-title {
-  font-family:'Space Grotesk',sans-serif; font-weight:600;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
   font-size:var(--text-xl); color:var(--text-primary);
   margin:0 0 var(--space-4); letter-spacing:-0.02em;
 }
@@ -890,7 +901,7 @@ const prosCss = `
 }
 .who-card:hover { border-color:rgba(96,40,137,0.25); transform:translateY(-2px); box-shadow:0 8px 32px rgba(15,27,45,0.08); }
 .who-card-title {
-  font-family:'Space Grotesk',sans-serif; font-weight:600;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
   font-size:var(--text-lg); color:var(--text-primary);
   margin:0 0 var(--space-2); letter-spacing:-0.01em;
 }
@@ -915,16 +926,16 @@ const prosCss = `
 .pros-popular-badge {
   position:absolute; top:-14px; left:50%; transform:translateX(-50%);
   background:var(--bg-dark); color:#fff;
-  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
   font-size:0.65rem; letter-spacing:0.12em;
   padding:0.35rem 1rem; border-radius:999px; white-space:nowrap;
 }
 .pros-tier-name {
-  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
   font-size:0.8rem; letter-spacing:0.15em; color:var(--text-tertiary); margin:0 0 var(--space-3);
 }
 .pros-tier-price {
-  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
   font-size:var(--text-3xl); color:var(--text-primary);
   margin:0 0 var(--space-2); line-height:1; letter-spacing:-0.02em;
 }
@@ -959,7 +970,7 @@ const prosCss = `
 .pros-faq-q {
   width:100%; display:flex; justify-content:space-between; align-items:center;
   padding:var(--space-6); background:transparent; border:0; cursor:pointer;
-  font-family:'Space Grotesk',sans-serif; font-weight:600;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
   font-size:var(--text-base); color:var(--text-primary); text-align:left;
 }
 .pros-faq-chev {
@@ -987,7 +998,7 @@ const prosCss = `
 .pros-mobile-cta {
   position:fixed; left:0; right:0; bottom:0;
   background:var(--bg-dark); color:#fff; text-align:center;
-  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem;
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:700; font-size:1rem;
   padding:1.1rem 1.5rem calc(1.1rem + env(safe-area-inset-bottom));
   z-index:9998; border:none; cursor:pointer;
   box-shadow:0 -8px 32px rgba(0,0,0,0.2); display:none;
