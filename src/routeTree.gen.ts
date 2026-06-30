@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ModalTestRouteImport } from './routes/modal-test'
 import { Route as ForProfessionalsRouteImport } from './routes/for-professionals'
 import { Route as ForGradsRouteImport } from './routes/for-grads'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ModalTestRoute = ModalTestRouteImport.update({
+  id: '/modal-test',
+  path: '/modal-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForProfessionalsRoute = ForProfessionalsRouteImport.update({
   id: '/for-professionals',
   path: '/for-professionals',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
+  '/modal-test': typeof ModalTestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
+  '/modal-test': typeof ModalTestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
+  '/modal-test': typeof ModalTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/for-grads' | '/for-professionals'
+  fullPaths: '/' | '/for-grads' | '/for-professionals' | '/modal-test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/for-grads' | '/for-professionals'
-  id: '__root__' | '/' | '/for-grads' | '/for-professionals'
+  to: '/' | '/for-grads' | '/for-professionals' | '/modal-test'
+  id: '__root__' | '/' | '/for-grads' | '/for-professionals' | '/modal-test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ForGradsRoute: typeof ForGradsRoute
   ForProfessionalsRoute: typeof ForProfessionalsRoute
+  ModalTestRoute: typeof ModalTestRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/modal-test': {
+      id: '/modal-test'
+      path: '/modal-test'
+      fullPath: '/modal-test'
+      preLoaderRoute: typeof ModalTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/for-professionals': {
       id: '/for-professionals'
       path: '/for-professionals'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ForGradsRoute: ForGradsRoute,
   ForProfessionalsRoute: ForProfessionalsRoute,
+  ModalTestRoute: ModalTestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

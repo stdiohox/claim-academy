@@ -1,5 +1,4 @@
 @import './lib/motion/tokens.css';
-@import './lib/motion/ambient.css';
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
