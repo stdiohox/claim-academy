@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import React, { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
@@ -33,10 +33,6 @@ const BOOK_URL = (import.meta as { env?: Record<string, string> }).env?.VITE_STR
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 function ForGradsPage() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
-
   useEffect(() => {
     const styleEl = document.createElement('style');
     styleEl.id = 'for-grads-styles';
@@ -58,33 +54,32 @@ function ForGradsPage() {
       <header className="page-header">
         <img src="/images/logo-white.png" alt="Claim Academy"
           style={{ height: '36px', width: 'auto' }} />
-        <button type="button" onClick={openModal} className="btn btn-gold shimmer"
+        <a href={BOOK_URL} className="btn btn-gold shimmer"
           style={{ fontSize: '0.85rem', padding: '0.6rem 1.25rem' }}>
           Book a Free Call →
-        </button>
+        </a>
       </header>
       <main>
-        <Hero onOpen={openModal} />
+        <Hero />
         <IntroVideo />
         <ExperienceParadox />
         <WhatYouGet />
-        <Guarantee onOpen={openModal} />
+        <Guarantee />
         <TestimonialVideo />
-        <WhoFor onOpen={openModal} />
-        <Pricing onOpen={openModal} />
+        <WhoFor />
+        <Pricing />
         <Faq />
-        <FinalCta onOpen={openModal} />
+        <FinalCta />
       </main>
       <footer className="page-footer">
         <p>© Claim Academy. All rights reserved.</p>
       </footer>
-      <StickyMobileCta onOpen={openModal} />
-      <LeadModal isOpen={modalOpen} onClose={closeModal} />
+      <StickyMobileCta />
     </div>
   );
 }
 
-function Hero({ onOpen }: { onOpen: () => void }) {
+function Hero() {
   return (
     <section className="hero">
       <div className="orb-field hero-orbs" aria-hidden="true">
@@ -125,9 +120,9 @@ function Hero({ onOpen }: { onOpen: () => void }) {
             visible: { transition: { staggerChildren: 0.08, delayChildren: 0.65 } },
           }}
         >
-          <motion.button type="button" onClick={onOpen} className="btn btn-gold shimmer" variants={ctaItem}>
+          <motion.a href={BOOK_URL} className="btn btn-gold shimmer" variants={ctaItem}>
             Book Your Free Strategy Call
-          </motion.button>
+          </motion.a>
           <motion.a href="#what-you-get" className="btn btn-glass shimmer" variants={ctaItem}
             style={{ borderColor: 'rgba(255,255,255,0.3)' }}>
             See How It Works →
@@ -291,7 +286,7 @@ function WhatYouGet() {
   );
 }
 
-function Guarantee({ onOpen }: { onOpen: () => void }) {
+function Guarantee() {
   return (
     <section className="section section-guarantee">
       <div className="guarantee-orbs" aria-hidden="true">
@@ -329,10 +324,10 @@ function Guarantee({ onOpen }: { onOpen: () => void }) {
             </div>
           </div>
           <div style={{ textAlign: 'center', marginTop: 'var(--space-12)' }}>
-            <button type="button" onClick={onOpen} className="btn btn-gold shimmer"
+            <a href={BOOK_URL} className="btn btn-gold shimmer"
               style={{ fontSize: '1rem', padding: '1rem 2rem' }}>
               Book Your Free Strategy Call
-            </button>
+            </a>
             <p style={{
               marginTop: 'var(--space-4)',
               fontSize: '0.8rem',
@@ -348,7 +343,7 @@ function Guarantee({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function WhoFor({ onOpen }: { onOpen: () => void }) {
+function WhoFor() {
   const items = [
     "You graduated in the last 2 years with a CS, STEM, or technical degree",
     "You've applied to AI/tech jobs and heard nothing back",
@@ -371,9 +366,7 @@ function WhoFor({ onOpen }: { onOpen: () => void }) {
         <RevealSection delay={0.5}>
           <p className="who-footer">
             Not sure if you qualify?{" "}
-            <button type="button" onClick={onOpen} className="gold-link" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
-              Book a free 20-min call →
-            </button>
+            <a href={BOOK_URL} className="gold-link">Book a free 20-min call →</a>
           </p>
         </RevealSection>
       </div>
@@ -399,7 +392,7 @@ function ChecklistItem({ text }: { text: string }) {
   );
 }
 
-function Pricing({ onOpen }: { onOpen: () => void }) {
+function Pricing() {
   const tiers = [
     {
       name: "LAUNCH", price: "$2,997", monthly: "≈ $249/mo with Climb",
@@ -460,9 +453,9 @@ function Pricing({ onOpen }: { onOpen: () => void }) {
               <ul className="tier-bullets">
                 {t.bullets.map((b) => <li key={b}>{b}</li>)}
               </ul>
-              <button type="button" onClick={onOpen} className={`btn ${t.buttonClass} shimmer tier-cta`}>
+              <a href={BOOK_URL} className={`btn ${t.buttonClass} shimmer tier-cta`}>
                 {t.cta}
-              </button>
+              </a>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -543,7 +536,7 @@ function Faq() {
   );
 }
 
-function FinalCta({ onOpen }: { onOpen: () => void }) {
+function FinalCta() {
   return (
     <section className="section section-final">
       <div className="final-orbs" aria-hidden="true">
@@ -564,13 +557,13 @@ function FinalCta({ onOpen }: { onOpen: () => void }) {
             20-minute call. No pressure. We'll tell you honestly if this is the right fit.
           </p>
           <div className="final-cta-wrap">
-            <button type="button" onClick={onOpen} className="btn btn-gold shimmer" style={{
+            <a href={BOOK_URL} className="btn btn-gold shimmer" style={{
               fontSize: '1.1rem',
               padding: '1.2rem 2.5rem',
               boxShadow: '0 0 40px rgba(255,183,27,0.3), 0 8px 32px rgba(0,0,0,0.4)',
             }}>
               Book Your Free Strategy Call
-            </button>
+            </a>
           </div>
           <p className="final-meta">
             Cohort A: Jul 6 · Cohort B: Aug 3 · Limited seats per cohort
@@ -581,7 +574,7 @@ function FinalCta({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function StickyMobileCta({ onOpen }: { onOpen: () => void }) {
+function StickyMobileCta() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
@@ -594,9 +587,8 @@ function StickyMobileCta({ onOpen }: { onOpen: () => void }) {
   return (
     <AnimatePresence>
       {mounted && scrolled && (
-        <motion.button
-          type="button"
-          onClick={onOpen}
+        <motion.a
+          href={BOOK_URL}
           className="mobile-cta"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -604,195 +596,7 @@ function StickyMobileCta({ onOpen }: { onOpen: () => void }) {
           transition={{ duration: 0.35, ease: EASE }}
         >
           Book Free Strategy Call
-        </motion.button>
-      )}
-    </AnimatePresence>
-  );
-}
-
-interface LeadModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-function LeadModal({ isOpen, onClose }: LeadModalProps) {
-  const WEBHOOK = (import.meta as { env?: Record<string, string> })
-    .env?.VITE_WEBHOOK_URL ?? '';
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [background, setBackground] = useState('');
-  const [track, setTrack] = useState('');
-  const [source, setSource] = useState('');
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-
-  useEffect(() => {
-    if (!isOpen) {
-      setFirstName(''); setLastName(''); setEmail('');
-      setPhone(''); setBackground(''); setTrack('');
-      setSource(''); setStatus('idle');
-    }
-  }, [isOpen]);
-
-  const handleSubmit = async () => {
-    if (!firstName || !email || !phone) return;
-    setStatus('submitting');
-    try {
-      await fetch(WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, phone, background, track, source, source_page: '/for-grads' }),
-      });
-
-      setStatus('success');
-    } catch {
-      setStatus('error');
-    }
-  };
-
-  const onBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
-  };
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [isOpen]);
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="modal-backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          onClick={onBackdrop}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Book your free strategy call"
-        >
-          <motion.div
-            className="modal-panel"
-            initial={{ opacity: 0, y: 40, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <button type="button" className="modal-close" onClick={onClose} aria-label="Close">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2"
-                strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-
-            {status === 'success' ? (
-              <div className="modal-success">
-                <div className="modal-success-icon">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="2.5"
-                    strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                <h3>Thanks — you're all set.</h3>
-                <p>Our admissions team will reach out shortly to confirm next steps. Keep an eye on your inbox.</p>
-              </div>
-            ) : (
-              <>
-                <div className="modal-header">
-                  <h2 className="modal-title">Get Your Free Strategy Call</h2>
-                  <p className="modal-subtitle">Takes 2 minutes to fill out.</p>
-                </div>
-
-                <div className="modal-body">
-                  <div className="form-group-label">YOUR INFO</div>
-                  <div className="form-row">
-                    <div className="form-field">
-                      <label className="field-label" htmlFor="fg-firstName">First name</label>
-                      <input id="fg-firstName" type="text" className="field-input" placeholder="Jane"
-                        value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    </div>
-                    <div className="form-field">
-                      <label className="field-label" htmlFor="fg-lastName">Last name</label>
-                      <input id="fg-lastName" type="text" className="field-input" placeholder="Smith"
-                        value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    </div>
-                  </div>
-                  <div className="form-row">
-                    <div className="form-field">
-                      <label className="field-label" htmlFor="fg-email">Email</label>
-                      <input id="fg-email" type="email" className="field-input" placeholder="you@example.com"
-                        value={email} onChange={(e) => setEmail(e.target.value)} />
-                    </div>
-                    <div className="form-field">
-                      <label className="field-label" htmlFor="fg-phone">Phone</label>
-                      <input id="fg-phone" type="tel" className="field-input" placeholder="+1 (555) 555-5555"
-                        value={phone} onChange={(e) => setPhone(e.target.value)} />
-                    </div>
-                  </div>
-
-                  <div className="form-group-label" style={{ marginTop: 'var(--space-6)' }}>ABOUT YOU</div>
-
-                  <div className="form-field">
-                    <label className="field-label">Your background</label>
-                    <div className="pill-group">
-                      {['Recent grad', 'Professional', 'Career switcher', 'Other'].map((opt) => (
-                        <button key={opt} type="button"
-                          className={`pill-btn ${background === opt ? 'active' : ''}`}
-                          onClick={() => setBackground(opt)}>{opt}</button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="form-field">
-                    <label className="field-label">Which track interests you?</label>
-                    <div className="pill-group">
-                      {['Engineering Track', 'Builders Track', 'Not sure yet'].map((opt) => (
-                        <button key={opt} type="button"
-                          className={`pill-btn ${track === opt ? 'active' : ''}`}
-                          onClick={() => setTrack(opt)}>{opt}</button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="form-field">
-                    <label className="field-label">How did you hear about us?</label>
-                    <div className="pill-group">
-                      {['LinkedIn', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
-                        <button key={opt} type="button"
-                          className={`pill-btn ${source === opt ? 'active' : ''}`}
-                          onClick={() => setSource(opt)}>{opt}</button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-gold shimmer modal-submit"
-                    onClick={handleSubmit} disabled={status === 'submitting'}>
-                    {status === 'submitting' ? 'Submitting...' : 'Book My Free Strategy Call →'}
-                  </button>
-                  {status === 'error' && (
-                    <p className="modal-error">Something went wrong. Please try again or email us directly.</p>
-                  )}
-                </div>
-              </>
-            )}
-          </motion.div>
-        </motion.div>
+        </motion.a>
       )}
     </AnimatePresence>
   );
@@ -880,9 +684,6 @@ function TestimonialVideo() {
     </section>
   );
 }
-
-// Unused but satisfies ReactNode import
-const _unused: ReactNode = null;
 
 const pageCss = `
 .for-grads-page {
@@ -1113,39 +914,4 @@ const pageCss = `
 .testimonial-quote{font-size:var(--text-lg);color:var(--text-primary);line-height:1.6;font-style:italic;margin:0 0 var(--space-4);}
 .testimonial-attr{font-size:var(--text-sm);color:var(--accent-gold);font-weight:600;font-family:'Space Grotesk',sans-serif;letter-spacing:0.05em;}
 @media(min-width:769px){.mobile-cta{display:none !important;}}
-.modal-backdrop{position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:var(--space-4);overflow-y:auto;}
-.modal-panel{background:#ffffff;border-radius:20px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(0,0,0,0.05);}
-.modal-close{position:absolute;top:var(--space-4);right:var(--space-4);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.06);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#374151;z-index:1;transition:background 0.2s;}
-.modal-close:hover{background:rgba(0,0,0,0.12);}
-.modal-header{padding:var(--space-8) var(--space-8) var(--space-4);border-bottom:1px solid rgba(0,0,0,0.06);}
-.modal-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;color:#111827;margin:0 0 var(--space-2);letter-spacing:-0.02em;line-height:1.2;}
-.modal-subtitle{font-size:0.875rem;color:#6B7280;margin:0;}
-.modal-body{padding:var(--space-6) var(--space-8);}
-.form-group-label{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.7rem;letter-spacing:0.15em;color:#6B7280;margin-bottom:var(--space-4);}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4);}
-.form-field{display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4);}
-.field-label{font-size:0.875rem;font-weight:500;color:#374151;}
-.field-input{padding:0.65rem 0.875rem;border:1.5px solid #E5E7EB;border-radius:8px;font-size:0.95rem;color:#111827;background:#fff;outline:none;transition:border-color 0.2s,box-shadow 0.2s;font-family:'Inter',sans-serif;width:100%;}
-.field-input:focus{border-color:#602889;box-shadow:0 0 0 3px rgba(96,40,137,0.1);}
-.field-input::placeholder{color:#9CA3AF;}
-.pill-group{display:flex;flex-wrap:wrap;gap:var(--space-2);}
-.pill-btn{padding:0.45rem 1rem;border:1.5px solid #E5E7EB;border-radius:999px;background:#fff;color:#374151;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 0.15s,background 0.15s,color 0.15s;white-space:nowrap;}
-.pill-btn:hover{border-color:#602889;color:#602889;}
-.pill-btn.active{background:#602889;border-color:#602889;color:#fff;font-weight:600;}
-.modal-footer{padding:var(--space-4) var(--space-8) var(--space-8);border-top:1px solid rgba(0,0,0,0.06);}
-.modal-submit{width:100%;justify-content:center;font-size:1rem;padding:0.95rem 1.75rem;}
-.modal-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none !important;}
-.modal-error{text-align:center;color:#DC2626;font-size:0.875rem;margin-top:var(--space-4);}
-.modal-success{padding:var(--space-12) var(--space-8);text-align:center;}
-.modal-success-icon{width:64px;height:64px;border-radius:50%;background:rgba(0,208,132,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-6);color:#00D084;}
-.modal-success h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;color:#111827;margin:0 0 var(--space-3);letter-spacing:-0.02em;}
-.modal-success p{color:#6B7280;font-size:0.95rem;line-height:1.6;margin:0;}
-@media(max-width:640px){
-  .modal-backdrop{align-items:flex-end;padding:0;}
-  .modal-panel{border-radius:20px 20px 0 0;max-height:92vh;width:100%;}
-  .form-row{grid-template-columns:1fr;}
-  .modal-header{padding:var(--space-6) var(--space-6) var(--space-3);}
-  .modal-body{padding:var(--space-4) var(--space-6);}
-  .modal-footer{padding:var(--space-3) var(--space-6) calc(var(--space-6) + env(safe-area-inset-bottom));}
-}
 `;
