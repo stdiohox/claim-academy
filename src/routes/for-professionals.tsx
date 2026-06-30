@@ -26,14 +26,6 @@ export const Route = createFileRoute("/for-professionals")({
         content: "12 weeks to real AI experience. Your employer may cover up to $5,250. Guaranteed placement or full refund.",
       },
     ],
-    scripts: [
-      {
-        children: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1407484639676240');fbq('track','PageView');`,
-      },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://connect.facebook.net" },
-    ],
   }),
   component: ForProfessionalsPage,
 });
@@ -694,14 +686,7 @@ function ProsModal({ isOpen, onClose }: ProsModalProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, email, phone, background, track, source, source_page: "/for-professionals" }),
       });
-      if (typeof window !== "undefined" && (window as any).fbq) {
-        (window as any).fbq("track", "Lead", {
-          content_name: "Pros Strategy Call",
-          content_category: "AI Internship",
-          value: 3997,
-          currency: "USD",
-        });
-      }
+
       setStatus("success");
     } catch {
       setStatus("error");
