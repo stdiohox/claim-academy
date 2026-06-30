@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   AnimatedHeadline,
@@ -37,10 +38,192 @@ export const Route = createFileRoute("/for-professionals")({
   component: ForProfessionalsPage,
 });
 
-const BOOK_URL = (import.meta as { env?: Record<string, string> }).env?.VITE_STRATEGY_CALL_URL ?? "#book-call";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+interface ProsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function ProsModal({ isOpen, onClose }: ProsModalProps) {
+  const WEBHOOK = import.meta.env.VITE_WEBHOOK_URL as string | undefined ?? '';
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [background, setBackground] = useState('');
+  const [track, setTrack] = useState('');
+  const [source, setSource] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  useEffect(() => {
+    if (!isOpen) {
+      setFirstName(''); setLastName(''); setEmail('');
+      setPhone(''); setBackground(''); setTrack('');
+      setSource(''); setStatus('idle');
+    }
+  }, [isOpen]);
+
+  const handleSubmit = async () => {
+    if (!firstName || !email || !phone) return;
+    if (!WEBHOOK) { setStatus('error'); return; }
+    setStatus('submitting');
+    try {
+      await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName, lastName, email, phone,
+          background, track, source,
+          source_page: '/for-professionals',
+        }),
+      });
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead', {
+          content_name: 'Pros Strategy Call',
+          content_category: 'AI Internship',
+          value: 3997,
+          currency: 'USD',
+        });
+      }
+      setStatus('success');
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  const onBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="modal-backdrop"
+      onClick={onBackdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-label="See if you qualify"
+    >
+      <div className="modal-panel">
+        <button type="button" className="modal-close" onClick={onClose} aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {status === 'success' ? (
+          <div className="modal-success">
+            <div className="modal-success-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h3>Thanks — you're all set.</h3>
+            <p>Our admissions team will reach out shortly to confirm next steps. Keep an eye on your inbox.</p>
+          </div>
+        ) : (
+          <>
+            <div className="modal-header">
+              <h2 className="modal-title">See If You Qualify</h2>
+              <p className="modal-subtitle">Takes 2 minutes. No commitment.</p>
+            </div>
+            <div className="modal-body">
+              <div className="form-group-label">YOUR INFO</div>
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fp-firstName">First name</label>
+                  <input id="fp-firstName" type="text" className="field-input" placeholder="Jane"
+                    value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                </div>
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fp-lastName">Last name</label>
+                  <input id="fp-lastName" type="text" className="field-input" placeholder="Smith"
+                    value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fp-email">Email</label>
+                  <input id="fp-email" type="email" className="field-input" placeholder="you@example.com"
+                    value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fp-phone">Phone</label>
+                  <input id="fp-phone" type="tel" className="field-input" placeholder="+1 (555) 555-5555"
+                    value={phone} onChange={(e) => setPhone(e.target.value)} />
+                </div>
+              </div>
+              <div className="form-group-label" style={{ marginTop: 'var(--space-6)' }}>ABOUT YOU</div>
+              <div className="form-field">
+                <label className="field-label">Your background</label>
+                <div className="pill-group">
+                  {['Recent grad', 'Professional', 'Career switcher', 'Other'].map((opt) => (
+                    <button key={opt} type="button"
+                      className={`pill-btn ${background === opt ? 'active' : ''}`}
+                      onClick={() => setBackground(opt)}>{opt}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="form-field">
+                <label className="field-label">Which track interests you?</label>
+                <div className="pill-group">
+                  {['Engineering Track', 'Builders Track', 'Not sure yet'].map((opt) => (
+                    <button key={opt} type="button"
+                      className={`pill-btn ${track === opt ? 'active' : ''}`}
+                      onClick={() => setTrack(opt)}>{opt}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="form-field">
+                <label className="field-label">How did you hear about us?</label>
+                <div className="pill-group">
+                  {['LinkedIn', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
+                    <button key={opt} type="button"
+                      className={`pill-btn ${source === opt ? 'active' : ''}`}
+                      onClick={() => setSource(opt)}>{opt}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="pros-btn-gold modal-submit"
+                onClick={handleSubmit} disabled={status === 'submitting'}>
+                {status === 'submitting' ? 'Submitting...' : 'Book My Free Strategy Call →'}
+              </button>
+              {status === 'error' && (
+                <p className="modal-error">Something went wrong. Please try again or email us directly.</p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ForProfessionalsPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
   useEffect(() => {
     const styleEl = document.createElement('style');
     styleEl.id = 'for-pros-styles';
@@ -60,32 +243,35 @@ function ForProfessionalsPage() {
     <div className="for-pros-page">
       <header className="pros-header">
         <img src="/images/logo-white.png" alt="Claim Academy" style={{ height: "36px", width: "auto" }} />
-        <a href={BOOK_URL} className="pros-btn-gold">
+        <button type="button" onClick={openModal} className="pros-btn-gold">
           See If You Qualify
-        </a>
+        </button>
       </header>
       <main>
-        <HeroPros />
+        <HeroPros onOpen={openModal} />
         <DilemmaSection />
-        <EmployerReimbursement />
+        <EmployerReimbursement onOpen={openModal} />
+        <TestimonialOne />
         <ProgramSection />
-        <GuaranteePros />
+        <GuaranteePros onOpen={openModal} />
         <WhoWeAccept />
-        <PricingPros />
+        <TestimonialTwo />
+        <PricingPros onOpen={openModal} />
         <FaqPros />
-        <FinalCtaPros />
+        <FinalCtaPros onOpen={openModal} />
       </main>
       <footer className="pros-footer">
         <p>© Claim Academy. All rights reserved.</p>
       </footer>
-      <StickyMobileCtaPros />
+      <StickyMobileCtaPros onOpen={openModal} />
+      <ProsModal isOpen={modalOpen} onClose={closeModal} />
     </div>
   );
 }
 
 // ─── HERO ───────────────────────────────────────────────────────────────────
 
-function HeroPros() {
+function HeroPros({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="hero-pros">
       <div className="hero-pros-orb" aria-hidden="true" />
@@ -135,13 +321,14 @@ function HeroPros() {
             visible: { transition: { staggerChildren: 0.1, delayChildren: 1.6 } },
           }}
         >
-          <motion.a
-            href={BOOK_URL}
+          <motion.button
+            type="button"
+            onClick={onOpen}
             className="pros-btn-gold large"
             variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } } }}
           >
             See If You Qualify
-          </motion.a>
+          </motion.button>
           <motion.a
             href="#employer-reimbursement"
             className="pros-btn-glass"
@@ -221,7 +408,7 @@ function DilemmaSection() {
 
 // ─── EMPLOYER REIMBURSEMENT ─────────────────────────────────────────────────
 
-function EmployerReimbursement() {
+function EmployerReimbursement({ onOpen }: { onOpen: () => void }) {
   const steps = [
     {
       num: "1",
@@ -265,9 +452,9 @@ function EmployerReimbursement() {
             ))}
           </StaggerContainer>
           <div style={{ textAlign: "center" }}>
-            <a href={BOOK_URL} className="pros-gold-link">
+            <button type="button" onClick={onOpen} className="pros-gold-link">
               See if your employer qualifies — Book a free call →
-            </a>
+            </button>
           </div>
         </RevealSection>
       </div>
@@ -333,7 +520,7 @@ function ProgramSection() {
 
 // ─── GUARANTEE ──────────────────────────────────────────────────────────────
 
-function GuaranteePros() {
+function GuaranteePros({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="section-pros section-navy">
       <div className="pros-container">
@@ -353,13 +540,14 @@ function GuaranteePros() {
               <div className="pros-guarantee-card">
                 87% job placement rate over 11 years · 2:1 employer-to-student ratio · Full refund if we fail
               </div>
-              <a
-                href={BOOK_URL}
+              <button
+                type="button"
+                onClick={onOpen}
                 className="pros-btn-gold"
                 style={{ whiteSpace: 'nowrap', alignSelf: 'center' }}
               >
                 See If You Qualify
-              </a>
+              </button>
             </div>
           </div>
         </RevealSection>
@@ -423,7 +611,7 @@ function WhoWeAccept() {
 
 // ─── PRICING ────────────────────────────────────────────────────────────────
 
-function PricingPros() {
+function PricingPros({ onOpen }: { onOpen: () => void }) {
   const tiers = [
     {
       name: "LAUNCH",
@@ -498,13 +686,14 @@ function PricingPros() {
               <ul className="pros-tier-bullets">
                 {t.bullets.map((b) => <li key={b}>{b}</li>)}
               </ul>
-              <a
-                href={BOOK_URL}
+              <button
+                type="button"
+                onClick={onOpen}
                 className={t.featured ? "pros-btn-gold" : "btn-navy"}
                 style={{ width: "100%", justifyContent: "center" }}
               >
                 {t.cta}
-              </a>
+              </button>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -589,7 +778,7 @@ function FaqPros() {
 
 // ─── FINAL CTA ──────────────────────────────────────────────────────────────
 
-function FinalCtaPros() {
+function FinalCtaPros({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="pros-final">
       <div className="pros-container-narrow" style={{ textAlign: "center" }}>
@@ -603,9 +792,9 @@ function FinalCtaPros() {
             A free 20-minute call. We'll confirm it's the right fit and walk you through
             employer reimbursement.
           </p>
-          <a href={BOOK_URL} className="pros-btn-gold large">
+          <button type="button" onClick={onOpen} className="pros-btn-gold large">
             See If You Qualify
-          </a>
+          </button>
           <p className="pros-final-meta">
             No pressure. No hard sell. Just an honest conversation.
           </p>
@@ -615,23 +804,100 @@ function FinalCtaPros() {
   );
 }
 
+// ─── TESTIMONIAL VIDEOS ─────────────────────────────────────────────────────
+
+function TestimonialOne() {
+  return (
+    <section className="section-pros section-light pros-testimonial-section">
+      <div className="pros-container-narrow">
+        <RevealSection>
+          <div className="pros-testimonial-label">REAL RESULTS</div>
+          <h2 className="pros-section-headline">
+            Hear From Someone Who Made the Switch
+          </h2>
+          <p className="pros-section-sub">
+            A working professional who used employer reimbursement to attend at zero personal cost.
+          </p>
+          <div className="pros-video-wrap">
+            <video
+              src="/videos/pros-testimonial-1.mp4"
+              poster="/videos/pros-testimonial-1-poster.png"
+              controls
+              playsInline
+              preload="metadata"
+              aria-label="Professional testimonial video one"
+              className="pros-video-player"
+              style={{ backgroundColor: '#0F1B2D' }}
+            >
+              Your browser does not support the video tag.
+            </video>
+            <div className="pros-video-play-overlay" aria-hidden="true">
+              <svg width="64" height="64" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="11" fill="rgba(15,27,45,0.6)" />
+                <path d="M9 7l8 5-8 5V7z" fill="white" />
+              </svg>
+            </div>
+          </div>
+        </RevealSection>
+      </div>
+    </section>
+  );
+}
+
+function TestimonialTwo() {
+  return (
+    <section className="section-pros section-tint pros-testimonial-section">
+      <div className="pros-container-narrow">
+        <RevealSection>
+          <div className="pros-testimonial-label">ANOTHER PERSPECTIVE</div>
+          <h2 className="pros-section-headline">
+            From Stuck in a Role to Building With AI
+          </h2>
+          <p className="pros-section-sub">
+            Why the guaranteed internship made the difference for this graduate.
+          </p>
+          <div className="pros-video-wrap">
+            <video
+              src="/videos/pros-testimonial-2.mp4"
+              poster="/videos/pros-testimonial-2-poster.png"
+              controls
+              playsInline
+              preload="metadata"
+              aria-label="Professional testimonial video two"
+              className="pros-video-player"
+              style={{ backgroundColor: '#0F1B2D' }}
+            >
+              Your browser does not support the video tag.
+            </video>
+            <div className="pros-video-play-overlay" aria-hidden="true">
+              <svg width="64" height="64" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="11" fill="rgba(15,27,45,0.6)" />
+                <path d="M9 7l8 5-8 5V7z" fill="white" />
+              </svg>
+            </div>
+          </div>
+        </RevealSection>
+      </div>
+    </section>
+  );
+}
+
 // ─── STICKY MOBILE CTA ──────────────────────────────────────────────────────
 
-function StickyMobileCtaPros() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+function StickyMobileCtaPros({ onOpen }: { onOpen: () => void }) {
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.5);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return (
     <AnimatePresence>
-      {mounted && scrolled && (
-        <motion.a
-          href={BOOK_URL}
+      {visible && (
+        <motion.button
+          type="button"
+          onClick={onOpen}
           className="pros-mobile-cta"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -639,7 +905,7 @@ function StickyMobileCtaPros() {
           transition={{ duration: 0.35, ease: EASE }}
         >
           See If You Qualify
-        </motion.a>
+        </motion.button>
       )}
     </AnimatePresence>
   );
@@ -729,7 +995,7 @@ const prosCss = `
 }
 .pros-eyebrow {
   display:inline-block; font-family:'Space Grotesk Variable',sans-serif;
-  font-weight:600; font-size:0.75rem; letter-spacing:0.15em;
+  font-weight:600; font-size:0.8rem; letter-spacing:0.15em;
   color:rgba(255,255,255,0.8); padding:0.5rem 1rem; border-radius:999px;
   border:1px solid rgba(255,255,255,0.2); margin-bottom:var(--space-8);
 }
@@ -754,6 +1020,8 @@ const prosCss = `
 .employer-callout a {
   color:var(--accent-gold); font-weight:600;
   text-decoration:none; margin-left:var(--space-2);
+  padding:0.75rem 0.25rem; display:inline-flex;
+  align-items:center; min-height:44px;
 }
 .employer-callout a:hover { text-decoration:underline; }
 .pros-ctas {
@@ -773,7 +1041,7 @@ const prosCss = `
   line-height:1; letter-spacing:-0.02em;
 }
 .pros-stat-label {
-  font-size:0.7rem; letter-spacing:0.12em; color:rgba(255,255,255,0.45);
+  font-size:0.8rem; letter-spacing:0.12em; color:rgba(255,255,255,0.45);
   font-weight:500; text-align:center;
 }
 .pros-btn-gold {
@@ -809,7 +1077,7 @@ const prosCss = `
 }
 .dilemma-label {
   font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
-  font-size:0.7rem; letter-spacing:0.15em; margin-bottom:var(--space-4);
+  font-size:0.8rem; letter-spacing:0.15em; margin-bottom:var(--space-4);
 }
 .dilemma-label-muted { color:var(--text-tertiary); }
 .dilemma-label-gold { color:var(--accent-gold); }
@@ -836,6 +1104,8 @@ const prosCss = `
   color:var(--accent-gold); font-weight:600; text-decoration:none;
   font-size:var(--text-base); cursor:pointer; background:none; border:none;
   font-family:'Space Grotesk Variable',sans-serif;
+  padding:0.75rem 0.25rem; display:inline-flex;
+  align-items:center; min-height:44px;
 }
 .pros-gold-link:hover { text-decoration:underline; }
 .pros-cards-grid {
@@ -862,7 +1132,7 @@ const prosCss = `
   background:rgba(96,40,137,0.08); border:1px solid rgba(96,40,137,0.2);
   border-radius:999px; color:var(--accent);
   font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
-  font-size:0.7rem; letter-spacing:0.1em; margin-bottom:var(--space-4);
+  font-size:0.8rem; letter-spacing:0.1em; margin-bottom:var(--space-4);
 }
 .pros-card-title {
   font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
@@ -874,7 +1144,7 @@ const prosCss = `
 .pros-tag-gold {
   display:inline-block; padding:0.35rem 0.8rem;
   background:rgba(255,183,27,0.10); border:1px solid rgba(255,183,27,0.3);
-  border-radius:999px; color:#92620A; font-size:0.75rem; font-weight:600; letter-spacing:0.05em;
+  border-radius:999px; color:#92620A; font-size:0.8rem; font-weight:600; letter-spacing:0.05em;
 }
 .pros-guarantee-inner {
   display:flex; flex-direction:column; align-items:center;
@@ -935,19 +1205,19 @@ const prosCss = `
   position:absolute; top:-14px; left:50%; transform:translateX(-50%);
   background:var(--bg-dark); color:#fff;
   font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
-  font-size:0.65rem; letter-spacing:0.12em;
+  font-size:0.78rem; letter-spacing:0.12em;
   padding:0.35rem 1rem; border-radius:999px; white-space:nowrap;
 }
 .pros-tier-name {
   font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
-  font-size:0.8rem; letter-spacing:0.15em; color:var(--text-tertiary); margin:0 0 var(--space-3);
+  font-size:0.9rem; letter-spacing:0.15em; color:var(--text-tertiary); margin:0 0 var(--space-3);
 }
 .pros-tier-price {
   font-family:'Space Grotesk Variable',sans-serif; font-weight:700;
   font-size:var(--text-3xl); color:var(--text-primary);
   margin:0 0 var(--space-2); line-height:1; letter-spacing:-0.02em;
 }
-.pros-tier-monthly { font-size:0.8rem; color:var(--text-tertiary); margin:0 0 var(--space-6); letter-spacing:0.02em; }
+.pros-tier-monthly { font-size:0.85rem; color:var(--text-tertiary); margin:0 0 var(--space-6); letter-spacing:0.02em; }
 .pros-tier-bullets {
   list-style:none; padding:0; margin:0 0 var(--space-8);
   display:flex; flex-direction:column; gap:var(--space-3); flex:1;
@@ -1009,11 +1279,11 @@ const prosCss = `
   font-family:'Space Grotesk Variable',sans-serif; font-weight:700; font-size:1rem;
   padding:1.1rem 1.5rem calc(1.1rem + env(safe-area-inset-bottom));
   z-index:9998; border:none; cursor:pointer;
-  box-shadow:0 -8px 32px rgba(0,0,0,0.2); display:none;
+  box-shadow:0 -8px 32px rgba(0,0,0,0.2);
   border-top:1px solid rgba(255,183,27,0.2);
+  text-decoration:none; display:flex; align-items:center; justify-content:center;
 }
 @media(max-width:768px){
-  .pros-mobile-cta { display:block; }
   .pros-footer { padding-bottom:calc(var(--space-8) + 100px); }
   .pros-hero-headline { font-size:var(--text-3xl); }
   .pros-section-headline { font-size:var(--text-2xl); }
@@ -1023,6 +1293,9 @@ const prosCss = `
   .who-grid { grid-template-columns:1fr; }
   .pros-guarantee-row { flex-direction:column; align-items:center; }
   .pros-guarantee-card { max-width:100%; }
+  .pros-ctas { flex-direction:column; width:100%; }
+  .pros-ctas a, .pros-ctas button { width:100%; white-space:normal; text-align:center; }
+  .pros-card { padding:var(--space-6); }
 }
 @media(max-width:1024px){
   .pros-cards-grid { grid-template-columns:1fr; }
@@ -1031,4 +1304,66 @@ const prosCss = `
   .pros-pricing-featured:hover { transform:translateY(-4px); }
 }
 @media(min-width:769px){ .pros-mobile-cta { display:none !important; } }
+.pros-testimonial-section { text-align:center; }
+.pros-testimonial-label {
+  font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
+  font-size:0.8rem; letter-spacing:0.15em;
+  color:var(--accent-gold); margin-bottom:var(--space-4);
+}
+.pros-section-sub {
+  font-size:var(--text-base); color:var(--text-secondary);
+  max-width:520px; margin:0 auto var(--space-8); line-height:1.6;
+}
+.pros-video-wrap {
+  position:relative; border-radius:16px; overflow:hidden;
+  box-shadow:0 0 0 1px rgba(15,27,45,0.08),0 32px 80px rgba(15,27,45,0.15);
+  background:#0F1B2D; max-width:760px; margin:0 auto;
+}
+.pros-video-player {
+  width:100%; aspect-ratio:16/9; display:block; border-radius:16px;
+}
+.pros-video-play-overlay {
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none; opacity:0.9;
+  transition:opacity 0.2s,transform 0.2s;
+}
+.pros-video-wrap:hover .pros-video-play-overlay {
+  opacity:1; transform:translate(-50%,-50%) scale(1.05);
+}
+.modal-backdrop{position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:var(--space-4);overflow-y:auto;}
+.modal-panel{background:#ffffff;border-radius:20px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.5);}
+.modal-header{padding:var(--space-8) var(--space-8) var(--space-4);border-bottom:1px solid rgba(0,0,0,0.06);}
+.modal-title{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:1.5rem;color:#111827;margin:0 0 var(--space-2);letter-spacing:-0.02em;line-height:1.2;}
+.modal-subtitle{font-size:0.875rem;color:#6B7280;margin:0;}
+.modal-body{padding:var(--space-6) var(--space-8);}
+.modal-footer{padding:var(--space-4) var(--space-8) var(--space-8);border-top:1px solid rgba(0,0,0,0.06);}
+.modal-close{position:absolute;top:var(--space-4);right:var(--space-4);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.06);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#374151;transition:background 0.2s;}
+.modal-close:hover{background:rgba(0,0,0,0.12);}
+.form-group-label{font-family:'Space Grotesk Variable',sans-serif;font-weight:600;font-size:0.7rem;letter-spacing:0.15em;color:#6B7280;margin-bottom:var(--space-4);text-transform:uppercase;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4);}
+.form-field{display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4);}
+.field-label{font-size:0.875rem;font-weight:500;color:#374151;}
+.field-input{padding:0.65rem 0.875rem;border:1.5px solid #E5E7EB;border-radius:8px;font-size:0.95rem;color:#111827;background:#fff;outline:none;transition:border-color 0.2s,box-shadow 0.2s;font-family:'Inter Variable',sans-serif;width:100%;}
+.field-input:focus{border-color:#602889;box-shadow:0 0 0 3px rgba(96,40,137,0.1);}
+.field-input::placeholder{color:#9CA3AF;}
+.pill-group{display:flex;flex-wrap:wrap;gap:var(--space-2);}
+.pill-btn{padding:0.45rem 1rem;border:1.5px solid #E5E7EB;border-radius:999px;background:#fff;color:#374151;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:'Inter Variable',sans-serif;transition:border-color 0.15s,background 0.15s,color 0.15s;white-space:nowrap;}
+.pill-btn:hover{border-color:#602889;color:#602889;}
+.pill-btn.active{background:#602889;border-color:#602889;color:#fff;font-weight:600;}
+.modal-submit{width:100%;justify-content:center;font-size:1rem;padding:0.95rem 1.75rem;}
+.modal-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none !important;}
+.modal-error{text-align:center;color:#DC2626;font-size:0.875rem;margin-top:var(--space-4);}
+.modal-success{padding:var(--space-12) var(--space-8);text-align:center;}
+.modal-success-icon{width:64px;height:64px;border-radius:50%;background:rgba(0,208,132,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-6);color:#00D084;}
+.modal-success h3{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:1.5rem;color:#111827;margin:0 0 var(--space-3);letter-spacing:-0.02em;}
+.modal-success p{color:#6B7280;font-size:0.95rem;line-height:1.6;margin:0;}
+@media(max-width:640px){
+  .modal-backdrop{align-items:flex-end;padding:0;}
+  .modal-panel{border-radius:20px 20px 0 0;max-height:92vh;width:100%;}
+  .form-row{grid-template-columns:1fr;}
+  .modal-header{padding:var(--space-6) var(--space-6) var(--space-3);}
+  .modal-body{padding:var(--space-4) var(--space-6);}
+  .modal-footer{padding:var(--space-3) var(--space-6) calc(var(--space-6) + env(safe-area-inset-bottom));}
+}
 `;

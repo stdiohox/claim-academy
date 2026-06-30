@@ -193,3 +193,16 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.main-video-play-overlay {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.video-play-wrap:hover .main-video-play-overlay {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.05);
+}

@@ -66,8 +66,6 @@ export function Testimonials() {
 
         {/* Featured video testimonial */}
         {(() => {
-          const videoPoster =
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Crect width='1280' height='720' fill='%231a0830'/%3E%3Ccircle cx='640' cy='360' r='72' fill='rgba(255%2C255%2C255%2C0.08)'/%3E%3Cpolygon points='624%2C330 624%2C390 678%2C360' fill='%23FFB71B'/%3E%3C/svg%3E";
           return (
             <div
               style={{
@@ -83,24 +81,32 @@ export function Testimonials() {
                 style={{ alignItems: "stretch" }}
               >
                 {/* Video */}
-                <video
-                  controls
-                  playsInline
-                  preload="metadata"
-                  poster={videoPoster}
-                  aria-label="Graduate testimonial video — hear directly from a Claim Academy graduate"
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    backgroundColor: "#0D0618",
-                    maxHeight: "380px",
-                    objectFit: "cover",
-                  }}
-                >
-                  <source src="/videos/main-testimonial-video.mp4" type="video/mp4" />
-                  <track kind="captions" srcLang="en" label="English captions" default />
-                  Your browser does not support the video tag.
-                </video>
+                <div className="video-play-wrap" style={{ position: "relative" }}>
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster="/videos/testimonial-video-poster.png"
+                    aria-label="Graduate testimonial video — hear directly from a Claim Academy graduate"
+                    style={{
+                      width: "100%",
+                      display: "block",
+                      backgroundColor: "#0D0618",
+                      maxHeight: "380px",
+                      objectFit: "cover",
+                    }}
+                  >
+                    <source src="/videos/main-testimonial-video.mp4" type="video/mp4" />
+                    <track kind="captions" srcLang="en" label="English captions" default />
+                    Your browser does not support the video tag.
+                  </video>
+                  <div className="main-video-play-overlay" aria-hidden="true">
+                    <svg width="64" height="64" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.55)" />
+                      <path d="M9 7l8 5-8 5V7z" fill="white" />
+                    </svg>
+                  </div>
+                </div>
 
                 {/* Caption panel */}
                 <div

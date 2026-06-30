@@ -1,5 +1,4 @@
-const POSTER =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Crect width='1280' height='720' fill='%23120820'/%3E%3Ccircle cx='640' cy='360' r='72' fill='%231e0d35'/%3E%3Cpolygon points='624%2C330 624%2C390 678%2C360' fill='%23FFB71B'/%3E%3C/svg%3E";
+const POSTER = "/videos/about-claim-poster.png";
 
 export function MeetClaimAcademy() {
   return (
@@ -77,7 +76,7 @@ export function MeetClaimAcademy() {
           </div>
 
           {/* Right — video player */}
-          <div>
+          <div className="video-play-wrap" style={{ position: "relative" }}>
             <video
               controls
               playsInline
@@ -98,6 +97,12 @@ export function MeetClaimAcademy() {
               <track kind="captions" srcLang="en" label="English captions" default />
               Your browser does not support the video tag.
             </video>
+            <div className="main-video-play-overlay" aria-hidden="true">
+              <svg width="64" height="64" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.55)" />
+                <path d="M9 7l8 5-8 5V7z" fill="white" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
