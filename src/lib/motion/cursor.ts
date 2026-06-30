@@ -1,6 +1,6 @@
 // Custom cursor disabled — GSAP ticker multiplication under HMR locks the main thread.
 // Re-enable by calling initCursor() in a useEffect after verifying production behavior.
-import { gsap } from 'gsap';
+// GSAP removed — replaced with direct CSS transforms so the module loads zero JS on import.
 import { isTouch } from './hooks';
 
 export class PremiumCursor {
@@ -14,7 +14,7 @@ export class PremiumCursor {
   private onMove = (e: MouseEvent) => {
     this.mouseX = e.clientX;
     this.mouseY = e.clientY;
-    gsap.to(this.dot, { x: e.clientX, y: e.clientY, duration: 0.08, ease: 'power2.out' });
+    this.dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
   };
   private onEnter = () => { this.ring.classList.add('cursor-expand'); };
   private onLeave = () => { this.ring.classList.remove('cursor-expand'); };
@@ -29,6 +29,7 @@ export class PremiumCursor {
       width: '6px', height: '6px', borderRadius: '50%',
       background: '#fff', mixBlendMode: 'difference',
       pointerEvents: 'none', zIndex: '99999',
+      marginLeft: '-3px', marginTop: '-3px',
     } as CSSStyleDeclaration);
     Object.assign(this.ring.style, {
       position: 'fixed', top: '0', left: '0',
@@ -36,9 +37,8 @@ export class PremiumCursor {
       border: '1px solid rgba(255,255,255,0.6)',
       mixBlendMode: 'difference', pointerEvents: 'none', zIndex: '99999',
       transition: 'width 0.25s ease, height 0.25s ease',
+      marginLeft: '-16px', marginTop: '-16px',
     } as CSSStyleDeclaration);
-    gsap.set(this.dot, { xPercent: -50, yPercent: -50 });
-    gsap.set(this.ring, { xPercent: -50, yPercent: -50 });
     document.body.appendChild(this.dot);
     document.body.appendChild(this.ring);
     window.addEventListener('mousemove', this.onMove);
@@ -50,7 +50,7 @@ export class PremiumCursor {
     const loop = () => {
       this.ringX += (this.mouseX - this.ringX) * 0.12;
       this.ringY += (this.mouseY - this.ringY) * 0.12;
-      gsap.set(this.ring, { x: this.ringX, y: this.ringY });
+      this.ring.style.transform = `translate(${this.ringX}px, ${this.ringY}px)`;
       this.raf = requestAnimationFrame(loop);
     };
     this.raf = requestAnimationFrame(loop);
