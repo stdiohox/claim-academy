@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ModalTestRouteImport } from './routes/modal-test'
 import { Route as ForProfessionalsRouteImport } from './routes/for-professionals'
 import { Route as ForGradsRouteImport } from './routes/for-grads'
+import { Route as BareTestRouteImport } from './routes/bare-test'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ModalTestRoute = ModalTestRouteImport.update({
@@ -29,6 +30,11 @@ const ForGradsRoute = ForGradsRouteImport.update({
   path: '/for-grads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BareTestRoute = BareTestRouteImport.update({
+  id: '/bare-test',
+  path: '/bare-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bare-test': typeof BareTestRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bare-test': typeof BareTestRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
@@ -50,20 +58,33 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bare-test': typeof BareTestRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/for-grads' | '/for-professionals' | '/modal-test'
+  fullPaths:
+    | '/'
+    | '/bare-test'
+    | '/for-grads'
+    | '/for-professionals'
+    | '/modal-test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/for-grads' | '/for-professionals' | '/modal-test'
-  id: '__root__' | '/' | '/for-grads' | '/for-professionals' | '/modal-test'
+  to: '/' | '/bare-test' | '/for-grads' | '/for-professionals' | '/modal-test'
+  id:
+    | '__root__'
+    | '/'
+    | '/bare-test'
+    | '/for-grads'
+    | '/for-professionals'
+    | '/modal-test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BareTestRoute: typeof BareTestRoute
   ForGradsRoute: typeof ForGradsRoute
   ForProfessionalsRoute: typeof ForProfessionalsRoute
   ModalTestRoute: typeof ModalTestRoute
@@ -92,6 +113,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForGradsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bare-test': {
+      id: '/bare-test'
+      path: '/bare-test'
+      fullPath: '/bare-test'
+      preLoaderRoute: typeof BareTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +132,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BareTestRoute: BareTestRoute,
   ForGradsRoute: ForGradsRoute,
   ForProfessionalsRoute: ForProfessionalsRoute,
   ModalTestRoute: ModalTestRoute,

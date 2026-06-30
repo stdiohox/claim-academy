@@ -2,15 +2,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
-  createRootRouteWithContext,
+  createRootRoute,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
-
-import appCss from "../styles.css?url";
+import { useEffect } from "react";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+
+const queryClient = new QueryClient();
 
 function NotFoundComponent() {
   return (
@@ -24,7 +22,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-content-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Go home
           </Link>
@@ -72,57 +70,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Claim Academy AI Internship — Guaranteed Employer Placement" },
-      { name: "description", content: "12-week AI bootcamp with a guaranteed employer internship in writing. 4 weeks live training, 8 weeks placed at a vetted US company — or full refund." },
-      { name: "author", content: "Claim Academy" },
-      { property: "og:title", content: "Claim Academy AI Internship — Guaranteed Employer Placement" },
-      { property: "og:description", content: "12-week AI bootcamp with a guaranteed employer internship in writing. 4 weeks live training, 8 weeks placed at a vetted US company — or full refund." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Claim Academy AI Internship — Guaranteed Employer Placement" },
-      { name: "twitter:description", content: "12-week AI bootcamp with a guaranteed employer internship in writing. 4 weeks live training, 8 weeks placed at a vetted US company — or full refund." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/42324450-5586-4973-88ab-373010f614ae/id-preview-3c7eba6e--f25fb99f-f4ae-4e7c-a9f6-b87f8642c74c.lovable.app-1780857332099.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/42324450-5586-4973-88ab-373010f614ae/id-preview-3c7eba6e--f25fb99f-f4ae-4e7c-a9f6-b87f8642c74c.lovable.app-1780857332099.png" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-  }),
-
-  shellComponent: RootShell,
+export const Route = createRootRoute({
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );
