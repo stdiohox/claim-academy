@@ -16,6 +16,17 @@
           "value": "grads.claimaiinternship.com"
         }
       ]
+    },
+    {
+      "source": "/",
+      "destination": "/for-professionals",
+      "permanent": false,
+      "has": [
+        {
+          "type": "host",
+          "value": "pros.claimaiinternship.com"
+        }
+      ]
     }
   ]
 }
