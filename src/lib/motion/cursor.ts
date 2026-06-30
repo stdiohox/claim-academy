@@ -1,3 +1,5 @@
+// Custom cursor disabled — GSAP ticker multiplication under HMR locks the main thread.
+// Re-enable by calling initCursor() in a useEffect after verifying production behavior.
 import { gsap } from 'gsap';
 import { isTouch } from './hooks';
 

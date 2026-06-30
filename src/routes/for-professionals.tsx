@@ -7,7 +7,6 @@ import {
   RevealSection,
   StaggerContainer,
   StaggerItem,
-  initCursor,
   initSpotlight,
 } from "@/lib/motion";
 import "@fontsource-variable/fraunces";
@@ -47,11 +46,9 @@ function ForProfessionalsPage() {
   }, []);
 
   useEffect(() => {
-    const cleanupCursor = initCursor();
     const id = window.setTimeout(() => initSpotlight(".pros-card"), 50);
     return () => {
       window.clearTimeout(id);
-      cleanupCursor?.();
     };
   }, []);
 

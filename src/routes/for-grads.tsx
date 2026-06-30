@@ -8,7 +8,6 @@ import {
   RevealSection,
   StaggerContainer,
   StaggerItem,
-  initCursor,
   initSpotlight,
 } from "@/lib/motion";
 
@@ -47,11 +46,9 @@ function ForGradsPage() {
   }, []);
 
   useEffect(() => {
-    const cleanupCursor = initCursor();
     const id = window.setTimeout(() => initSpotlight(".spotlight-card"), 50);
     return () => {
       window.clearTimeout(id);
-      cleanupCursor?.();
     };
   }, []);
 
