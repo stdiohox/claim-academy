@@ -51,6 +51,14 @@ export function LeadForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...parsed.data, timestamp: new Date().toISOString() }),
       }).catch(() => null);
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead', {
+          content_name: 'Main Site Strategy Call',
+          content_category: 'AI Internship',
+          value: 3997,
+          currency: 'USD',
+        });
+      }
       setSuccess(true);
     } catch {
       setSubmitError("Something went wrong. Please try again.");

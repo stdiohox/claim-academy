@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import React from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
@@ -25,14 +26,267 @@ export const Route = createFileRoute("/for-grads")({
         content: "12 weeks to real employer experience and an AI portfolio. Guaranteed placement or full refund.",
       },
     ],
+    scripts: [
+      {
+        children: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1407484639676240');fbq('track','PageView');`,
+      },
+    ],
+    links: [
+      { rel: 'preconnect', href: 'https://connect.facebook.net' },
+    ],
   }),
   component: ForGradsPage,
 });
 
-const BOOK_URL = (import.meta as { env?: Record<string, string> }).env?.VITE_STRATEGY_CALL_URL ?? "#book-call";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+interface LeadModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function LeadModal({ isOpen, onClose }: LeadModalProps) {
+  const WEBHOOK = import.meta.env.VITE_WEBHOOK_URL as string | undefined ?? '';
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [background, setBackground] = useState('');
+  const [track, setTrack] = useState('');
+  const [source, setSource] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  useEffect(() => {
+    if (!isOpen) {
+      setFirstName(''); setLastName(''); setEmail('');
+      setPhone(''); setBackground(''); setTrack('');
+      setSource(''); setStatus('idle');
+    }
+  }, [isOpen]);
+
+  const handleSubmit = async () => {
+    if (!firstName || !email || !phone) return;
+    if (!WEBHOOK) { setStatus('error'); return; }
+    setStatus('submitting');
+    try {
+      await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName, lastName, email, phone,
+          background, track, source,
+          source_page: '/for-grads',
+        }),
+      });
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead', {
+          content_name: 'For Grads Strategy Call',
+          content_category: 'AI Internship',
+          value: 3997,
+          currency: 'USD',
+        });
+      }
+      setStatus('success');
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  const onBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="modal-backdrop"
+      onClick={onBackdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Book your free strategy call"
+    >
+      <div className="modal-panel">
+        <button
+          type="button"
+          className="modal-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {status === 'success' ? (
+          <div className="modal-success">
+            <div className="modal-success-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5"
+                strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h3>Thanks — you're all set.</h3>
+            <p>Our admissions team will reach out shortly to
+            confirm next steps. Keep an eye on your inbox.</p>
+          </div>
+        ) : (
+          <>
+            <div className="modal-header">
+              <h2 className="modal-title">Get Your Free Strategy Call</h2>
+              <p className="modal-subtitle">Takes 2 minutes to fill out.</p>
+            </div>
+
+            <div className="modal-body">
+              <div className="form-group-label">YOUR INFO</div>
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fg-firstName">First name</label>
+                  <input
+                    id="fg-firstName"
+                    type="text"
+                    className="field-input"
+                    placeholder="Jane"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fg-lastName">Last name</label>
+                  <input
+                    id="fg-lastName"
+                    type="text"
+                    className="field-input"
+                    placeholder="Smith"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fg-email">Email</label>
+                  <input
+                    id="fg-email"
+                    type="email"
+                    className="field-input"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fg-phone">Phone</label>
+                  <input
+                    id="fg-phone"
+                    type="tel"
+                    className="field-input"
+                    placeholder="+1 (555) 555-5555"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group-label" style={{ marginTop: 'var(--space-6)' }}>
+                ABOUT YOU
+              </div>
+
+              <div className="form-field">
+                <label className="field-label">Your background</label>
+                <div className="pill-group">
+                  {['Recent grad', 'Professional', 'Career switcher', 'Other'].map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={`pill-btn ${background === opt ? 'active' : ''}`}
+                      onClick={() => setBackground(opt)}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-field">
+                <label className="field-label">Which track interests you?</label>
+                <div className="pill-group">
+                  {['Engineering Track', 'Builders Track', 'Not sure yet'].map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={`pill-btn ${track === opt ? 'active' : ''}`}
+                      onClick={() => setTrack(opt)}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-field">
+                <label className="field-label">How did you hear about us?</label>
+                <div className="pill-group">
+                  {['LinkedIn', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={`pill-btn ${source === opt ? 'active' : ''}`}
+                      onClick={() => setSource(opt)}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-gold shimmer modal-submit"
+                onClick={handleSubmit}
+                disabled={status === 'submitting'}
+              >
+                {status === 'submitting' ? 'Submitting...' : 'Book My Free Strategy Call →'}
+              </button>
+              {status === 'error' && (
+                <p className="modal-error">
+                  Something went wrong. Please try again or email us directly.
+                </p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ForGradsPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
   useEffect(() => {
     const styleEl = document.createElement('style');
     styleEl.id = 'for-grads-styles';
@@ -54,32 +308,33 @@ function ForGradsPage() {
       <header className="page-header">
         <img src="/images/logo-white.png" alt="Claim Academy"
           style={{ height: '36px', width: 'auto' }} />
-        <a href={BOOK_URL} className="btn btn-gold shimmer"
-          style={{ fontSize: '0.85rem', padding: '0.6rem 1.25rem' }}>
+        <button type="button" onClick={openModal} className="btn btn-gold shimmer"
+          style={{ fontSize: '0.85rem', padding: '0.7rem 1.25rem' }}>
           Book a Free Call →
-        </a>
+        </button>
       </header>
       <main>
-        <Hero />
+        <Hero onOpen={openModal} />
         <IntroVideo />
         <ExperienceParadox />
         <WhatYouGet />
-        <Guarantee />
+        <Guarantee onOpen={openModal} />
         <TestimonialVideo />
-        <WhoFor />
-        <Pricing />
+        <WhoFor onOpen={openModal} />
+        <Pricing onOpen={openModal} />
         <Faq />
-        <FinalCta />
+        <FinalCta onOpen={openModal} />
       </main>
       <footer className="page-footer">
         <p>© Claim Academy. All rights reserved.</p>
       </footer>
-      <StickyMobileCta />
+      <StickyMobileCta onOpen={openModal} />
+      <LeadModal isOpen={modalOpen} onClose={closeModal} />
     </div>
   );
 }
 
-function Hero() {
+function Hero({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="hero">
       <div className="orb-field hero-orbs" aria-hidden="true">
@@ -120,9 +375,9 @@ function Hero() {
             visible: { transition: { staggerChildren: 0.08, delayChildren: 0.65 } },
           }}
         >
-          <motion.a href={BOOK_URL} className="btn btn-gold shimmer" variants={ctaItem}>
+          <motion.button type="button" onClick={onOpen} className="btn btn-gold shimmer" variants={ctaItem}>
             Book Your Free Strategy Call
-          </motion.a>
+          </motion.button>
           <motion.a href="#what-you-get" className="btn btn-glass shimmer" variants={ctaItem}
             style={{ borderColor: 'rgba(255,255,255,0.3)' }}>
             See How It Works →
@@ -263,14 +518,16 @@ function WhatYouGet() {
             Lovable.dev). Ship 4 deployed projects with live URLs.</p>
             <span className="tag">No prior AI experience needed</span>
           </StaggerItem>
-          <StaggerItem className="spotlight-card get-card get-card-featured glass-accent">
-            <span className="watermark">02</span>
-            <h3 className="get-week">WEEKS 5–12</h3>
-            <h4 className="get-title">Guaranteed Employer Internship</h4>
-            <p>Real projects at a vetted US company. Founder reference. GitHub
-            credits. Documented work experience. Placed within 2 weeks of
-            training completion — in writing.</p>
-            <span className="tag tag-gold">GUARANTEED OR FULL REFUND</span>
+          <StaggerItem className="get-card-wrapper">
+            <div className="spotlight-card get-card get-card-featured glass-accent">
+              <span className="watermark">02</span>
+              <h3 className="get-week">WEEKS 5–12</h3>
+              <h4 className="get-title">Guaranteed Employer Internship</h4>
+              <p>Real projects at a vetted US company. Founder reference. GitHub
+              credits. Documented work experience. Placed within 2 weeks of
+              training completion — in writing.</p>
+              <span className="tag tag-gold">GUARANTEED OR FULL REFUND</span>
+            </div>
           </StaggerItem>
           <StaggerItem className="spotlight-card get-card glass">
             <span className="watermark">03</span>
@@ -286,7 +543,7 @@ function WhatYouGet() {
   );
 }
 
-function Guarantee() {
+function Guarantee({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="section section-guarantee">
       <div className="guarantee-orbs" aria-hidden="true">
@@ -324,10 +581,10 @@ function Guarantee() {
             </div>
           </div>
           <div style={{ textAlign: 'center', marginTop: 'var(--space-12)' }}>
-            <a href={BOOK_URL} className="btn btn-gold shimmer"
+            <button type="button" onClick={onOpen} className="btn btn-gold shimmer"
               style={{ fontSize: '1rem', padding: '1rem 2rem' }}>
               Book Your Free Strategy Call
-            </a>
+            </button>
             <p style={{
               marginTop: 'var(--space-4)',
               fontSize: '0.8rem',
@@ -343,7 +600,7 @@ function Guarantee() {
   );
 }
 
-function WhoFor() {
+function WhoFor({ onOpen }: { onOpen: () => void }) {
   const items = [
     "You graduated in the last 2 years with a CS, STEM, or technical degree",
     "You've applied to AI/tech jobs and heard nothing back",
@@ -366,7 +623,7 @@ function WhoFor() {
         <RevealSection delay={0.5}>
           <p className="who-footer">
             Not sure if you qualify?{" "}
-            <a href={BOOK_URL} className="gold-link">Book a free 20-min call →</a>
+            <button type="button" onClick={onOpen} className="gold-link">Book a free 20-min call →</button>
           </p>
         </RevealSection>
       </div>
@@ -392,7 +649,7 @@ function ChecklistItem({ text }: { text: string }) {
   );
 }
 
-function Pricing() {
+function Pricing({ onOpen }: { onOpen: () => void }) {
   const tiers = [
     {
       name: "LAUNCH", price: "$2,997", monthly: "≈ $249/mo with Climb",
@@ -440,22 +697,19 @@ function Pricing() {
         </RevealSection>
         <StaggerContainer className="pricing-grid">
           {tiers.map((t) => (
-            <StaggerItem
-              key={t.name}
-              className={`spotlight-card pricing-card ${t.featured
-                ? "pricing-card-featured"
-                : "glass"}`}
-            >
-              {t.featured && <span className="popular-pill">MOST POPULAR</span>}
-              <h3 className="tier-name">{t.name}</h3>
-              <p className="tier-price">{t.price}</p>
-              <p className="tier-monthly">{t.monthly}</p>
-              <ul className="tier-bullets">
-                {t.bullets.map((b) => <li key={b}>{b}</li>)}
-              </ul>
-              <a href={BOOK_URL} className={`btn ${t.buttonClass} shimmer tier-cta`}>
-                {t.cta}
-              </a>
+            <StaggerItem key={t.name} className={t.featured ? "pricing-card-wrapper" : undefined}>
+              <div className={`spotlight-card pricing-card ${t.featured ? "pricing-card-featured" : "glass"}`}>
+                {t.featured && <span className="popular-pill">MOST POPULAR</span>}
+                <h3 className="tier-name">{t.name}</h3>
+                <p className="tier-price">{t.price}</p>
+                <p className="tier-monthly">{t.monthly}</p>
+                <ul className="tier-bullets">
+                  {t.bullets.map((b) => <li key={b}>{b}</li>)}
+                </ul>
+                <button type="button" onClick={onOpen} className={`btn ${t.buttonClass} shimmer tier-cta`}>
+                  {t.cta}
+                </button>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -536,7 +790,7 @@ function Faq() {
   );
 }
 
-function FinalCta() {
+function FinalCta({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="section section-final">
       <div className="final-orbs" aria-hidden="true">
@@ -557,13 +811,13 @@ function FinalCta() {
             20-minute call. No pressure. We'll tell you honestly if this is the right fit.
           </p>
           <div className="final-cta-wrap">
-            <a href={BOOK_URL} className="btn btn-gold shimmer" style={{
+            <button type="button" onClick={onOpen} className="btn btn-gold shimmer" style={{
               fontSize: '1.1rem',
               padding: '1.2rem 2.5rem',
               boxShadow: '0 0 40px rgba(255,183,27,0.3), 0 8px 32px rgba(0,0,0,0.4)',
             }}>
               Book Your Free Strategy Call
-            </a>
+            </button>
           </div>
           <p className="final-meta">
             Cohort A: Jul 6 · Cohort B: Aug 3 · Limited seats per cohort
@@ -574,29 +828,28 @@ function FinalCta() {
   );
 }
 
-function StickyMobileCta() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+function StickyMobileCta({ onOpen }: { onOpen: () => void }) {
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.5);
+    window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
   return (
     <AnimatePresence>
-      {mounted && scrolled && (
-        <motion.a
-          href={BOOK_URL}
+      {visible && (
+        <motion.button
+          type="button"
+          onClick={onOpen}
           className="mobile-cta"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.35, ease: EASE }}
+          transition={{ duration: 0.3 }}
         >
           Book Free Strategy Call
-        </motion.a>
+        </motion.button>
       )}
     </AnimatePresence>
   );
@@ -615,9 +868,10 @@ function IntroVideo() {
             Before you book a call, hear directly from the team
             why this program exists and what makes it different.
           </p>
-          <div className="video-player-wrap">
+          <div className="video-player-wrap" style={{ position: 'relative' }}>
             <video
               src="/videos/intro-claim-academy.mp4"
+              poster="/videos/intro-claim-academy-poster.png"
               controls
               playsInline
               preload="metadata"
@@ -627,6 +881,12 @@ function IntroVideo() {
             >
               Your browser does not support the video tag.
             </video>
+            <div className="video-play-overlay" aria-hidden="true">
+              <svg width="64" height="64" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)" />
+                <path d="M9 7l8 5-8 5V7z" fill="white" />
+              </svg>
+            </div>
           </div>
         </RevealSection>
       </div>
@@ -664,9 +924,10 @@ function TestimonialVideo() {
               </div>
             </div>
             <div className="testimonial-video-right">
-              <div className="video-player-wrap">
+              <div className="video-player-wrap" style={{ position: 'relative' }}>
                 <video
                   src="/videos/grad-testimonial.mp4"
+                  poster="/videos/grad-testimonial-poster.jpg"
                   controls
                   playsInline
                   preload="metadata"
@@ -676,6 +937,12 @@ function TestimonialVideo() {
                 >
                   Your browser does not support the video tag.
                 </video>
+                <div className="video-play-overlay" aria-hidden="true">
+                  <svg width="64" height="64" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)" />
+                    <path d="M9 7l8 5-8 5V7z" fill="white" />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -739,7 +1006,7 @@ const pageCss = `
 .eyebrow {
   display:inline-block;
   font-family:'Space Grotesk Variable',sans-serif; font-weight:600;
-  font-size:0.75rem; letter-spacing:0.15em; color:var(--accent-gold);
+  font-size:0.8rem; letter-spacing:0.15em; color:var(--accent-gold);
   padding:0.5rem 1rem; border-radius:999px;
   background:rgba(255,183,27,0.08); border:1px solid rgba(255,183,27,0.25);
   margin-bottom:var(--space-8);
@@ -830,23 +1097,24 @@ const pageCss = `
 .paradox-card{position:relative;padding:var(--space-8);border-radius:16px;border-left:4px solid var(--accent-gold);background:rgba(255,183,27,0.03);overflow:hidden;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),border-color 0.3s;}
 .paradox-card:hover{transform:translateY(-4px);background:rgba(255,183,27,0.05);}
 .paradox-card p{font-family:'Space Grotesk Variable',sans-serif;font-weight:600;font-size:var(--text-lg);line-height:1.4;color:var(--text-primary);margin:0;}
-.card-num{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.15em;color:var(--accent-gold);display:block;margin-bottom:var(--space-4);}
+.card-num{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.15em;color:var(--accent-gold);display:block;margin-bottom:var(--space-4);}
 .pivot{text-align:center;max-width:680px;margin:0 auto;padding-top:var(--space-8);}
 .pivot p{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:var(--text-2xl);color:var(--text-primary);margin:0 0 var(--space-6);line-height:1.3;letter-spacing:-0.02em;}
 .pivot-underline-wrap{display:block;height:3px;max-width:280px;margin:0 auto;background:rgba(255,183,27,0.15);border-radius:2px;overflow:hidden;}
 .pivot-underline{display:block;height:100%;background:linear-gradient(90deg,var(--accent-gold),#FFD56B);border-radius:2px;}
 .get-grid{display:grid;gap:var(--space-6);grid-template-columns:repeat(3,1fr);align-items:stretch;}
+.get-card-wrapper{display:contents;}
 @media(max-width:1024px){.get-grid{grid-template-columns:1fr;}}
 .get-card{position:relative;padding:var(--space-8);border-radius:20px;overflow:hidden;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
 .get-card-featured{border:1px solid rgba(96,40,137,0.6);box-shadow:0 0 80px rgba(96,40,137,0.30),0 0 0 1px rgba(96,40,137,0.20),inset 0 1px 0 rgba(255,255,255,0.08);transform:translateY(-8px);background:rgba(96,40,137,0.10);}
 .watermark{position:absolute;top:-1rem;right:0.5rem;font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:8rem;line-height:1;color:var(--accent-gold);opacity:0.12;pointer-events:none;user-select:none;}
-.get-week{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.15em;color:var(--accent-gold);margin:0 0 var(--space-2);}
+.get-week{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.15em;color:var(--accent-gold);margin:0 0 var(--space-2);}
 .get-title{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:var(--text-xl);margin:0 0 var(--space-4);color:var(--text-primary);letter-spacing:-0.02em;}
 .get-card p{color:var(--text-secondary);font-size:var(--text-base);line-height:1.6;margin:0 0 var(--space-6);}
-.tag{display:inline-block;padding:0.4rem 0.8rem;font-size:0.7rem;letter-spacing:0.1em;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-secondary);border-radius:999px;border:1px solid var(--border-subtle);}
+.tag{display:inline-block;padding:0.4rem 0.8rem;font-size:0.8rem;letter-spacing:0.1em;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-secondary);border-radius:999px;border:1px solid var(--border-subtle);}
 .tag-gold{background:rgba(255,183,27,0.12);color:var(--accent-gold);border-color:rgba(255,183,27,0.3);}
 .section-guarantee{position:relative;overflow:hidden;background:radial-gradient(ellipse at center,#371454 0%,#2A1340 60%,#1A0828 100%);}
-.guarantee-eyebrow{display:block;width:fit-content;margin:0 auto var(--space-6);font-family:'Space Grotesk Variable',sans-serif;font-weight:600;font-size:0.7rem;letter-spacing:0.18em;color:rgba(255,255,255,0.7);padding:0.4rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,0.2);text-align:center;}
+.guarantee-eyebrow{display:block;width:fit-content;margin:0 auto var(--space-6);font-family:'Space Grotesk Variable',sans-serif;font-weight:600;font-size:0.8rem;letter-spacing:0.18em;color:rgba(255,255,255,0.7);padding:0.4rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,0.2);text-align:center;}
 .guarantee-orbs{position:absolute;inset:0;pointer-events:none;}
 .guarantee-orb-1{top:-30%;left:10%;width:60vw;height:60vw;opacity:0.4;}
 .guarantee-orb-2{bottom:-30%;right:10%;width:50vw;height:50vw;opacity:0.3;}
@@ -858,16 +1126,17 @@ const pageCss = `
 .checklist-item{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-6);background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:12px;font-size:var(--text-base);color:var(--text-primary);line-height:1.5;}
 .check{flex-shrink:0;width:24px;height:24px;color:var(--accent-gold);}
 .who-footer{text-align:center;color:var(--text-secondary);font-size:var(--text-base);}
-.gold-link{color:var(--accent-gold);text-decoration:none;font-weight:600;}
+.gold-link{color:var(--accent-gold);text-decoration:none;font-weight:600;display:inline-block;padding:0.5rem 0;}
 .gold-link:hover{text-decoration:underline;}
 .pricing-grid{display:grid;gap:var(--space-6);grid-template-columns:repeat(3,1fr);margin-bottom:var(--space-8);align-items:stretch;}
+.pricing-card-wrapper{display:contents;}
 @media(max-width:1024px){.pricing-grid{grid-template-columns:1fr;}}
 .pricing-card{position:relative;padding:var(--space-8);border-radius:20px;display:flex;flex-direction:column;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
 .pricing-card-featured{border:1px solid rgba(255,255,255,0.20);box-shadow:0 0 0 1px rgba(255,183,27,0.15),0 0 80px rgba(255,183,27,0.12),0 0 40px rgba(96,40,137,0.20),inset 0 1px 0 rgba(255,255,255,0.10);transform:translateY(-12px) scale(1.02);background:rgba(255,255,255,0.05);z-index:1;position:relative;}
-.popular-pill{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--accent-gold);color:#000;font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.7rem;letter-spacing:0.15em;padding:0.35rem 1.1rem;border-radius:999px;white-space:nowrap;width:auto;max-width:160px;box-shadow:0 4px 20px rgba(255,183,27,0.5),0 0 0 3px rgba(255,183,27,0.15);}
-.tier-name{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.15em;color:var(--text-secondary);margin:0 0 var(--space-4);}
+.popular-pill{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--accent-gold);color:#000;font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.15em;padding:0.35rem 1.1rem;border-radius:999px;white-space:nowrap;width:auto;max-width:160px;box-shadow:0 4px 20px rgba(255,183,27,0.5),0 0 0 3px rgba(255,183,27,0.15);}
+.tier-name{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.15em;color:var(--text-secondary);margin:0 0 var(--space-4);}
 .tier-price{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:var(--text-3xl);color:var(--accent-gold);margin:0 0 var(--space-2);line-height:1;letter-spacing:-0.02em;}
-.tier-monthly{font-size:0.8rem;color:var(--text-tertiary);margin:0 0 var(--space-6);letter-spacing:0.02em;}
+.tier-monthly{font-size:0.85rem;color:var(--text-tertiary);margin:0 0 var(--space-6);letter-spacing:0.02em;}
 .tier-bullets{list-style:none;padding:0;margin:0 0 var(--space-8);display:flex;flex-direction:column;gap:var(--space-3);flex:1;}
 .tier-bullets li{color:var(--text-secondary);font-size:0.95rem;line-height:1.5;padding-left:1.5rem;position:relative;}
 .tier-bullets li::before{content:'✓';position:absolute;left:0;color:var(--accent-gold);font-weight:700;}
@@ -904,13 +1173,18 @@ const pageCss = `
   .stats-row{gap:var(--space-4);}
   .stats-row .stat+.stat::before{display:none;}
   .pivot p{font-size:var(--text-xl);line-height:1.4;}
+  .hero-ctas{flex-direction:column;width:100%;}
+  .hero-ctas .btn{width:100%;text-align:center;}
 }
 .section-intro-video{background:var(--bg-elevated);text-align:center;padding:clamp(3rem,6vw,6rem) var(--section-padding-x);}
-.intro-video-label{font-family:'Space Grotesk Variable',sans-serif;font-weight:600;font-size:0.7rem;letter-spacing:0.18em;color:var(--accent-gold);margin-bottom:var(--space-4);}
+.intro-video-label{font-family:'Space Grotesk Variable',sans-serif;font-weight:600;font-size:0.8rem;letter-spacing:0.18em;color:var(--accent-gold);margin-bottom:var(--space-4);}
 .intro-video-headline{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:var(--text-2xl);line-height:1.2;letter-spacing:-0.02em;color:var(--text-primary);max-width:600px;margin:0 auto var(--space-4);}
 .intro-video-sub{font-size:var(--text-base);color:var(--text-secondary);max-width:520px;margin:0 auto var(--space-8);line-height:1.6;}
 .video-player-wrap{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 32px 80px rgba(0,0,0,0.6),0 0 60px rgba(96,40,137,0.15);background:#000;max-width:800px;margin:0 auto;}
 .video-player{width:100%;aspect-ratio:16/9;display:block;border-radius:16px;}
+.video-play-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0.9;transition:opacity 0.2s,transform 0.2s;}
+.video-player-wrap:hover .video-play-overlay{opacity:1;transform:translate(-50%,-50%) scale(1.05);}
+.video-player::-webkit-media-controls-panel,.video-player[controls]:focus~.video-play-overlay{display:none;opacity:0;}
 .section-testimonial-video{background:var(--bg-base);padding:clamp(3rem,6vw,6rem) var(--section-padding-x);}
 .testimonial-video-inner{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12);align-items:center;}
 @media(max-width:1024px){
@@ -923,4 +1197,39 @@ const pageCss = `
 .testimonial-quote{font-size:var(--text-lg);color:var(--text-primary);line-height:1.6;font-style:italic;margin:0 0 var(--space-4);}
 .testimonial-attr{font-size:var(--text-sm);color:var(--accent-gold);font-weight:600;font-family:'Space Grotesk Variable',sans-serif;letter-spacing:0.05em;}
 @media(min-width:769px){.mobile-cta{display:none !important;}}
+.modal-backdrop{position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:var(--space-4);overflow-y:auto;}
+.modal-panel{background:#ffffff;border-radius:20px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.5);}
+.modal-header{padding:var(--space-8) var(--space-8) var(--space-4);border-bottom:1px solid rgba(0,0,0,0.06);}
+.modal-title{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:1.5rem;color:#111827;margin:0 0 var(--space-2);letter-spacing:-0.02em;line-height:1.2;}
+.modal-subtitle{font-size:0.875rem;color:#6B7280;margin:0;}
+.modal-body{padding:var(--space-6) var(--space-8);}
+.modal-footer{padding:var(--space-4) var(--space-8) var(--space-8);border-top:1px solid rgba(0,0,0,0.06);}
+.modal-close{position:absolute;top:var(--space-4);right:var(--space-4);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.06);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#374151;transition:background 0.2s;}
+.modal-close:hover{background:rgba(0,0,0,0.12);}
+.form-group-label{font-family:'Space Grotesk Variable',sans-serif;font-weight:600;font-size:0.7rem;letter-spacing:0.15em;color:#6B7280;margin-bottom:var(--space-4);text-transform:uppercase;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4);}
+.form-field{display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4);}
+.field-label{font-size:0.875rem;font-weight:500;color:#374151;}
+.field-input{padding:0.65rem 0.875rem;border:1.5px solid #E5E7EB;border-radius:8px;font-size:0.95rem;color:#111827;background:#fff;outline:none;transition:border-color 0.2s,box-shadow 0.2s;font-family:'Inter Variable',sans-serif;width:100%;}
+.field-input:focus{border-color:#602889;box-shadow:0 0 0 3px rgba(96,40,137,0.1);}
+.field-input::placeholder{color:#9CA3AF;}
+.pill-group{display:flex;flex-wrap:wrap;gap:var(--space-2);}
+.pill-btn{padding:0.45rem 1rem;border:1.5px solid #E5E7EB;border-radius:999px;background:#fff;color:#374151;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:'Inter Variable',sans-serif;transition:border-color 0.15s,background 0.15s,color 0.15s;white-space:nowrap;}
+.pill-btn:hover{border-color:#602889;color:#602889;}
+.pill-btn.active{background:#602889;border-color:#602889;color:#fff;font-weight:600;}
+.modal-submit{width:100%;justify-content:center;font-size:1rem;padding:0.95rem 1.75rem;}
+.modal-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none !important;}
+.modal-error{text-align:center;color:#DC2626;font-size:0.875rem;margin-top:var(--space-4);}
+.modal-success{padding:var(--space-12) var(--space-8);text-align:center;}
+.modal-success-icon{width:64px;height:64px;border-radius:50%;background:rgba(0,208,132,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-6);color:#00D084;}
+.modal-success h3{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:1.5rem;color:#111827;margin:0 0 var(--space-3);letter-spacing:-0.02em;}
+.modal-success p{color:#6B7280;font-size:0.95rem;line-height:1.6;margin:0;}
+@media(max-width:640px){
+  .modal-backdrop{align-items:flex-end;padding:0;}
+  .modal-panel{border-radius:20px 20px 0 0;max-height:92vh;width:100%;}
+  .form-row{grid-template-columns:1fr;}
+  .modal-header{padding:var(--space-6) var(--space-6) var(--space-3);}
+  .modal-body{padding:var(--space-4) var(--space-6);}
+  .modal-footer{padding:var(--space-3) var(--space-6) calc(var(--space-6) + env(safe-area-inset-bottom));}
+}
 `;
