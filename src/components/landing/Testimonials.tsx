@@ -60,7 +60,7 @@ export function Testimonials() {
               marginTop: "12px",
             }}
           >
-            Over 3,800 careers changed since 2013
+            Over 4,000 careers changed since 2013
           </p>
         </div>
 
@@ -278,7 +278,7 @@ export function Testimonials() {
             }}
           >
             {[
-              { value: 3800, suffix: "+", label: "Graduates" },
+              { value: 4000, suffix: "+", label: "Graduates" },
               { value: 87, suffix: "%", label: "Placement rate" },
               { value: 81310, prefix: "$", label: "Avg salary" },
               { value: 11, suffix: " yrs", label: "Operating" },
@@ -359,11 +359,11 @@ export function Testimonials() {
                     borderRadius: "100px",
                   }}
                 >
-                  $0 to start
+                  Your investment. Your terms.
                 </span>
               </div>
 
-              {/* Hook — $0 upfront dominates */}
+              {/* Hook */}
               <div>
                 <p
                   style={{
@@ -376,7 +376,7 @@ export function Testimonials() {
                     margin: 0,
                   }}
                 >
-                  $0 upfront.
+                  Your future shouldn't wait on your finances.
                 </p>
                 <p
                   style={{
@@ -389,7 +389,7 @@ export function Testimonials() {
                     marginTop: "8px",
                   }}
                 >
-                  8 flexible ways to pay.
+                  8 flexible ways to pay — because you're ready.
                 </p>
               </div>
 
@@ -403,7 +403,7 @@ export function Testimonials() {
                   margin: 0,
                 }}
               >
-                From $249/mo with Climb Credit · Employer reimbursement up to $5,250 · ISA available · 30-day money-back guarantee
+                From $249/mo with Climb Credit · Employer reimbursement up to $5,250 · 30-day money-back guarantee
               </p>
 
               {/* CTA */}

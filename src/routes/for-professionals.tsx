@@ -26,14 +26,6 @@ export const Route = createFileRoute("/for-professionals")({
         content: "12 weeks to real AI experience. Your employer may cover up to $5,250. Guaranteed placement or full refund.",
       },
     ],
-    scripts: [
-      {
-        children: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1407484639676240');fbq('track','PageView');`,
-      },
-    ],
-    links: [
-      { rel: 'preconnect', href: 'https://connect.facebook.net' },
-    ],
   }),
   component: ForProfessionalsPage,
 });
@@ -195,7 +187,7 @@ function ProsModal({ isOpen, onClose }: ProsModalProps) {
               <div className="form-field">
                 <label className="field-label">How did you hear about us?</label>
                 <div className="pill-group">
-                  {['LinkedIn', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
+                  {['Facebook', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
                     <button key={opt} type="button"
                       className={`pill-btn ${source === opt ? 'active' : ''}`}
                       onClick={() => setSource(opt)}>{opt}</button>
@@ -350,7 +342,7 @@ function HeroPros({ onOpen }: { onOpen: () => void }) {
           </div>
           <div className="pros-stat-divider" />
           <div className="pros-stat">
-            <span className="pros-stat-num"><CounterStat target={3800} suffix="+" duration={1.4} /></span>
+            <span className="pros-stat-num"><CounterStat target={4000} suffix="+" duration={1.4} /></span>
             <span className="pros-stat-label">GRADUATES</span>
           </div>
           <div className="pros-stat-divider" />
@@ -664,11 +656,10 @@ function PricingPros({ onOpen }: { onOpen: () => void }) {
           <AnimatedHeadline
             as="h2"
             className="pros-section-headline"
-            text="Investment — Starting With Whether Your Employer Covers It."
+            text="Built for people who are ready — not just people who are ready to pay."
           />
           <div className="pros-reimb-callout">
-            Many professionals attend at $0 personal cost through employer reimbursement.
-            Ask us about it on your free call.
+            8 flexible payment options starting at $249/mo · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </div>
         </RevealSection>
         <StaggerContainer className="pros-pricing-grid">
@@ -699,7 +690,7 @@ function PricingPros({ onOpen }: { onOpen: () => void }) {
         </StaggerContainer>
         <RevealSection delay={0.3}>
           <p className="pros-pricing-footer">
-            From $249/month with Climb Credit · Employer reimbursement available · 30-day money-back guarantee · 8 ways to pay
+            8 flexible payment options starting at $249/mo · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </p>
         </RevealSection>
       </div>

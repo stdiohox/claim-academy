@@ -26,14 +26,6 @@ export const Route = createFileRoute("/for-grads")({
         content: "12 weeks to real employer experience and an AI portfolio. Guaranteed placement or full refund.",
       },
     ],
-    scripts: [
-      {
-        children: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1407484639676240');fbq('track','PageView');`,
-      },
-    ],
-    links: [
-      { rel: 'preconnect', href: 'https://connect.facebook.net' },
-    ],
   }),
   component: ForGradsPage,
 });
@@ -246,7 +238,7 @@ function LeadModal({ isOpen, onClose }: LeadModalProps) {
               <div className="form-field">
                 <label className="field-label">How did you hear about us?</label>
                 <div className="pill-group">
-                  {['LinkedIn', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
+                  {['Facebook', 'Webinar', 'Google', 'Referral', 'Other'].map((opt) => (
                     <button
                       key={opt}
                       type="button"
@@ -389,7 +381,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.75, ease: EASE }}
         >
-          Cohort A starts Jul 6 · Limited to 20 seats per cohort
+          Cohort A starts Jul 20 · Limited to 20 seats per cohort
         </motion.p>
         <motion.div
           className="stats-row"
@@ -400,10 +392,10 @@ function Hero({ onOpen }: { onOpen: () => void }) {
             visible: { transition: { staggerChildren: 0.06, delayChildren: 0.8 } },
           }}
         >
-          <Stat target={3800} suffix="+" label="GRADUATES" />
+          <Stat target={4000} suffix="+" label="GRADUATES" />
           <Stat target={87} suffix="%" label="PLACEMENT RATE" />
           <Stat target={11} suffix="" label="YRS OPERATING" />
-          <Stat target={200} suffix="+" label="EMPLOYER PARTNERS" />
+          <Stat target={600} suffix="+" label="EMPLOYER PARTNERS" />
         </motion.div>
         <motion.div
           className="scroll-indicator"
@@ -690,9 +682,9 @@ function Pricing({ onOpen }: { onOpen: () => void }) {
       <div className="container">
         <RevealSection>
           <AnimatedHeadline as="h2" className="section-headline"
-            text="Investment — How Most Grads Pay $0 Upfront" />
+            text="Don't let money be the reason you don't start." />
           <p className="section-subhead">
-            From $249/month with Climb Credit. No payments during the program.
+            From $249/month with Climb Credit · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </p>
         </RevealSection>
         <StaggerContainer className="pricing-grid">
@@ -715,7 +707,7 @@ function Pricing({ onOpen }: { onOpen: () => void }) {
         </StaggerContainer>
         <RevealSection delay={0.3}>
           <p className="pricing-footer">
-            30-day money-back guarantee on all tiers · 8 ways to pay including $0 upfront
+            30-day money-back guarantee on all tiers · 8 flexible ways to pay · Employer reimbursement up to $5,250
           </p>
         </RevealSection>
       </div>
@@ -806,7 +798,7 @@ function FinalCta({ onOpen }: { onOpen: () => void }) {
       <div className="container container-narrow">
         <RevealSection>
           <AnimatedHeadline as="h2" className="section-headline final-headline"
-            text="Your Employer Is Already Waiting. Your Cohort Starts Jul 6." />
+            text="Your Employer Is Already Waiting. Your Cohort Starts Jul 20." />
           <p className="final-sub">
             20-minute call. No pressure. We'll tell you honestly if this is the right fit.
           </p>
@@ -820,7 +812,7 @@ function FinalCta({ onOpen }: { onOpen: () => void }) {
             </button>
           </div>
           <p className="final-meta">
-            Cohort A: Jul 6 · Cohort B: Aug 3 · Limited seats per cohort
+            Cohort A: Jul 20 · Cohort B: Aug 3 · Limited seats per cohort
           </p>
         </RevealSection>
       </div>

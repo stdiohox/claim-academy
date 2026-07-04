@@ -5,7 +5,7 @@ import {
   createRootRoute,
   useRouter,
 } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 const queryClient = new QueryClient();
@@ -71,12 +71,50 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRoute({
+  head: () => ({
+    scripts: [
+      {
+        children: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1407484639676240');`,
+      },
+    ],
+    links: [
+      { rel: 'preconnect', href: 'https://connect.facebook.net' },
+    ],
+  }),
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
+function useMetaPixelPageView() {
+  const router = useRouter();
+  const lastPath = useRef<string | null>(null);
+
+  useEffect(() => {
+    // Fire PageView on the initial load for the first route rendered.
+    const firePageView = (pathname: string) => {
+      if (pathname === lastPath.current) return;
+      lastPath.current = pathname;
+      const fbq = (window as any).fbq;
+      if (typeof fbq === 'function') {
+        fbq('track', 'PageView');
+      }
+    };
+
+    // Fire for the current location immediately (covers direct loads).
+    firePageView(router.state.location.pathname);
+
+    // Subscribe to future navigations — fires after each resolved route change.
+    const unsub = router.subscribe('onResolved', ({ toLocation }) => {
+      firePageView(toLocation.pathname);
+    });
+
+    return unsub;
+  }, [router]);
+}
+
 function RootComponent() {
+  useMetaPixelPageView();
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />

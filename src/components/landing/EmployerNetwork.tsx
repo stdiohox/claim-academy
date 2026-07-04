@@ -58,7 +58,7 @@ export function EmployerNetwork() {
               lineHeight: 1.1,
             }}
           >
-            200+ employer partners.<br />
+            600+ employer partners.<br />
             <span style={{ color: "#CCCCCC" }}>Built over 11 years.</span>
           </h2>
           <p

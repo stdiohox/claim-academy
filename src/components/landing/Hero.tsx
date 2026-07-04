@@ -285,7 +285,7 @@ export function Hero() {
                 marginTop: "10px",
                 letterSpacing: "0.03em",
               }}>
-                Next cohort: Jul 6 · Limited seats
+                Next cohort: Jul 20 · Limited seats
               </p>
             </div>
           </motion.div>

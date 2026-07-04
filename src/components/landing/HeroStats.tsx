@@ -5,7 +5,7 @@ const STATS = [
     label: "Rating from graduates",
   },
   {
-    value: "3,800+",
+    value: "4,000+",
     stars: false,
     label: "Careers changed since 2013",
   },
@@ -15,7 +15,7 @@ const STATS = [
     label: "Employer placement rate",
   },
   {
-    value: "200+",
+    value: "600+",
     stars: false,
     label: "Employer partners",
   },

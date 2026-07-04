@@ -206,7 +206,7 @@ export function Pricing() {
               borderRadius: "100px",
             }}
           >
-            $0 to start
+            Flexible financing
           </span>
 
           {/* Hook — high contrast on light bg */}
@@ -221,7 +221,7 @@ export function Pricing() {
               margin: 0,
             }}
           >
-            $0 out-of-pocket.
+            Don't let money be the reason you don't start.
           </p>
 
           {/* Supporting line */}
@@ -234,7 +234,7 @@ export function Pricing() {
               lineHeight: 1.5,
             }}
           >
-            8 flexible ways to pay — Climb Credit, ISA, employer reimbursement &amp; more.
+            From $249/mo with Climb Credit · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </p>
 
           {/* CTA */}

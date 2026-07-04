@@ -26,7 +26,7 @@ const FAQS = [
   },
   {
     q: "When does the next cohort start?",
-    a: "Summer 2026 runs two cohorts. Cohort A (CS graduates): training July 6 – August 1, 10 AM ET. Cohort B (working professionals): training August 3 – 28, 7 PM ET. All sessions are recorded.",
+    a: "Summer 2026 runs two cohorts. Cohort A (CS graduates): training July 20 – August 17, 10 AM ET. Cohort B (working professionals): training August 3 – 28, 7 PM ET. All sessions are recorded.",
     tag: "Schedule",
   },
   {

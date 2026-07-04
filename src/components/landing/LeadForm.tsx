@@ -11,7 +11,7 @@ const schema = z.object({
   phone: z.string().trim().regex(/^[+\d][\d\s()-]{9,}$/, "Enter a valid phone number"),
   background: z.enum(["recent_grad", "working_professional", "career_switcher", "other"], { message: "Select an option" }),
   track: z.enum(["engineering", "builders", "unsure"], { message: "Select an option" }),
-  source: z.enum(["linkedin", "webinar", "google", "referral", "other"], { message: "Select an option" }),
+  source: z.enum(["facebook", "webinar", "google", "referral", "other"], { message: "Select an option" }),
 });
 
 const WEBHOOK_URL = import.meta.env.VITE_WEBHOOK_URL as string;
@@ -233,7 +233,7 @@ export function LeadForm() {
                     <input type="hidden" name="source" value={sourceVal} />
                     <ChipGroup
                       options={[
-                        { value: "linkedin", label: "LinkedIn" },
+                        { value: "facebook", label: "Facebook" },
                         { value: "webinar", label: "Webinar" },
                         { value: "google", label: "Google" },
                         { value: "referral", label: "Referral" },

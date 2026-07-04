@@ -78,7 +78,7 @@ export function StickyCtaBar() {
           minWidth: 0,
         }}
       >
-        Next cohort: <span style={{ color: "#FFB71B" }}>Jul 6</span> · Limited seats
+        Next cohort: <span style={{ color: "#FFB71B" }}>Jul 20</span> · Limited seats
       </p>
       <a
         href="#lead-form"
