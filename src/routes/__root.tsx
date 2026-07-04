@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
+  HeadContent,
   createRootRoute,
   useRouter,
 } from "@tanstack/react-router";
@@ -117,6 +118,7 @@ function RootComponent() {
   useMetaPixelPageView();
   return (
     <QueryClientProvider client={queryClient}>
+      <HeadContent />
       <Outlet />
     </QueryClientProvider>
   );
