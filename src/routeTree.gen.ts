@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ModalTestRouteImport } from './routes/modal-test'
 import { Route as ForProfessionalsRouteImport } from './routes/for-professionals'
 import { Route as ForGradsRouteImport } from './routes/for-grads'
+import { Route as EnrollmentAgreementRouteImport } from './routes/enrollment-agreement'
+import { Route as EmployersRouteImport } from './routes/employers'
 import { Route as BareTestRouteImport } from './routes/bare-test'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -30,6 +32,16 @@ const ForGradsRoute = ForGradsRouteImport.update({
   path: '/for-grads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnrollmentAgreementRoute = EnrollmentAgreementRouteImport.update({
+  id: '/enrollment-agreement',
+  path: '/enrollment-agreement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmployersRoute = EmployersRouteImport.update({
+  id: '/employers',
+  path: '/employers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BareTestRoute = BareTestRouteImport.update({
   id: '/bare-test',
   path: '/bare-test',
@@ -44,6 +56,8 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bare-test': typeof BareTestRoute
+  '/employers': typeof EmployersRoute
+  '/enrollment-agreement': typeof EnrollmentAgreementRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
@@ -51,6 +65,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bare-test': typeof BareTestRoute
+  '/employers': typeof EmployersRoute
+  '/enrollment-agreement': typeof EnrollmentAgreementRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
@@ -59,6 +75,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/bare-test': typeof BareTestRoute
+  '/employers': typeof EmployersRoute
+  '/enrollment-agreement': typeof EnrollmentAgreementRoute
   '/for-grads': typeof ForGradsRoute
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
@@ -68,15 +86,26 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/bare-test'
+    | '/employers'
+    | '/enrollment-agreement'
     | '/for-grads'
     | '/for-professionals'
     | '/modal-test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bare-test' | '/for-grads' | '/for-professionals' | '/modal-test'
+  to:
+    | '/'
+    | '/bare-test'
+    | '/employers'
+    | '/enrollment-agreement'
+    | '/for-grads'
+    | '/for-professionals'
+    | '/modal-test'
   id:
     | '__root__'
     | '/'
     | '/bare-test'
+    | '/employers'
+    | '/enrollment-agreement'
     | '/for-grads'
     | '/for-professionals'
     | '/modal-test'
@@ -85,6 +114,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BareTestRoute: typeof BareTestRoute
+  EmployersRoute: typeof EmployersRoute
+  EnrollmentAgreementRoute: typeof EnrollmentAgreementRoute
   ForGradsRoute: typeof ForGradsRoute
   ForProfessionalsRoute: typeof ForProfessionalsRoute
   ModalTestRoute: typeof ModalTestRoute
@@ -113,6 +144,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForGradsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/enrollment-agreement': {
+      id: '/enrollment-agreement'
+      path: '/enrollment-agreement'
+      fullPath: '/enrollment-agreement'
+      preLoaderRoute: typeof EnrollmentAgreementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/employers': {
+      id: '/employers'
+      path: '/employers'
+      fullPath: '/employers'
+      preLoaderRoute: typeof EmployersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bare-test': {
       id: '/bare-test'
       path: '/bare-test'
@@ -133,6 +178,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BareTestRoute: BareTestRoute,
+  EmployersRoute: EmployersRoute,
+  EnrollmentAgreementRoute: EnrollmentAgreementRoute,
   ForGradsRoute: ForGradsRoute,
   ForProfessionalsRoute: ForProfessionalsRoute,
   ModalTestRoute: ModalTestRoute,

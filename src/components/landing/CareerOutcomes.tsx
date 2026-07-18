@@ -12,7 +12,7 @@ const ROLES = [
       "Design retrieval-augmented (RAG) systems over company data",
       "Ship LLM-powered apps with FastAPI and Supabase",
     ],
-    salary: "~$70,000–$100,000 / year",
+    salary: "~$70,000 to $100,000 / year",
   },
   {
     title: "AI Automation Specialist",
@@ -23,7 +23,7 @@ const ROLES = [
       "Build AI agents that handle repetitive operations",
       "Eliminate manual bottlenecks across business tools",
     ],
-    salary: "~$57,000–$98,000 / year",
+    salary: "~$57,000 to $98,000 / year",
   },
   {
     title: "AI Solutions Engineer",
@@ -34,7 +34,7 @@ const ROLES = [
       "Tune prompts and pipelines for production reliability",
       "Bridge business needs and AI implementation",
     ],
-    salary: "~$84,000–$120,000 / year",
+    salary: "~$84,000 to $120,000 / year",
   },
 ];
 

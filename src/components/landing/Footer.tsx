@@ -4,6 +4,7 @@ const QUICK_LINKS = [
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#lead-form" },
   { label: "Visit Claim Academy →", href: "https://claimacademy.org", target: "_blank", rel: "noopener noreferrer" },
+  { label: "Enrollment Agreement", href: "/enrollment-agreement" },
 ];
 
 const PROGRAM_LINKS = [
@@ -14,7 +15,7 @@ const PROGRAM_LINKS = [
 ];
 
 const CONTACT_LINKS = [
-  { label: "hello@claimacademy.org", href: "mailto:hello@claimacademy.org" },
+  { label: "info@claimaiinternship.com", href: "mailto:info@claimaiinternship.com" },
   { label: "claimaiinternship.com", href: "https://claimaiinternship.com", target: "_blank", rel: "noopener noreferrer" },
   { label: "314.499.5888", href: "tel:3144995888" },
 ];
@@ -144,21 +145,25 @@ export function Footer() {
           }}>
             © 2026 Claim Academy. All rights reserved.
           </p>
-          <div style={{ display: "flex", gap: "24px" }}>
-            {["Privacy Policy", "Terms of Service"].map((label) => (
+          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", justifyContent: "center" }}>
+            {[
+              { label: "Enrollment Agreement", href: "/enrollment-agreement" },
+              { label: "Privacy Policy", href: "#" },
+              { label: "Terms of Service", href: "#" },
+            ].map(({ label, href }) => (
               <a
                 key={label}
-                href="#"
+                href={href}
                 style={{
                   fontFamily: "var(--font-body)",
                   fontWeight: 400,
                   fontSize: "12px",
-                  color: "rgba(255,255,255,0.25)",
-                  textDecoration: "none",
+                  color: "rgba(255,255,255,0.55)",
+                  textDecoration: "underline",
                   transition: "color 150ms",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#FFB71B")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
               >
                 {label}
               </a>

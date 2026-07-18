@@ -7,7 +7,7 @@ const PHASES = [
     number: "01",
     label: "PHASE ONE",
     title: "Live AI Bootcamp",
-    date: "Jul 6 – Aug 1, 2026 · Cohort A",
+    date: "Jul 20 – Aug 17, 2026 · Cohort A",
     body: "Three live sessions per week, 60 minutes each. All recordings included. Two tracks run simultaneously — choose the one that fits your background.",
     tracks: [
       { name: "Engineering Track", detail: "Claude API · LangGraph · RAG Systems · FastAPI · Supabase" },
@@ -33,7 +33,7 @@ const PHASES = [
     date: "Lifetime · Included in all tiers",
     body: "Your support doesn't end at graduation. Every student gets a full career toolkit to land the role.",
     bullets: [
-      "CV + LinkedIn profile rewrite by AI",
+      "Resume + LinkedIn profile rewritten by AI",
       "3 AI-simulated mock interviews",
       "Personalized job search strategy",
       "Salary negotiation coaching",

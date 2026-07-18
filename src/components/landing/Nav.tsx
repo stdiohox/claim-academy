@@ -32,6 +32,10 @@ export function Nav() {
             How It Works
             <span className="absolute left-0 -bottom-0.5 h-px w-0 bg-white transition-all duration-200 group-hover:w-full" />
           </a>
+          <a href="/employers" className="relative text-white/80 hover:text-white text-sm font-medium group transition-colors">
+            For Employers
+            <span className="absolute left-0 -bottom-0.5 h-px w-0 bg-white transition-all duration-200 group-hover:w-full" />
+          </a>
           <a href="#pricing" className="relative text-white/80 hover:text-white text-sm font-medium group transition-colors">
             Pricing
             <span className="absolute left-0 -bottom-0.5 h-px w-0 bg-white transition-all duration-200 group-hover:w-full" />
@@ -89,6 +93,13 @@ export function Nav() {
             className="py-3 text-white/80 hover:text-white text-sm font-medium border-b border-white/10 transition-colors"
           >
             How It Works
+          </a>
+          <a
+            href="/employers"
+            onClick={() => setMenuOpen(false)}
+            className="py-3 text-white/80 hover:text-white text-sm font-medium border-b border-white/10 transition-colors"
+          >
+            For Employers
           </a>
           <a
             href="#pricing"

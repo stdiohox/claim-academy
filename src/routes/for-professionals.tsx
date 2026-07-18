@@ -10,6 +10,7 @@ import {
   StaggerItem,
   initSpotlight,
 } from "@/lib/motion";
+import { CALENDLY_URL } from "@/lib/booking";
 import "@fontsource-variable/fraunces";
 
 export const Route = createFileRoute("/for-professionals")({
@@ -128,8 +129,36 @@ function ProsModal({ isOpen, onClose }: ProsModalProps) {
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h3>Thanks — you're all set.</h3>
-            <p>Our admissions team will reach out shortly to confirm next steps. Keep an eye on your inbox.</p>
+            <h3>You're in — one more step!</h3>
+            <p>Book your free discovery call now while we review your application.</p>
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                marginTop: "24px",
+                backgroundColor: "#602889",
+                color: "#FFFFFF",
+                fontWeight: 700,
+                fontSize: "18px",
+                padding: "16px 32px",
+                borderRadius: "8px",
+                textDecoration: "none",
+              }}
+            >
+              BOOK MY DISCOVERY CALL
+            </a>
+            <p style={{ marginTop: "16px", fontSize: "13px", color: "#6B7280" }}>
+              Prefer we reach out? We'll call you within 24 hours.
+            </p>
+            <p style={{ marginTop: "8px", fontSize: "12px", color: "#6B7280" }}>
+              By proceeding you agree to our{" "}
+              <a href="/enrollment-agreement" style={{ color: "inherit", textDecoration: "underline" }}>
+                Enrollment Agreement
+              </a>
+              .
+            </p>
           </div>
         ) : (
           <>
@@ -254,6 +283,11 @@ function ForProfessionalsPage() {
       </main>
       <footer className="pros-footer">
         <p>© Claim Academy. All rights reserved.</p>
+        <p style={{ marginTop: "8px" }}>
+          <a href="/enrollment-agreement" style={{ color: "inherit", textDecoration: "underline" }}>
+            Enrollment Agreement
+          </a>
+        </p>
       </footer>
       <StickyMobileCtaPros onOpen={openModal} />
       <ProsModal isOpen={modalOpen} onClose={closeModal} />

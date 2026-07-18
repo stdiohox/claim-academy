@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
+import { CALENDLY_URL } from "@/lib/booking";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -154,9 +155,37 @@ export function LeadForm() {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
-                <h3 className="font-display font-bold text-[var(--brand-dark)] text-[22px]">Thanks — you're all set.</h3>
+                <h3 className="font-display font-bold text-[var(--brand-dark)] text-[22px]">You're in — one more step!</h3>
                 <p className="mt-2 text-[15px] text-[var(--brand-gray-600)]">
-                  Our admissions team will reach out to you shortly to confirm the details. Keep an eye on your inbox.
+                  Book your free discovery call now while we review your application.
+                </p>
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    marginTop: "24px",
+                    backgroundColor: "#602889",
+                    color: "#FFFFFF",
+                    fontWeight: 700,
+                    fontSize: "18px",
+                    padding: "16px 32px",
+                    borderRadius: "8px",
+                    textDecoration: "none",
+                  }}
+                >
+                  BOOK MY DISCOVERY CALL
+                </a>
+                <p className="mt-4 text-[13px] text-[var(--brand-gray-600)]">
+                  Prefer we reach out? We'll call you within 24 hours.
+                </p>
+                <p className="mt-2 text-[12px] text-[var(--brand-gray-600)]">
+                  By proceeding you agree to our{" "}
+                  <a href="/enrollment-agreement" style={{ textDecoration: "underline" }}>
+                    Enrollment Agreement
+                  </a>
+                  .
                 </p>
               </motion.div>
             ) : (
