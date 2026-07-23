@@ -1270,8 +1270,8 @@ export default function Employers() {
             }}
           />
           <span className="emp-urgency-text" style={{ fontWeight: 500, fontSize: "0.8rem", color: "rgba(251,246,234,0.85)", whiteSpace: "nowrap" }}>
-            <span className="emp-urgency-full">Q3 2026 cohort — employer spots filling fast.</span>
-            <span className="emp-urgency-short">Q3 2026 spots filling fast.</span>
+            <span className="emp-urgency-full">Next cohort starts August 3 — applications close August 3.</span>
+            <span className="emp-urgency-short">August 3 cohort — spots filling fast.</span>
           </span>
         </div>
         <a
@@ -1469,7 +1469,7 @@ export default function Employers() {
                       marginLeft: "4px",
                     }}
                   />
-                  Now matching employers for the Q3 2026 cohort
+                  Now matching employers for the August 2026 cohort
                   <span
                     style={{
                       width: "24px",

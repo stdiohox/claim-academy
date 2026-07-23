@@ -10,7 +10,7 @@ const QUICK_LINKS = [
 const PROGRAM_LINKS = [
   { label: "Engineering Track", href: "#how" },
   { label: "Builders Track", href: "#how" },
-  { label: "Summer 2026 Cohorts", href: "#how" },
+  { label: "August 2026 Cohort", href: "#how" },
   { label: "Employer Partners", href: "#how" },
 ];
 

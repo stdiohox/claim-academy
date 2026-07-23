@@ -7,7 +7,7 @@ const PHASES = [
     number: "01",
     label: "PHASE ONE",
     title: "Live AI Bootcamp",
-    date: "Jul 20 – Aug 17, 2026 · Cohort A",
+    date: "Aug 3 – Aug 28, 2026 · 4 weeks",
     body: "Three live sessions per week, 60 minutes each. All recordings included. Two tracks run simultaneously — choose the one that fits your background.",
     tracks: [
       { name: "Engineering Track", detail: "Claude API · LangGraph · RAG Systems · FastAPI · Supabase" },
@@ -20,7 +20,7 @@ const PHASES = [
     number: "02",
     label: "PHASE TWO",
     title: "Guaranteed Employer Internship",
-    date: "Aug 3 – Sep 26, 2026 · 8 weeks",
+    date: "Aug 31 – Oct 23, 2026 · 8 weeks",
     body: "Placed at a vetted US employer before Week 5 ends. Real projects. Real GitHub commits. Real founder reference on LinkedIn.",
     guarantee: "Full refund if we don't place you within 2 weeks of bootcamp completion. This is written into your enrollment contract.",
     footer: "We maintain 2 confirmed employer partners per student before any cohort opens.",

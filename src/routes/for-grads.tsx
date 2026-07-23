@@ -415,7 +415,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.75, ease: EASE }}
         >
-          Cohort A starts Jul 20 · Limited to 20 seats per cohort
+          The August 3 cohort is filling up fast — applications close August 3 · Limited to 20 seats
         </motion.p>
         <motion.div
           className="stats-row"
@@ -832,7 +832,7 @@ function FinalCta({ onOpen }: { onOpen: () => void }) {
       <div className="container container-narrow">
         <RevealSection>
           <AnimatedHeadline as="h2" className="section-headline final-headline"
-            text="Your Employer Is Already Waiting. Your Cohort Starts Jul 20." />
+            text="Your Employer Is Already Waiting. Your Cohort Starts August 3." />
           <p className="final-sub">
             20-minute call. No pressure. We'll tell you honestly if this is the right fit.
           </p>
@@ -846,7 +846,7 @@ function FinalCta({ onOpen }: { onOpen: () => void }) {
             </button>
           </div>
           <p className="final-meta">
-            Cohort A: Jul 20 · Cohort B: Aug 3 · Limited seats per cohort
+            Next cohort: August 3 · Apply by August 3 · Limited seats per cohort
           </p>
         </RevealSection>
       </div>

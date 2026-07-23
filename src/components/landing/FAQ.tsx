@@ -26,7 +26,7 @@ const FAQS = [
   },
   {
     q: "When does the next cohort start?",
-    a: "Summer 2026 runs two cohorts. Cohort A (CS graduates): training July 20 – August 17, 10 AM ET. Cohort B (working professionals): training August 3 – 28, 7 PM ET. All sessions are recorded.",
+    a: "The next cohort starts August 3, 2026 and runs 12 weeks: 4 weeks of live training (Mon/Wed/Fri, 60-minute sessions), then your guaranteed 8-week internship, ending October 23, 2026. Applications close August 3 — the same day the cohort starts. All sessions are recorded.",
     tag: "Schedule",
   },
   {

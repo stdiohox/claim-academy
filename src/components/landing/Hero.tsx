@@ -71,7 +71,7 @@ export function Hero() {
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
               }}>
-                2026 Summer Cohorts — Now Open
+                August 2026 Cohort — Now Open
               </div>
             </motion.div>
 
@@ -285,7 +285,7 @@ export function Hero() {
                 marginTop: "10px",
                 letterSpacing: "0.03em",
               }}>
-                Next cohort: Jul 20 · Limited seats
+                Next cohort: August 3 · Apply by August 3 · Limited seats
               </p>
             </div>
           </motion.div>
