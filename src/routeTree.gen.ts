@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebinarAccessRouteImport } from './routes/webinar-access'
 import { Route as WebinarRouteImport } from './routes/webinar'
 import { Route as ModalTestRouteImport } from './routes/modal-test'
 import { Route as ForProfessionalsRouteImport } from './routes/for-professionals'
@@ -18,6 +19,11 @@ import { Route as EmployersRouteImport } from './routes/employers'
 import { Route as BareTestRouteImport } from './routes/bare-test'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WebinarAccessRoute = WebinarAccessRouteImport.update({
+  id: '/webinar-access',
+  path: '/webinar-access',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WebinarRoute = WebinarRouteImport.update({
   id: '/webinar',
   path: '/webinar',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
   '/webinar': typeof WebinarRoute
+  '/webinar-access': typeof WebinarAccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
   '/webinar': typeof WebinarRoute
+  '/webinar-access': typeof WebinarAccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/for-professionals': typeof ForProfessionalsRoute
   '/modal-test': typeof ModalTestRoute
   '/webinar': typeof WebinarRoute
+  '/webinar-access': typeof WebinarAccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/for-professionals'
     | '/modal-test'
     | '/webinar'
+    | '/webinar-access'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/for-professionals'
     | '/modal-test'
     | '/webinar'
+    | '/webinar-access'
   id:
     | '__root__'
     | '/'
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | '/for-professionals'
     | '/modal-test'
     | '/webinar'
+    | '/webinar-access'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,10 +144,18 @@ export interface RootRouteChildren {
   ForProfessionalsRoute: typeof ForProfessionalsRoute
   ModalTestRoute: typeof ModalTestRoute
   WebinarRoute: typeof WebinarRoute
+  WebinarAccessRoute: typeof WebinarAccessRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/webinar-access': {
+      id: '/webinar-access'
+      path: '/webinar-access'
+      fullPath: '/webinar-access'
+      preLoaderRoute: typeof WebinarAccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/webinar': {
       id: '/webinar'
       path: '/webinar'
@@ -204,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForProfessionalsRoute: ForProfessionalsRoute,
   ModalTestRoute: ModalTestRoute,
   WebinarRoute: WebinarRoute,
+  WebinarAccessRoute: WebinarAccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
