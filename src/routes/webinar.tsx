@@ -437,7 +437,7 @@ function Webinar() {
               </motion.h1>
               <motion.div {...heroAnim(0.2)} className="wb-h1-accent" aria-hidden />
               <motion.p {...heroAnim(0.28)} className="wb-subhead">
-                Register below and we'll send you our free AI training video instantly. Watch it, then decide if the August 3 cohort is right for you.
+                Register below and we'll send your webinar access link instantly. Join when you're ready — no waiting, no scheduling.
               </motion.p>
 
               {timeLeft ? (
@@ -602,8 +602,8 @@ function Webinar() {
               {status === "success" ? (
                 <div className="wb-success">
                   <div className="wb-success-badge"><Check size={30} color="#16A34A" /></div>
-                  <h3 className="wb-success-title">You're in!</h3>
-                  <p className="wb-success-body">Check your email — your free AI training video and next steps are on their way. Cohort starts August 3, 2026.</p>
+                  <h3 className="wb-success-title">You're registered!</h3>
+                  <p className="wb-success-body">Check your email for your webinar access link. See you inside.</p>
                   <div className="wb-success-again">
                     <p style={{ marginBottom: "14px", color: STONE, fontSize: "15px" }}>Already ready to enroll?</p>
                     <GoldCta href={CALENDLY_URL} external>Book a discovery call</GoldCta>
@@ -613,7 +613,7 @@ function Webinar() {
                 <>
                   <div className="wb-register-head">
                     <Eyebrow>Save your spot</Eyebrow>
-                    <h2 className="wb-register-title">It's free. Just watch.</h2>
+                    <h2 className="wb-register-title">Get Instant Webinar Access — Free</h2>
                     <p className="wb-register-sub">Break Into AI · Free training video · Delivered by email</p>
                   </div>
                   <form onSubmit={handleSubmit} noValidate>
@@ -627,7 +627,7 @@ function Webinar() {
                     <button type="submit" disabled={loading} className={`wb-btn wb-submit${loading ? " wb-loading" : ""}`}>
                       <BtnShimmer />
                       <span className="wb-spinner" aria-hidden />
-                      <span>{loading ? "Saving your spot…" : "Save My Spot — It's Free"}</span>
+                      <span>{loading ? "Saving your spot…" : "Get Instant Access — It's Free"}</span>
                     </button>
                     <p className="wb-no-cc">No credit card. No obligation. Just watch.</p>
                     {status === "error" && (
