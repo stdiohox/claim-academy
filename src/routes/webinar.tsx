@@ -58,6 +58,16 @@ export const Route = createFileRoute("/webinar")({
       },
       { property: "og:type", content: "website" },
     ],
+    // Google Ads tag (gtag.js) — this page only, per the ad campaign pointed at /webinar.
+    scripts: [
+      { attrs: { src: "https://www.googletagmanager.com/gtag/js?id=AW-957715891", async: true } },
+      {
+        children: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-957715891');`,
+      },
+    ],
   }),
   component: Webinar,
 });
