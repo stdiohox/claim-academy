@@ -3,8 +3,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CALENDLY_URL } from "@/lib/booking";
 
 // ── Config ───────────────────────────────────────────────────────────────────
-const DRIVE_FILE_ID = "1auI5fQ4A5R7XhsOR5KGDNlrlRdCiNEcr";
-const DRIVE_EMBED_SRC = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`;
 const LOGO_SRC = "https://claimaiinternship.com/images/claim-logo-transparent.png";
 
 const GOLD = "#C9A227";
@@ -66,29 +64,20 @@ function WebinarAccess() {
           <p className="wa-video-label">Break Into AI — Free Training Session</p>
 
           <div className="wa-player">
-            <iframe
-              src={DRIVE_EMBED_SRC}
-              allow="autoplay"
-              allowFullScreen
-              title="Claim Academy AI Internship — Free Training"
-              style={{ width: "100%", height: "100%", border: "none" }}
-            />
-            {/* Blocks Google Drive's "Pop-out" button (top-right of the iframe chrome) — color
-                matches the page background so it reads as part of the player, not a patch. */}
-            <div
-              aria-hidden
+            <video
+              controls
+              playsInline
               style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                width: "60px",
-                height: "50px",
-                background: "#0a0a0a",
-                zIndex: 10,
-                cursor: "default",
-                pointerEvents: "all",
+                width: "100%",
+                height: "100%",
+                borderRadius: "8px",
+                border: "1px solid rgba(201,162,39,0.25)",
+                display: "block",
+                background: "#000",
               }}
-            />
+            >
+              <source src="/videos/webinar-training.mp4" type="video/mp4" />
+            </video>
           </div>
 
           <p className="wa-lock-note">🔒 This recording is available to registered attendees only</p>
