@@ -17,12 +17,10 @@ import { CALENDLY_URL } from "@/lib/booking";
 import { RevealSection } from "@/lib/motion";
 
 // ── Webinar constants (single source of truth — no hardcoded literals in markup) ──
-const WEBINAR_DATE = "2026-07-27T19:00:00-06:00";
-const WEBINAR_TIME = "7:00 PM CST";
-const WEBINAR_DATE_DISPLAY = "Monday, July 27";
+const COHORT_DATE = "2026-08-03T09:00:00-05:00";
 const N8N_WEBHOOK = "https://n8n.srv1759554.hstgr.cloud/webhook/lead-intake";
-const GOOGLE_DRIVE_VIDEO_ID = "1auI5fQ4A5R7XhsOR5KGDNlrlRdCiNEcr";
-const VIDEO_SRC = `https://drive.google.com/file/d/${GOOGLE_DRIVE_VIDEO_ID}/preview`;
+const VIDEO_SRC = "/videos/grad-testimonial.mp4";
+const VIDEO_POSTER = "/videos/grad-testimonial-poster.jpg";
 
 // ── Scoped theme tokens (mirror the employers page's design system) ──
 const CREAM = "#FBF6EA";
@@ -47,16 +45,16 @@ const goldTextGrad: React.CSSProperties = {
 export const Route = createFileRoute("/webinar")({
   head: () => ({
     meta: [
-      { title: "Break Into AI — Free Live Training | Claim Academy AI Internship" },
+      { title: "Break Into AI — Free Training | Claim Academy AI Internship" },
       {
         name: "description",
         content:
-          "Free live webinar: see exactly what you'll learn in the Claim Academy AI Internship before you commit. Engineering & Builders tracks — Claude API, n8n, Cursor, RAG, LangGraph.",
+          "Watch our free AI training and see exactly what you'll learn in the Claim Academy AI Internship. Cohort starts August 3.",
       },
-      { property: "og:title", content: "Break Into AI — Free Live Training" },
+      { property: "og:title", content: "Break Into AI — Free Training" },
       {
         property: "og:description",
-        content: "See exactly what you'll learn in the Claim Academy AI Internship before you commit.",
+        content: "Watch our free AI training and see exactly what you'll learn in the Claim Academy AI Internship. Cohort starts August 3.",
       },
       { property: "og:type", content: "website" },
     ],
@@ -232,7 +230,7 @@ function SecondaryButton({ href, children, external = false, onDark = false }: {
 type TimeLeft = { days: number; hours: number; mins: number; secs: number } | null;
 
 function getTimeLeft(): TimeLeft {
-  const target = new Date(WEBINAR_DATE).getTime();
+  const target = new Date(COHORT_DATE).getTime();
   if (Number.isNaN(target)) return null; // invalid date → show nothing
   const diff = target - Date.now();
   if (diff <= 0) return null; // passed → show nothing
@@ -255,7 +253,7 @@ function Countdown({ timeLeft }: { timeLeft: NonNullable<TimeLeft> }) {
     <div className="wb-countdown-panel">
       <div className="wb-countdown-head">
         <span className="wb-live-dot" aria-hidden />
-        Doors open in
+        Next cohort starts in
       </div>
       <div className="wb-countdown-cells">
         {cells.map((c, i) => (
@@ -394,7 +392,7 @@ function Webinar() {
           phone: form.phone,
           source: "webinar",
           lead_type: "webinar_registration",
-          webinar_date: WEBINAR_DATE,
+          webinar_date: COHORT_DATE,
           notes: "Registered via webinar landing page",
         }),
       });
@@ -424,9 +422,9 @@ function Webinar() {
           <motion.div {...heroAnim(0.02)} className="wb-pill-wrap">
             <span className="wb-pill">
               <span className="wb-pill-dot" aria-hidden />
-              <span className="wb-pill-live">LIVE</span>
+              <span className="wb-pill-live">NEXT COHORT</span>
               <span className="wb-pill-sep" aria-hidden>·</span>
-              {WEBINAR_DATE_DISPLAY} · {WEBINAR_TIME} · Free
+              August 3, 2026 · Applications Close August 3 · Limited Spots
               <span className="wb-pill-arrow" aria-hidden><ArrowRight size={12} color={CREAM} /></span>
             </span>
           </motion.div>
@@ -435,11 +433,11 @@ function Webinar() {
             {/* LEFT — content */}
             <div className="wb-hero-copy">
               <motion.h1 {...heroAnim(0.12)} className="wb-h1">
-                Break into <span style={goldTextGrad}>AI</span>. Live.
+                Break into <span style={goldTextGrad}>AI</span>.
               </motion.h1>
               <motion.div {...heroAnim(0.2)} className="wb-h1-accent" aria-hidden />
               <motion.p {...heroAnim(0.28)} className="wb-subhead">
-                See exactly what you'll build in the Claim Academy AI Internship — and how it gets you hired — before you commit a dollar.
+                Register below and we'll send you our free AI training video instantly. Watch it, then decide if the August 3 cohort is right for you.
               </motion.p>
 
               {timeLeft ? (
@@ -459,9 +457,21 @@ function Webinar() {
 
             {/* RIGHT — video */}
             <motion.div {...heroAnim(0.34)} className="wb-hero-media">
-              <div className="wb-video">
-                <iframe src={VIDEO_SRC} allow="autoplay" allowFullScreen title="Break Into AI — webinar preview" />
-              </div>
+              <video
+                controls
+                playsInline
+                poster={VIDEO_POSTER}
+                style={{
+                  width: "100%",
+                  borderRadius: "12px",
+                  border: "1px solid #C9A227",
+                }}
+              >
+                <source src={VIDEO_SRC} type="video/mp4" />
+              </video>
+              <p style={{ color: STONE, fontSize: "14px", textAlign: "center", marginTop: "8px" }}>
+                Hear from a Claim Academy graduate
+              </p>
             </motion.div>
           </div>
 
@@ -537,7 +547,7 @@ function Webinar() {
           <RevealSection>
             <div className="wb-head">
               <Eyebrow>Who this is for</Eyebrow>
-              <h2 className="wb-h2">If this sounds like you, the webinar was built for you.</h2>
+              <h2 className="wb-h2">If this sounds like you, this training was built for you.</h2>
             </div>
           </RevealSection>
           <div className="wb-grid-3">
@@ -592,8 +602,8 @@ function Webinar() {
               {status === "success" ? (
                 <div className="wb-success">
                   <div className="wb-success-badge"><Check size={30} color="#16A34A" /></div>
-                  <h3 className="wb-success-title">You're registered!</h3>
-                  <p className="wb-success-body">Check your email for webinar details. See you there.</p>
+                  <h3 className="wb-success-title">You're in!</h3>
+                  <p className="wb-success-body">Check your email — your free AI training video and next steps are on their way. Cohort starts August 3, 2026.</p>
                   <div className="wb-success-again">
                     <p style={{ marginBottom: "14px", color: STONE, fontSize: "15px" }}>Already ready to enroll?</p>
                     <GoldCta href={CALENDLY_URL} external>Book a discovery call</GoldCta>
@@ -603,8 +613,8 @@ function Webinar() {
                 <>
                   <div className="wb-register-head">
                     <Eyebrow>Save your spot</Eyebrow>
-                    <h2 className="wb-register-title">It's free. Just show up.</h2>
-                    <p className="wb-register-sub">Break Into AI · Live · {WEBINAR_DATE_DISPLAY} at {WEBINAR_TIME}</p>
+                    <h2 className="wb-register-title">It's free. Just watch.</h2>
+                    <p className="wb-register-sub">Break Into AI · Free training video · Delivered by email</p>
                   </div>
                   <form onSubmit={handleSubmit} noValidate>
                     <div className="wb-grid-2 wb-form-grid">
@@ -619,7 +629,7 @@ function Webinar() {
                       <span className="wb-spinner" aria-hidden />
                       <span>{loading ? "Saving your spot…" : "Save My Spot — It's Free"}</span>
                     </button>
-                    <p className="wb-no-cc">No credit card. No obligation. Just show up.</p>
+                    <p className="wb-no-cc">No credit card. No obligation. Just watch.</p>
                     {status === "error" && (
                       <p className="wb-form-error" role="alert">Something went wrong — please try again or email info@claimaiinternship.com</p>
                     )}
@@ -640,8 +650,8 @@ function Webinar() {
         <NodeGraph />
         <div className="wb-wrap wb-urgency-inner">
           <RevealSection>
-            <h2 className="wb-urgency-h">The August 3 cohort opens right after the webinar.</h2>
-            <p className="wb-urgency-sub">Registered attendees get first access. Seats are limited.</p>
+            <h2 className="wb-urgency-h">Our next cohort starts August 3, 2026.</h2>
+            <p className="wb-urgency-sub">Applications close August 3. Seats are limited.</p>
             <div className="wb-cta-row wb-urgency-cta">
               <GoldCta href="#register" size="lg">Save My Spot</GoldCta>
               <SecondaryButton href={CALENDLY_URL} external onDark>Book a Call</SecondaryButton>
@@ -744,9 +754,6 @@ const WB_CSS = `
   .wb-cta-note { font-size: 13px; color: rgba(251,246,234,0.45); margin: 12px 0 0; }
 
   .wb-hero-media { width: 100%; }
-  .wb-video { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 18px;
-    border: 1px solid rgba(201,162,39,0.4); box-shadow: 0 24px 70px rgba(0,0,0,0.5); background: #000; }
-  .wb-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
 
   .wb-trust { display: flex; flex-wrap: wrap; align-items: center; gap: 22px 30px; margin-top: 56px;
     padding: 26px 30px; border-radius: 18px; background: rgba(251,246,234,0.04); border: 1px solid rgba(251,246,234,0.08); }
