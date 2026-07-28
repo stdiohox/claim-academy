@@ -387,6 +387,37 @@ function Webinar() {
     return !Object.values(next).some(Boolean);
   }
 
+  // Loads the Calendly inline-widget script once on mount for the "book a call
+  // directly" column beside the registration form. Cleaned up on unmount.
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.head.appendChild(script);
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
+
+  // Fires the Google Ads "actually booked" conversion when Calendly's embedded widget
+  // posts a page-level event_scheduled message — distinct from webinar_signup above,
+  // since this tracks the direct-booking path rather than the free-training signup.
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data.event === "calendly.event_scheduled") {
+        (window as unknown as { gtag?: (command: string, action: string, params: object) => void }).gtag?.(
+          "event",
+          "conversion",
+          { send_to: "AW-957715891/calendly_booked" }
+        );
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
@@ -612,6 +643,11 @@ function Webinar() {
       {/* ══ REGISTRATION (cream) ══ */}
       <section className="wb-section wb-register" id="register">
         <div className="wb-wrap">
+          <div className="wb-register-labels">
+            <p className="wb-register-label">Option 1 — Get the free training</p>
+            <p className="wb-register-label">Option 2 — Book a call directly</p>
+          </div>
+          <div className="wb-register-grid">
           <RevealSection>
             <div className="wb-register-card">
               {status === "success" ? (
@@ -657,6 +693,22 @@ function Webinar() {
               )}
             </div>
           </RevealSection>
+
+          <RevealSection delay={0.08}>
+            <div className="wb-calendly-panel">
+              <p className="wb-calendly-eyebrow">Or book a call directly</p>
+              <h3 className="wb-calendly-headline">Already convinced?<br />Skip the video.</h3>
+              <p className="wb-calendly-body">
+                Book a free 30-minute call with our team and we'll walk you through everything — program, funding, and next steps.
+              </p>
+              <div
+                className="calendly-inline-widget wb-calendly-widget"
+                data-url="https://calendly.com/ola-claimacademy/your-career-coach-discovery-call-clone?hide_gdpr_banner=1&primary_color=C9A227"
+                style={{ minWidth: "280px" }}
+              />
+            </div>
+          </RevealSection>
+          </div>
         </div>
       </section>
 
@@ -811,7 +863,18 @@ const WB_CSS = `
 
   /* Register */
   .wb-register { background: var(--cream); }
+
+  .wb-register-labels { display: none; }
+
+  .wb-register-grid { display: grid; grid-template-columns: 1fr; gap: 40px; max-width: 1100px; margin: 0 auto; align-items: start; }
+
   .wb-register-card { max-width: 560px; margin: 0 auto; background: #FFFDF7; border: 1px solid var(--parchment); border-radius: 22px; padding: 40px; box-shadow: 0 20px 60px rgba(18,16,14,0.07); }
+
+  .wb-calendly-panel { background: #ffffff; border-radius: 16px; border: 1px solid var(--parchment); overflow: hidden; padding: 32px 24px; }
+  .wb-calendly-eyebrow { color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 12px; text-align: center; }
+  .wb-calendly-headline { color: var(--ink); font-size: 20px; font-weight: 800; margin: 0 0 8px; text-align: center; line-height: 1.3; }
+  .wb-calendly-body { color: var(--stone); font-size: 14px; margin: 0 0 20px; text-align: center; line-height: 1.6; }
+  .wb-calendly-widget { height: 600px; }
   .wb-register-head { text-align: center; margin-bottom: 26px; }
   .wb-register-head .wb-h2, .wb-register-title { font-weight: 800; font-size: 28px; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 6px; }
   .wb-register-sub { font-size: 14px; color: var(--stone); margin: 0; }
@@ -860,11 +923,20 @@ const WB_CSS = `
     .wb-grid-3 { grid-template-columns: repeat(3, 1fr); }
     .wb-grid-2 { grid-template-columns: repeat(2, 1fr); }
     .wb-about-stats { grid-template-columns: repeat(4, 1fr); }
+
+    .wb-register-labels { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto 16px; }
+    .wb-register-label { color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-align: center; margin: 0; }
+    .wb-register-grid { grid-template-columns: 1fr 1fr; }
+    .wb-register-card { max-width: none; margin: 0; }
   }
   @media (min-width: 940px) {
     .wb-hero { padding: 150px 0 80px; }
     .wb-hero-row { grid-template-columns: 1.05fr 0.95fr; gap: 56px; }
     .wb-form-grid { gap: 14px; }
+  }
+
+  @media (max-width: 768px) {
+    .wb-calendly-widget { height: 500px; }
   }
 
   @media (max-width: 520px) {
