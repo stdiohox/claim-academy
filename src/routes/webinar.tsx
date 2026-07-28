@@ -369,6 +369,11 @@ function Webinar() {
   const [status, setStatus] = useState<Status>("idle");
   const reduce = useReducedMotion() ?? false;
 
+  // Progressive-reveal state: Step 2 (Calendly) stays blurred/locked until Step 1
+  // (registration) succeeds, then unlocks and pre-fills with the lead's own details.
+  const [calendlyUnlocked, setCalendlyUnlocked] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState({ name: "", email: "", phone: "" });
+
   const update = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((f) => ({ ...f, [k]: e.target.value }));
     setErrors((prev) => (prev[k] ? { ...prev, [k]: false } : prev));
@@ -444,10 +449,45 @@ function Webinar() {
         "conversion",
         { send_to: "AW-957715891/webinar_signup" }
       );
+      setCalendlyUnlocked(true);
+      setRegisteredUser({
+        name: `${form.firstName} ${form.lastName}`,
+        email: form.email,
+        phone: form.phone,
+      });
+      setTimeout(() => {
+        document.getElementById("step2-calendly")?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
     } catch {
       setStatus("error");
     }
   }
+
+  const calendlyUrl = calendlyUnlocked
+    ? `https://calendly.com/ola-claimacademy/your-career-coach-discovery-call-clone?hide_gdpr_banner=1&primary_color=C9A227&name=${encodeURIComponent(registeredUser.name)}&email=${encodeURIComponent(registeredUser.email)}&a1=${encodeURIComponent(registeredUser.phone)}`
+    : `https://calendly.com/ola-claimacademy/your-career-coach-discovery-call-clone?hide_gdpr_banner=1&primary_color=C9A227`;
+
+  // Re-initializes the Calendly inline widget once Step 1 unlocks so it actually
+  // re-reads the new data-url (with pre-fill params) — Calendly's own script only
+  // parses data-url once on initial mount, so a fresh URL alone won't apply prefill
+  // to an already-mounted widget.
+  useEffect(() => {
+    if (calendlyUnlocked && (window as unknown as { Calendly?: { initInlineWidget: (opts: unknown) => void } }).Calendly) {
+      const widget = document.querySelector(".calendly-inline-widget");
+      if (widget) {
+        (window as unknown as { Calendly: { initInlineWidget: (opts: unknown) => void } }).Calendly.initInlineWidget({
+          url: calendlyUrl,
+          parentElement: widget,
+          prefill: {
+            name: registeredUser.name,
+            email: registeredUser.email,
+            customAnswers: { a1: registeredUser.phone },
+          },
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calendlyUnlocked]);
 
   const loading = status === "loading";
 
@@ -644,8 +684,8 @@ function Webinar() {
       <section className="wb-section wb-register" id="register">
         <div className="wb-wrap">
           <div className="wb-register-labels">
-            <p className="wb-register-label">Option 1 — Get the free training</p>
-            <p className="wb-register-label">Option 2 — Book a call directly</p>
+            <p className="wb-register-label">Step 1 — Get your free training</p>
+            <p className="wb-register-label">Step 2 — Book your discovery call</p>
           </div>
           <div className="wb-register-grid">
           <RevealSection>
@@ -695,17 +735,41 @@ function Webinar() {
           </RevealSection>
 
           <RevealSection delay={0.08}>
-            <div className="wb-calendly-panel">
-              <p className="wb-calendly-eyebrow">Or book a call directly</p>
+            <div className="wb-calendly-panel" id="step2-calendly">
+              <p className="wb-calendly-eyebrow">Step 2 — Book your call</p>
               <h3 className="wb-calendly-headline">Already convinced?<br />Skip the video.</h3>
               <p className="wb-calendly-body">
-                Book a free 30-minute call with our team and we'll walk you through everything — program, funding, and next steps.
+                Book a free 30-minute call with our team. We'll cover the program, funding options, and next steps.
               </p>
-              <div
-                className="calendly-inline-widget wb-calendly-widget"
-                data-url="https://calendly.com/ola-claimacademy/your-career-coach-discovery-call-clone?hide_gdpr_banner=1&primary_color=C9A227"
-                style={{ minWidth: "280px" }}
-              />
+
+              {calendlyUnlocked && (
+                <div className="wb-calendly-unlocked-msg">
+                  <p>✅ You're registered! Now pick a time for your discovery call — your details are pre-filled.</p>
+                </div>
+              )}
+
+              <div className="wb-calendly-widget-wrap">
+                <div
+                  className="calendly-inline-widget wb-calendly-widget"
+                  data-url={calendlyUrl}
+                  style={{
+                    minWidth: "280px",
+                    filter: calendlyUnlocked ? "none" : "blur(4px)",
+                    pointerEvents: calendlyUnlocked ? "all" : "none",
+                    transition: "filter 0.5s ease",
+                  }}
+                />
+
+                {!calendlyUnlocked && (
+                  <div className="wb-calendly-lock">
+                    <div className="wb-calendly-lock-icon">🔒</div>
+                    <p className="wb-calendly-lock-title">Complete Step 1 first</p>
+                    <p className="wb-calendly-lock-body">
+                      Register above to unlock your booking slot — we'll pre-fill your details automatically.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </RevealSection>
           </div>
@@ -875,6 +939,17 @@ const WB_CSS = `
   .wb-calendly-headline { color: var(--ink); font-size: 20px; font-weight: 800; margin: 0 0 8px; text-align: center; line-height: 1.3; }
   .wb-calendly-body { color: var(--stone); font-size: 14px; margin: 0 0 20px; text-align: center; line-height: 1.6; }
   .wb-calendly-widget { height: 600px; }
+  .wb-calendly-widget-wrap { position: relative; min-width: 280px; height: 600px; }
+  .wb-calendly-widget-wrap .wb-calendly-widget { width: 100%; height: 100%; }
+
+  .wb-calendly-unlocked-msg { background: #C9A22720; border: 1px solid #C9A22760; border-radius: 8px; padding: 12px 16px; margin: 0 0 16px; text-align: center; }
+  .wb-calendly-unlocked-msg p { color: #A07820; font-size: 14px; font-weight: 700; margin: 0; }
+
+  .wb-calendly-lock { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(251,246,234,0.85); border-radius: 8px; z-index: 10; }
+  .wb-calendly-lock-icon { font-size: 40px; margin-bottom: 16px; }
+  .wb-calendly-lock-title { color: var(--ink); font-size: 16px; font-weight: 700; text-align: center; margin: 0 0 8px; padding: 0 24px; }
+  .wb-calendly-lock-body { color: var(--stone); font-size: 14px; text-align: center; margin: 0; padding: 0 24px; }
+
   .wb-register-head { text-align: center; margin-bottom: 26px; }
   .wb-register-head .wb-h2, .wb-register-title { font-weight: 800; font-size: 28px; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 6px; }
   .wb-register-sub { font-size: 14px; color: var(--stone); margin: 0; }
@@ -936,7 +1011,7 @@ const WB_CSS = `
   }
 
   @media (max-width: 768px) {
-    .wb-calendly-widget { height: 500px; }
+    .wb-calendly-widget-wrap { height: 500px; }
   }
 
   @media (max-width: 520px) {
