@@ -15,6 +15,17 @@ export const Route = createFileRoute("/webinar-access")({
       { name: "description", content: "Your live training session is ready." },
       { name: "robots", content: "noindex" },
     ],
+    // Google Ads tag (gtag.js) — same tag as /webinar, so conversions from this page
+    // (Calendly click below) attribute back to the same ad campaign.
+    scripts: [
+      { attrs: { src: "https://www.googletagmanager.com/gtag/js?id=AW-957715891", async: true } },
+      {
+        children: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-957715891');`,
+      },
+    ],
   }),
   component: WebinarAccess,
 });
@@ -99,7 +110,18 @@ function WebinarAccess() {
             <p className="wa-cta-body">
               Enjoyed the training? Book a free 30-minute call with our team. We'll walk you through the program, confirm your funding options, and answer every question.
             </p>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="wa-cta-btn">
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="wa-cta-btn"
+              onClick={() => {
+                const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+                if (typeof gtag === "function") {
+                  gtag("event", "conversion", { send_to: "AW-957715891/book_call_click" });
+                }
+              }}
+            >
               Book Your Discovery Call →
             </a>
             <p className="wa-cta-note">No pressure. No commitment. Just a conversation.</p>
