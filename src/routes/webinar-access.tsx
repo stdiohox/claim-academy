@@ -44,8 +44,56 @@ function useNameParam(): string | null {
   return name;
 }
 
+// Loads the Calendly inline-widget script once on mount so the embedded widget below
+// the CTA card can render. Cleaned up on unmount (route change) to avoid leaking a
+// duplicate <script> tag if the page is revisited within the same session.
+function useCalendlyWidgetScript(): void {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+}
+
+// Fires the "actually booked" conversion (distinct from the button-click conversion
+// above) when Calendly's embedded widget posts a page-level event_scheduled message —
+// this only happens once a visitor completes a real booking, not just opens the widget.
+function useCalendlyBookingConversion(): void {
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data?.event === "calendly.event_scheduled") {
+        (window as unknown as { gtag?: (command: string, action: string, params: object) => void }).gtag?.(
+          "event",
+          "conversion",
+          { send_to: "AW-957715891/calendly_booked" }
+        );
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+}
+
+// Reveals the sticky bottom CTA bar 60 seconds after the page loads — long enough that
+// a visitor has genuinely engaged with the video, not an immediate popup.
+function useStickyBarReveal(): [boolean, (show: boolean) => void] {
+  const [showSticky, setShowSticky] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSticky(true), 60000);
+    return () => clearTimeout(timer);
+  }, []);
+  return [showSticky, setShowSticky];
+}
+
 function WebinarAccess() {
   const name = useNameParam();
+  const [showSticky, setShowSticky] = useStickyBarReveal();
+  useCalendlyWidgetScript();
+  useCalendlyBookingConversion();
 
   return (
     <div className="wa-root">
@@ -122,9 +170,22 @@ function WebinarAccess() {
                 }
               }}
             >
-              Book Your Discovery Call →
+              Find Out If You Qualify →
             </a>
             <p className="wa-cta-note">No pressure. No commitment. Just a conversation.</p>
+          </section>
+
+          <section className="wa-calendly" id="calendly-section">
+            <p className="wa-calendly-eyebrow">Book Your Call</p>
+            <h2 className="wa-calendly-headline">Ready to find out if you qualify?</h2>
+            <p className="wa-calendly-body">
+              Pick a time that works for you — it's free, 30 minutes, and there's no obligation.
+            </p>
+            <div
+              className="calendly-inline-widget"
+              data-url="https://calendly.com/ola-claimacademy/your-career-coach-discovery-call-clone?hide_gdpr_banner=1&primary_color=C9A227"
+              style={{ minWidth: "320px", height: "700px" }}
+            />
           </section>
         </div>
       </main>
@@ -132,6 +193,29 @@ function WebinarAccess() {
       <footer className="wa-footer">
         © 2026 Claim Academy AI Internship · <a href="mailto:info@claimaiinternship.com">info@claimaiinternship.com</a>
       </footer>
+
+      <div className={`wa-sticky${showSticky ? " wa-sticky-visible" : ""}`}>
+        <span className="wa-sticky-text">🎯 Liked what you saw?</span>
+        <div className="wa-sticky-actions">
+          <button
+            type="button"
+            className="wa-sticky-btn"
+            onClick={() => {
+              document.getElementById("calendly-section")?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            Find Out If You Qualify →
+          </button>
+          <button
+            type="button"
+            className="wa-sticky-dismiss"
+            aria-label="Dismiss"
+            onClick={() => setShowSticky(false)}
+          >
+            ×
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -297,6 +381,96 @@ const WA_CSS = `
     margin: 14px 0 0;
   }
 
+  .wa-calendly {
+    margin-top: 40px;
+    background: #FBF6EA;
+    border-radius: 16px;
+    padding: 60px 40px;
+    text-align: center;
+    color: #12100E;
+  }
+  .wa-calendly-eyebrow {
+    display: inline-block;
+    background: #C9A22720;
+    color: #A07820;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    border: 1px solid #C9A22760;
+    margin: 0 0 20px;
+  }
+  .wa-calendly-headline {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #12100E;
+    margin: 0 0 12px;
+  }
+  .wa-calendly-body {
+    font-size: 16px;
+    color: #5C5A56;
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+
+  .wa-sticky {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #12100E;
+    border-top: 2px solid ${GOLD};
+    padding: 16px 24px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  .wa-sticky-visible {
+    transform: translateY(0);
+  }
+  .wa-sticky-text {
+    color: #FBF6EA;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .wa-sticky-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .wa-sticky-btn {
+    display: inline-block;
+    background: ${GOLD_GRAD};
+    color: #12100E;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Poppins', system-ui, sans-serif;
+    transition: transform 150ms cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .wa-sticky-btn:hover { transform: scale(1.03); }
+  .wa-sticky-btn:active { transform: scale(0.97); }
+  .wa-sticky-dismiss {
+    background: transparent;
+    border: none;
+    color: #5C5A56;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+
   .wa-footer {
     background: #12100E;
     color: rgba(251,246,234,0.4);
@@ -310,6 +484,16 @@ const WA_CSS = `
   @media (max-width: 640px) {
     .wa-brand-name { display: none; }
     .wa-cta { padding: 28px 22px; }
+    .wa-calendly { padding: 40px 20px; }
+
+    .wa-sticky {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .wa-sticky-text { text-align: center; }
+    .wa-sticky-actions { flex-direction: column; width: 100%; }
+    .wa-sticky-btn { width: 100%; text-align: center; }
+    .wa-sticky-dismiss { align-self: center; }
   }
 
   @media (prefers-reduced-motion: reduce) {
