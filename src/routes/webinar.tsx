@@ -408,6 +408,11 @@ function Webinar() {
       });
       if (!res.ok) throw new Error("Failed");
       setStatus("success");
+      (window as unknown as { gtag?: (command: string, action: string, params: object) => void }).gtag?.(
+        "event",
+        "conversion",
+        { send_to: "AW-957715891/webinar_signup" }
+      );
     } catch {
       setStatus("error");
     }
