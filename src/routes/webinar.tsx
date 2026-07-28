@@ -762,7 +762,19 @@ function Webinar() {
 
                 {!calendlyUnlocked && (
                   <div className="wb-calendly-lock">
-                    <div className="wb-calendly-lock-icon">🔒</div>
+                    <svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ marginBottom: "16px" }}
+                    >
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="#C9A227" strokeWidth="1.5" fill="none" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#C9A227" strokeWidth="1.5" strokeLinecap="round" />
+                      <circle cx="12" cy="16" r="1.5" fill="#C9A227" />
+                      <line x1="12" y1="17.5" x2="12" y2="19" stroke="#C9A227" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
                     <p className="wb-calendly-lock-title">Complete Step 1 first</p>
                     <p className="wb-calendly-lock-body">
                       Register above to unlock your booking slot — we'll pre-fill your details automatically.
@@ -946,7 +958,6 @@ const WB_CSS = `
   .wb-calendly-unlocked-msg p { color: #A07820; font-size: 14px; font-weight: 700; margin: 0; }
 
   .wb-calendly-lock { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(251,246,234,0.85); border-radius: 8px; z-index: 10; }
-  .wb-calendly-lock-icon { font-size: 40px; margin-bottom: 16px; }
   .wb-calendly-lock-title { color: var(--ink); font-size: 16px; font-weight: 700; text-align: center; margin: 0 0 8px; padding: 0 24px; }
   .wb-calendly-lock-body { color: var(--stone); font-size: 14px; text-align: center; margin: 0; padding: 0 24px; }
 
