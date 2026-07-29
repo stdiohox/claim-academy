@@ -246,14 +246,14 @@ export function Hero() {
                 lineHeight: 1,
                 marginTop: "6px",
                 letterSpacing: "-0.03em",
-              }}>$2,997</p>
+              }}>$2,499</p>
               <p style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "12px",
                 color: "rgba(255,255,255,0.40)",
                 marginTop: "6px",
               }}>
-                or from $249/mo with Climb Credit
+                or from $208/mo with Climb Credit
               </p>
               <a
                 href="#lead-form"

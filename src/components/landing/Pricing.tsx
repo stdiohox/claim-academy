@@ -11,24 +11,24 @@ type Tier = {
   payment: string;
   features: string[];
   cta: string;
+  href: string;
   featured?: boolean;
 };
 
 const TIERS: Tier[] = [
   {
-    label: "LAUNCH · FIRST 5 SEATS",
-    price: "$2,997",
-    was: "reg. $3,499",
-    payment: "From $249/mo with Climb Credit",
+    label: "STARTER",
+    price: "$2,499",
+    payment: "From $208/mo with Climb Credit",
     features: [
-      "4-week bootcamp (1 track)",
-      "8-week guaranteed internship",
+      "AI fundamentals, prompt engineering",
+      "1 live project",
       "Claude AI Tutor 24/7",
-      "CV review + career coaching",
-      "Portfolio projects + certificate",
+      "Certificate of completion",
       "30-day money-back guarantee",
     ],
     cta: "Get Started →",
+    href: "https://buy.stripe.com/dRmcMY2Go1Py3US2md0RG01",
   },
   {
     label: "PROFESSIONAL · BEST VALUE",
@@ -36,15 +36,15 @@ const TIERS: Tier[] = [
     price: "$3,997",
     payment: "From $333/mo · Ascent deferred · Splitit 0%",
     features: [
-      "Everything in Launch",
-      "Both tracks (Engineering + Builders)",
-      "Weekly 1:1 coaching call",
-      "Priority employer matching",
+      "Everything in Starter",
+      "AI tools deep dive + real employer projects",
+      "Job placement support",
       "LinkedIn profile rewrite by Claude AI",
       "3 AI-simulated mock interviews",
       "6-month post-program job support",
     ],
     cta: "Claim Your Spot →",
+    href: "https://buy.stripe.com/6oU8wI6WE2TCcrobWN0RG02",
     featured: true,
   },
   {
@@ -53,14 +53,14 @@ const TIERS: Tier[] = [
     payment: "From $416/mo · ISA available — $0 upfront",
     features: [
       "Everything in Professional",
-      "Dedicated Claude AI Career Coach",
-      "Guaranteed interviews at 3+ employers",
-      "VIP alumni network + mentor matching",
+      "1-on-1 mentorship",
+      "Priority employer matching",
       "Personalised 6-month AI career roadmap",
-      "Employer intro letters from Ola personally",
       "Salary negotiation coaching",
+      "60-day post-graduation support",
     ],
     cta: "Get Started →",
+    href: "https://buy.stripe.com/bJe5kwdl21Py3US6Ct0RG03",
   },
 ];
 
@@ -156,7 +156,7 @@ export function Pricing() {
               </ul>
 
               <a
-                href="#lead-form"
+                href={t.href}
                 className="mt-7 block w-full text-center rounded-md py-3.5 font-semibold transition-all duration-150 hover:scale-[1.01]"
                 style={
                   t.featured
@@ -234,7 +234,7 @@ export function Pricing() {
               lineHeight: 1.5,
             }}
           >
-            From $249/mo with Climb Credit · Employer reimbursement up to $5,250 · 30-day money-back guarantee
+            From $208/mo with Climb Credit · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </p>
 
           {/* CTA */}

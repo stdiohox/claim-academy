@@ -640,13 +640,13 @@ function WhoWeAccept() {
 function PricingPros({ onOpen }: { onOpen: () => void }) {
   const tiers = [
     {
-      name: "LAUNCH",
-      price: "$2,997",
-      monthly: "≈ $249/mo with Climb Credit",
+      name: "STARTER",
+      price: "$2,499",
+      monthly: "≈ $208/mo with Climb Credit",
       bullets: [
-        "4-week bootcamp (1 track)",
-        "Guaranteed 8-week internship",
-        "Career activation",
+        "AI fundamentals, prompt engineering",
+        "1 live project",
+        "Certificate of completion",
         "Alumni community",
       ],
       cta: "Get Started",
@@ -657,7 +657,7 @@ function PricingPros({ onOpen }: { onOpen: () => void }) {
       price: "$3,997",
       monthly: "≈ $333/mo with Climb Credit",
       bullets: [
-        "Everything in Launch",
+        "Everything in Starter",
         "Both tracks (Engineering + Builders)",
         "Weekly 1:1 coaching call",
         "Priority employer matching",
@@ -673,10 +673,10 @@ function PricingPros({ onOpen }: { onOpen: () => void }) {
       monthly: "≈ $416/mo with Climb Credit",
       bullets: [
         "Everything in Professional",
-        "Dedicated Claude Career Coach",
-        "Guaranteed interviews at 3+ employers",
-        "Employer intro letters from Ola",
+        "1-on-1 mentorship",
+        "Priority employer matching",
         "Salary negotiation coaching",
+        "60-day post-graduation support",
       ],
       cta: "Go Elite",
       featured: false,
@@ -693,7 +693,7 @@ function PricingPros({ onOpen }: { onOpen: () => void }) {
             text="Built for people who are ready — not just people who are ready to pay."
           />
           <div className="pros-reimb-callout">
-            8 flexible payment options starting at $249/mo · Employer reimbursement up to $5,250 · 30-day money-back guarantee
+            8 flexible payment options starting at $208/mo · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </div>
         </RevealSection>
         <StaggerContainer className="pros-pricing-grid">
@@ -724,7 +724,7 @@ function PricingPros({ onOpen }: { onOpen: () => void }) {
         </StaggerContainer>
         <RevealSection delay={0.3}>
           <p className="pros-pricing-footer">
-            8 flexible payment options starting at $249/mo · Employer reimbursement up to $5,250 · 30-day money-back guarantee
+            8 flexible payment options starting at $208/mo · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </p>
         </RevealSection>
       </div>

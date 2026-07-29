@@ -678,11 +678,11 @@ function ChecklistItem({ text }: { text: string }) {
 function Pricing({ onOpen }: { onOpen: () => void }) {
   const tiers = [
     {
-      name: "LAUNCH", price: "$2,997", monthly: "≈ $249/mo with Climb",
+      name: "STARTER", price: "$2,499", monthly: "≈ $208/mo with Climb",
       bullets: [
-        "4 weeks live AI training",
-        "8-week guaranteed internship",
-        "Career activation (lifetime)",
+        "AI fundamentals, prompt engineering",
+        "1 live project",
+        "Certificate of completion",
         "Alumni community",
       ],
       cta: "Get Started", buttonClass: "btn-glass",
@@ -690,7 +690,7 @@ function Pricing({ onOpen }: { onOpen: () => void }) {
     {
       name: "PROFESSIONAL", price: "$3,997", monthly: "≈ $333/mo with Climb", featured: true,
       bullets: [
-        "Everything in Launch",
+        "Everything in Starter",
         "Both tracks (Engineering + Builders)",
         "Weekly 1:1 coaching call",
         "Priority employer matching",
@@ -703,10 +703,10 @@ function Pricing({ onOpen }: { onOpen: () => void }) {
       name: "ELITE", price: "$4,997", monthly: "≈ $416/mo with Climb",
       bullets: [
         "Everything in Professional",
-        "Dedicated Claude Career Coach",
-        "Guaranteed interviews at 3+ employers",
-        "Employer intro letters from Ola",
+        "1-on-1 mentorship",
+        "Priority employer matching",
         "Salary negotiation coaching",
+        "60-day post-graduation support",
       ],
       cta: "Go Elite", buttonClass: "btn-glass",
     },
@@ -718,7 +718,7 @@ function Pricing({ onOpen }: { onOpen: () => void }) {
           <AnimatedHeadline as="h2" className="section-headline"
             text="Don't let money be the reason you don't start." />
           <p className="section-subhead">
-            From $249/month with Climb Credit · Employer reimbursement up to $5,250 · 30-day money-back guarantee
+            From $208/month with Climb Credit · Employer reimbursement up to $5,250 · 30-day money-back guarantee
           </p>
         </RevealSection>
         <StaggerContainer className="pricing-grid">
@@ -764,7 +764,7 @@ const faqs = [
   },
   {
     q: "How much does it actually cost per month?",
-    a: "Launch tier on Climb Credit is $249/month. Ascent Funding lets you defer all payments during the 12-week program.",
+    a: "Starter tier on Climb Credit is $208/month. Ascent Funding lets you defer all payments during the 12-week program.",
   },
 ];
 
