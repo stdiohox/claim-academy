@@ -449,6 +449,13 @@ function Webinar() {
         "conversion",
         { send_to: "AW-957715891/webinar_signup" }
       );
+      // Google Ads "Event Signup" conversion goal — fires alongside webinar_signup above,
+      // not instead of it (two separate conversion goals tracking the same signup).
+      (window as unknown as { gtag?: (command: string, action: string, params: object) => void }).gtag?.(
+        "event",
+        "conversion",
+        { send_to: "AW-957715891/SnbMCKK83OoBELOr1sgD" }
+      );
       setCalendlyUnlocked(true);
       setRegisteredUser({
         name: `${form.firstName} ${form.lastName}`,
