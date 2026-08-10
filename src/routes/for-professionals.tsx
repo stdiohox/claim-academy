@@ -821,7 +821,7 @@ function FinalCtaPros({ onOpen }: { onOpen: () => void }) {
             See If You Qualify
           </button>
           <p className="pros-final-meta">
-            No pressure. No hard sell. Just an honest conversation. Next cohort: August 3 · Applications close August 3, 2026.
+            No pressure. No hard sell. Just an honest conversation. Next cohort: September 3 · Applications close September 3, 2026.
           </p>
         </RevealSection>
       </div>
