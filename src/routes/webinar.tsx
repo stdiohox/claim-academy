@@ -17,7 +17,7 @@ import { CALENDLY_URL } from "@/lib/booking";
 import { RevealSection } from "@/lib/motion";
 
 // ── Webinar constants (single source of truth — no hardcoded literals in markup) ──
-const COHORT_DATE = "2026-08-03T09:00:00-05:00";
+const COHORT_DATE = "2026-09-03T09:00:00-05:00";
 const N8N_WEBHOOK = "https://n8n.srv1759554.hstgr.cloud/webhook/lead-intake";
 const VIDEO_SRC = "/videos/grad-testimonial.mp4";
 const VIDEO_POSTER = "/videos/grad-testimonial-poster.jpg";
@@ -49,12 +49,12 @@ export const Route = createFileRoute("/webinar")({
       {
         name: "description",
         content:
-          "Watch our free AI training and see exactly what you'll learn in the Claim Academy AI Internship. Cohort starts August 3.",
+          "Watch our free AI training and see exactly what you'll learn in the Claim Academy AI Internship. Cohort starts September 3.",
       },
       { property: "og:title", content: "Break Into AI — Free Training" },
       {
         property: "og:description",
-        content: "Watch our free AI training and see exactly what you'll learn in the Claim Academy AI Internship. Cohort starts August 3.",
+        content: "Watch our free AI training and see exactly what you'll learn in the Claim Academy AI Internship. Cohort starts September 3.",
       },
       { property: "og:type", content: "website" },
     ],
@@ -517,7 +517,7 @@ function Webinar() {
               <span className="wb-pill-dot" aria-hidden />
               <span className="wb-pill-live">NEXT COHORT</span>
               <span className="wb-pill-sep" aria-hidden>·</span>
-              August 3, 2026 · Applications Close August 3 · Limited Spots
+              September 3, 2026 · Applications Close September 3 · Limited Spots
               <span className="wb-pill-arrow" aria-hidden><ArrowRight size={12} color={CREAM} /></span>
             </span>
           </motion.div>
@@ -800,8 +800,8 @@ function Webinar() {
         <NodeGraph />
         <div className="wb-wrap wb-urgency-inner">
           <RevealSection>
-            <h2 className="wb-urgency-h">Our next cohort starts August 3, 2026.</h2>
-            <p className="wb-urgency-sub">Applications close August 3. Seats are limited.</p>
+            <h2 className="wb-urgency-h">Our next cohort starts September 3, 2026.</h2>
+            <p className="wb-urgency-sub">Applications close September 3. Seats are limited.</p>
             <div className="wb-cta-row wb-urgency-cta">
               <GoldCta href="#register" size="lg">Save My Spot</GoldCta>
               <SecondaryButton href={CALENDLY_URL} external onDark>Book a Call</SecondaryButton>

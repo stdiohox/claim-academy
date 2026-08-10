@@ -153,7 +153,7 @@ function WebinarAccess() {
           </section>
 
           <section className="wa-cta">
-            <p className="wa-cta-eyebrow">Next Cohort · August 3, 2026</p>
+            <p className="wa-cta-eyebrow">Next Cohort · September 3, 2026</p>
             <h2 className="wa-cta-headline">Ready to make it official?</h2>
             <p className="wa-cta-body">
               Enjoyed the training? Book a free 30-minute call with our team. We'll walk you through the program, confirm your funding options, and answer every question.
